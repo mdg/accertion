@@ -95,6 +95,8 @@ public:
 
 	// const T& value() const { return m_actual; }
 	template < typename T2 >
+	friend void operator == ( const actual_value< T2 > &, const T2 & );
+	template < typename T2 >
 	friend void operator == ( const T2 &, const actual_value< T2 > & );
 	template < typename T2 >
 	friend void operator != ( const T2 &, const actual_value< T2 > & );
