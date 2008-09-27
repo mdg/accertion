@@ -156,6 +156,22 @@ void operator != ( const T& expected, const actual_value< T > &act )
 	std::cout << "> != actual<" << act.m_actual << ">\n";
 }
 
+/**
+ * Check if an expected value is
+ * not equal to an actual value.
+ */
+template < typename T >
+void actual_value< T >::between( const T &lower, const T &upper )
+{
+	if ( lower <= m_actual && m_actual <= upper ) {
+		return;
+	}
+
+	print_failure_prefix();
+	std::cout << "expected<" << lower << "," << upper;
+	std::cout << "> != actual<" << m_actual << ">\n";
+}
+
 
 /**
  * Helper function to let the actual macro create an actual_value
