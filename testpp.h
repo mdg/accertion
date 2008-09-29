@@ -133,14 +133,24 @@ private:
  * equal to an actual value.
  */
 template < typename T >
-void operator == ( const T& expected, const actual_value< T > &act )
+void operator == ( const actual_value< T > &act, const T& expected )
 {
-	if ( expected == act.m_actual )
+	if ( act.m_actual == expected )
 		return;
 
 	act.print_failure_prefix();
 	std::cout << "expected<" << expected;
 	std::cout << "> == actual<" << act.m_actual << ">\n";
+}
+
+/**
+ * Check if an expected value is
+ * equal to an actual value.
+ */
+template < typename T >
+void operator == ( const T& expected, const actual_value< T > &act )
+{
+	act == expected;
 }
 
 /**
