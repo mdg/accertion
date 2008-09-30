@@ -18,6 +18,7 @@
 
 #include <iostream>
 #include <list>
+#include "testpp_assertion.h"
 
 
 /**
@@ -216,6 +217,53 @@ TESTPP( constructor_1 )
 	actual( 3 ).within( 5, 1 );
 	5 == actual( value );
 	"cat" == actual( text );
+}
+#endif
+
+
+/**
+ * Unit test class
+ */
+class testpp_c
+{
+public:
+	testpp_c();
+
+	void run( testpp_result_c * );
+	virtual void test() = 0;
+
+	virtual void setup() {}
+	virtual void teardown() {}
+
+protected:
+	virtual void run_and_catch();
+
+	template < typename T >
+	testpp_assertion_c< T > assertion( const char *filename, int line
+			, const T &actual_value );
+	void fail( const char *filename, int line, const std::string &msg );
+
+private:
+	testpp_result_c *m_result;
+};
+
+
+
+#define assertpp( value ) \
+	this->assertion( __FILE__, __LINE__, actual_value )
+
+#define failpp( msg ) \
+	this->fail( __FILE__, __LINE__, msg )
+
+
+#ifdef 0
+TESTPP( sample_test )
+{
+	assertpp( x ).t();
+	assertpp( x ).f();
+	assertpp( x ) < 0;
+	assertpp( x ) != NULL;
+	failpp( "this didn't work" );
 }
 #endif
 
