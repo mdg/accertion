@@ -26,6 +26,9 @@ class testpp_result_c
 public:
 	testpp_result_c();
 
+	/**
+	 * Mark this test as failed and give a message.
+	 */
 	void fail( const char *filename, int line, const std::string &msg );
 
 private:
@@ -105,18 +108,6 @@ private:
 	int m_line;
 	const T &m_actual;
 };
-
-
-#ifdef 0
-TESTPP( sample_test )
-{
-	assertpp( x ).t();
-	assertpp( x ).f();
-	assertpp( x ) < 0;
-	assertpp( x ) != NULL;
-	failpp( "this didn't work" );
-}
-#endif
 
 
 #endif
