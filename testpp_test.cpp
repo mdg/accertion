@@ -17,16 +17,31 @@
 #include "testpp.h"
 
 
+class simple_test
+{
+public:
+	void test()
+	{
+		int x( 5 );
+		assertpp( x ).t();
+		assertpp( x ) == 5;
+	}
+
+private:
+	void run_and_catch()
+	{
+		try {
+			test();
+		} catch ( ... ) {
+			failpp( "exception" );
+		}
+	}
+};
+
 TESTPP( test_simple )
 {
 	int value( 5 );
 	5 == actual( value );
 	4 == actual( value );
-}
-
-
-int main( int argc, char **argv )
-{
-	return 0;
 }
 

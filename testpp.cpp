@@ -16,6 +16,26 @@
 #include "testpp.h"
 
 
+testpp_c::testpp_c()
+: m_result( NULL )
+{}
+
+void testpp_c::run( testpp_result_c *result )
+{
+	m_result = result;
+	try {
+		run_and_catch();
+	} catch ( ... ) {
+		failpp( "Uncaught exception" );
+	}
+}
+
+void testpp_c::run_and_catch()
+{
+	test();
+}
+
+
 testpp_runner::testpp_runner( testpp_func f, const char *test_name
 	       , const char *file_name, int line_number )
 : f_testpp( f )
