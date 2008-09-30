@@ -79,7 +79,7 @@ public:
 	/**
 	 * Run the test.
 	 */
-	void run();
+	void run( testpp_result_c & );
 
 	static void run_all();
 

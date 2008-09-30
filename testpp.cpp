@@ -20,9 +20,9 @@ testpp_c::testpp_c()
 : m_result( NULL )
 {}
 
-void testpp_c::run( testpp_result_c *result )
+void testpp_c::test( testpp_result_c &result )
 {
-	m_result = result;
+	m_result = &result;
 	try {
 		run_and_catch();
 	} catch ( ... ) {
@@ -32,13 +32,13 @@ void testpp_c::run( testpp_result_c *result )
 
 void testpp_c::run_and_catch()
 {
-	test();
+	run();
 }
 
 
-testpp_runner::testpp_runner( testpp_func f, const char *test_name
+testpp_runner::testpp_runner( testpp_c *test, const char *test_name
 	       , const char *file_name, int line_number )
-: f_testpp( f )
+: m_test( test )
 , m_test_name( test_name )
 , m_file_name( file_name )
 , m_line_number( line_number )
@@ -60,12 +60,12 @@ testpp_runner::~testpp_runner()
 	}
 }
 
-void testpp_runner::run()
+void testpp_runner::run( testpp_result_c &result )
 {
 	std::cout << "testpp( " << m_file_name << ':' << m_test_name;
 	std::cout << ':' << m_line_number << " )" << std::endl;
 	try {
-		f_testpp();
+		m_test->test( result );
 	} catch (...) {
 		std::cerr << "catch...";
 	}
@@ -77,8 +77,9 @@ void testpp_runner::run_all()
 	std::list< testpp_runner * >::iterator it;
 	int i( 0 );
 	for ( it=runners().begin(); it!=runners().end(); ++it ) {
+		testpp_result_c result;
 		// std::cerr << "run( " << i++ << " )" << std::endl;
-		(*it)->run();
+		(*it)->run( result );
 	}
 }
 
