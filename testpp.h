@@ -22,20 +22,22 @@
 
 
 /**
- * Create a testpp test function.
+ * Create a testpp test.
  */
-#define OLD_TESTPP( test_func ) \
-static void test_func(); \
-static testpp_runner test_func##_runner( test_func, #test_func \
-		, __FILE__, __LINE__ ); \
-void test_func()
-
 #define TESTPP( test_class ) \
-class test_class##_test : public testpp_c { void run(); }; \
-static testpp_runner test_class##_runner( new test_class##_test(), #test_class \
-		, __FILE__, __LINE__ ); \
-void test_class##_test::run()
+	class test_class##_test : public testpp_c { void run(); }; \
+	static testpp_runner test_class##_runner( new test_class##_test() \
+			, #test_class, __FILE__, __LINE__ ); \
+	void test_class##_test::run()
 
+// #define TESTPP( test_class ) \
+
+
+class testpp_suite_c
+{
+public:
+	testpp_suite_c( const std::string &name );
+};
 
 
 /**
