@@ -91,3 +91,11 @@ TESTPP( test_string )
 	assertpp( value ) == "hello";
 }
 
+testpp_suite_c simple_suite( "simple" );
+
+/*
+TESTPP_2( suite_test, simple_suite )
+{
+}
+*/
+

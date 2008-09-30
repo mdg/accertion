@@ -30,13 +30,21 @@
 			, #test_class, __FILE__, __LINE__ ); \
 	void test_class##_test::run()
 
-// #define TESTPP( test_class ) \
+#define TESTPP_2( test_class, suite ) \
+	class test_class##_test : public testpp_c {        \
+	public:                                            \
+		test_class##_test() : testpp_c( suite ) {} \
+		void run();                                \
+	}; \
+	static testpp_runner test_class##_runner( new test_class##_test() \
+			, #test_class, __FILE__, __LINE__ ); \
+	void test_class##_test::run()
 
 
 class testpp_suite_c
 {
 public:
-	testpp_suite_c( const std::string &name );
+	testpp_suite_c( const std::string &name ) {}
 };
 
 
