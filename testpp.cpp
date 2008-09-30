@@ -80,14 +80,19 @@ void testpp_runner::run_all()
 	// std::cerr << "run_all( " << runners().size() << " )\n";
 	std::list< testpp_runner * >::iterator it;
 	int i( 0 );
+	int failures( 0 );
 	for ( it=runners().begin(); it!=runners().end(); ++it ) {
 		testpp_result_c result;
 		// std::cerr << "run( " << i++ << " )" << std::endl;
 		(*it)->run( result );
 		if ( result.failure() ) {
+			++failures;
 			std::cout << "\t" << result.message() << std::endl;
 		}
 	}
+
+	std::cout << failures << " failures in " << runners().size()
+		<< " tests\n";
 }
 
 
