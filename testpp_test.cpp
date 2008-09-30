@@ -62,12 +62,10 @@ void simple_test::run()
 	int value( 5 );
 }
 
-/*
 TESTPP( test_simple_2 )
 {
 	int value( 5 );
 	// 5 == actual( value );
 	// 4 == actual( value );
 }
-*/
 

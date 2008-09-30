@@ -35,6 +35,10 @@ void testpp_c::run_and_catch()
 	run();
 }
 
+void testpp_c::fail( const char *filename, int line, const std::string &msg )
+{
+}
+
 
 testpp_runner::testpp_runner( testpp_c *test, const char *test_name
 	       , const char *file_name, int line_number )

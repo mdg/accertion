@@ -31,8 +31,8 @@ static testpp_runner test_func##_runner( test_func, #test_func \
 void test_func()
 
 #define TESTPP( test_class ) \
-class test_class : public testpp_c { void run(); }; \
-static testpp_runner test_class##_runner( new test_class(), #test_class \
+class test_class##_test : public testpp_c { void run(); }; \
+static testpp_runner test_class##_runner( new test_class##_test(), #test_class \
 		, __FILE__, __LINE__ ); \
 void test_class##_test::run()
 

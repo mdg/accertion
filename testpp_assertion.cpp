@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+#include "testpp_assertion.h"
 #include <sstream>
 
 
@@ -30,7 +31,4 @@ void testpp_result_c::fail( const char *filename, int line
 	out << filename << ':' << line << ' ' << msg;
 	m_message = out.str();
 }
-
-
-#endif
 
