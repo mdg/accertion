@@ -17,31 +17,57 @@
 #include "testpp.h"
 
 
+// TESTPP_SUITE( simple_suite );
+
+
+/*
 class simple_test
+: public testpp< simple_test >
+{
+};
+*/
+
+
+class simple_test_x
 {
 public:
 	void test()
 	{
+		/*
 		int x( 5 );
 		assertpp( x ).t();
 		assertpp( x ) == 5;
+		*/
 	}
 
 private:
 	void run_and_catch()
 	{
+		/*
 		try {
 			test();
 		} catch ( ... ) {
-			failpp( "exception" );
+			// failpp( "exception" );
 		}
+		*/
 	}
 };
 
-TESTPP( test_simple )
+
+class simple_test : public testpp_c { void run(); };
+static testpp_runner simple_test_runner( new simple_test(), "simple_test"
+		, __FILE__, __LINE__ );
+void simple_test::run()
 {
 	int value( 5 );
-	5 == actual( value );
-	4 == actual( value );
 }
+
+/*
+TESTPP( test_simple_2 )
+{
+	int value( 5 );
+	// 5 == actual( value );
+	// 4 == actual( value );
+}
+*/
 

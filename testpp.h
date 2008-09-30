@@ -24,45 +24,18 @@
 /**
  * Create a testpp test function.
  */
-#define TESTPP( test_func ) \
+#define OLD_TESTPP( test_func ) \
 static void test_func(); \
 static testpp_runner test_func##_runner( test_func, #test_func \
 		, __FILE__, __LINE__ ); \
 void test_func()
 
+#define TESTPP( test_class ) \
+class test_class : public testpp_c { void run(); }; \
+static testpp_runner test_class##_runner( new test_class(), #test_class \
+		, __FILE__, __LINE__ ); \
+void test_class##_test::run()
 
-
-/**
- * The function to be run by the TESTPP macro
- */
-typedef void (*testpp_func)();
-
-/**
- * A class that takes a parameter as a testpp_func
- * and stores it to run later.
- */
-class testpp_runner
-{
-public:
-	testpp_runner( testpp_func, const char *test_name
-		, const char *file_name, int line_number );
-	~testpp_runner();
-
-	/**
-	 * Run the test.
-	 */
-	void run();
-
-	static void run_all();
-
-private:
-	std::string m_test_name;
-	const char *m_file_name;
-	int m_line_number;
-	testpp_func f_testpp;
-
-	static std::list< testpp_runner * > & runners();
-};
 
 
 /**
@@ -73,8 +46,8 @@ class testpp_c
 public:
 	testpp_c();
 
-	void run( testpp_result_c * );
-	virtual void test() = 0;
+	void test( testpp_result_c & );
+	virtual void run() = 0;
 
 	virtual void setup() {}
 	virtual void teardown() {}
@@ -89,6 +62,34 @@ protected:
 
 private:
 	testpp_result_c *m_result;
+};
+
+
+/**
+ * A class that takes a parameter as a testpp_func
+ * and stores it to run later.
+ */
+class testpp_runner
+{
+public:
+	testpp_runner( testpp_c *, const char *test_name
+		, const char *file_name, int line_number );
+	~testpp_runner();
+
+	/**
+	 * Run the test.
+	 */
+	void run();
+
+	static void run_all();
+
+private:
+	testpp_c *m_test;
+	std::string m_test_name;
+	const char *m_file_name;
+	int m_line_number;
+
+	static std::list< testpp_runner * > & runners();
 };
 
 

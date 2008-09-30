@@ -47,7 +47,7 @@ public:
 	/**
 	 * Construct an assertion class
 	 */
-	assertion_c( testpp_result_c &, const char *filename, int line
+	testpp_assertion_c( testpp_result_c &, const char *filename, int line
 			, const T &actual_value );
 
 	/**
@@ -63,7 +63,13 @@ public:
 	 * Assert equal to an expected value.
 	 */
 	template < class T2 >
-	void operator == ( const T2 &expected );
+	void operator == ( const T2 &expected )
+	{
+		if ( m_actual == expected )
+			return;
+		m_result.fail( m_filename, m_line, "not equal" );
+	}
+
 	/**
 	 * Assert not equal to an expected value.
 	 */
@@ -108,63 +114,6 @@ private:
 	int m_line;
 	const T &m_actual;
 };
-
-
-/**
- * Check if an expected value is
- * equal to an actual value.
- */
-template < typename T >
-void operator == ( const actual_value< T > &act, const T& expected )
-{
-	if ( act.m_actual == expected )
-		return;
-
-	act.print_failure_prefix();
-	std::cout << "expected<" << expected;
-	std::cout << "> == actual<" << act.m_actual << ">\n";
-}
-
-/**
- * Check if an expected value is
- * equal to an actual value.
- */
-template < typename T >
-void operator == ( const T& expected, const actual_value< T > &act )
-{
-	act == expected;
-}
-
-/**
- * Check if an expected value is
- * not equal to an actual value.
- */
-template < typename T >
-void operator != ( const T& expected, const actual_value< T > &act )
-{
-	if ( expected != act.m_actual )
-		return;
-
-	act.print_failure_prefix();
-	std::cout << "expected<" << expected;
-	std::cout << "> != actual<" << act.m_actual << ">\n";
-}
-
-/**
- * Check if an expected value is
- * not equal to an actual value.
- */
-template < typename T >
-void actual_value< T >::between( const T &lower, const T &upper )
-{
-	if ( lower <= m_actual && m_actual <= upper ) {
-		return;
-	}
-
-	print_failure_prefix();
-	std::cout << "expected<" << lower << "," << upper;
-	std::cout << "> != actual<" << m_actual << ">\n";
-}
 
 
 #endif
