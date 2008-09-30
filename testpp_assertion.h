@@ -16,6 +16,7 @@
  */
 
 #include <sstream>
+#include <iostream>
 
 
 /**
@@ -30,6 +31,9 @@ public:
 	 * Mark this test as failed and give a message.
 	 */
 	void fail( const char *filename, int line, const std::string &msg );
+
+	inline bool failure() const { return m_failure; }
+	inline const std::string & message() const { return m_message; }
 
 private:
 	bool m_failure;
@@ -47,17 +51,34 @@ public:
 	/**
 	 * Construct an assertion class
 	 */
-	testpp_assertion_c( testpp_result_c &, const char *filename, int line
-			, const T &actual_value );
+	testpp_assertion_c( testpp_result_c &result, const char *filename
+			, int line, const T &actual_value
+			, const std::string &actual_expression )
+	: m_result( result )
+	, m_filename( filename )
+	, m_line( line )
+	, m_actual( actual_value )
+	, m_expression( actual_expression )
+	{}
 
 	/**
 	 * Assert actual value is true.
 	 */
-	void t();
+	void t()
+	{
+		if ( m_actual )
+			return;
+		m_result.fail( m_filename, m_line, "not true" );
+	}
 	/**
 	 * Assert actual value is false.
 	 */
-	void f();
+	void f()
+	{
+		if ( ! m_actual )
+			return;
+		m_result.fail( m_filename, m_line, "not false" );
+	}
 
 	/**
 	 * Assert equal to an expected value.
@@ -67,7 +88,7 @@ public:
 	{
 		if ( m_actual == expected )
 			return;
-		m_result.fail( m_filename, m_line, "not equal" );
+		m_result.fail( m_filename, m_line, m_expression +" not equal" );
 	}
 
 	/**
@@ -113,6 +134,7 @@ private:
 	const char *m_filename;
 	int m_line;
 	const T &m_actual;
+	const std::string &m_expression;
 };
 
 

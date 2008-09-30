@@ -60,6 +60,8 @@ static testpp_runner simple_test_runner( new simple_test(), "simple_test"
 void simple_test::run()
 {
 	int value( 5 );
+	assertpp( value ) == 5;
+	assertpp( value ) == 4;
 }
 
 TESTPP( test_simple_2 )

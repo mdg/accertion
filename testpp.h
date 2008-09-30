@@ -57,7 +57,12 @@ protected:
 
 	template < typename T >
 	testpp_assertion_c< T > assertion( const char *filename, int line
-			, const T &actual_value );
+			, const T &actual_value
+			, const std::string &actual_expression )
+	{
+		return testpp_assertion_c< T >( *m_result, filename, line
+				, actual_value, actual_expression );
+	}
 	void fail( const char *filename, int line, const std::string &msg );
 
 private:
@@ -94,8 +99,8 @@ private:
 
 
 
-#define assertpp( value ) \
-	this->assertion( __FILE__, __LINE__, actual_value )
+#define assertpp( actual_value ) \
+	this->assertion( __FILE__, __LINE__, actual_value, #actual_value )
 
 #define failpp( msg ) \
 	this->fail( __FILE__, __LINE__, msg )

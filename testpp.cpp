@@ -84,6 +84,9 @@ void testpp_runner::run_all()
 		testpp_result_c result;
 		// std::cerr << "run( " << i++ << " )" << std::endl;
 		(*it)->run( result );
+		if ( result.failure() ) {
+			std::cout << "\t" << result.message() << std::endl;
+		}
 	}
 }
 
