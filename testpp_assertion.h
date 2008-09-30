@@ -88,7 +88,10 @@ public:
 	{
 		if ( m_actual == expected )
 			return;
-		m_result.fail( m_filename, m_line, m_expression +" not equal" );
+		std::ostringstream out;
+		out << m_expression << " == " << m_actual << " != "
+			<< expected;
+		m_result.fail( m_filename, m_line, out.str() );
 	}
 
 	/**
