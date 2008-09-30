@@ -11,12 +11,12 @@ print OBJ
 
 
 rule '.o' => SRC do |t|
-    sh %{g++ -c -g -o #{t.name} #{t.source}}
+    sh %{g++ -c -v -g -o #{t.name} #{t.source}}
 end
 
 
 file "run_testpp" => [ :compile ] do |t|
-    sh "g++ -g -o run_testpp #{OBJ}"
+    sh "g++ -g -v -o run_testpp #{OBJ}"
 end
 
 task :default => [ :build ]

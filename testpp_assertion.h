@@ -98,7 +98,15 @@ public:
 	 * Assert not equal to an expected value.
 	 */
 	template < class T2 >
-	void operator != ( const T2 &expected );
+	void operator != ( const T2 &expected )
+	{
+		if ( m_actual != expected )
+			return;
+		std::ostringstream out;
+		out << m_expression << " == " << m_actual << " == "
+			<< expected;
+		m_result.fail( m_filename, m_line, out.str() );
+	}
 	/**
 	 * Assert actual value less than expected value.
 	 */

@@ -59,15 +59,35 @@ static testpp_runner simple_test_runner( new simple_test(), "simple_test"
 		, __FILE__, __LINE__ );
 void simple_test::run()
 {
+}
+
+TESTPP( test_equality )
+{
 	int value( 5 );
 	assertpp( value ) == 5;
+}
+
+TESTPP( test_equality_failure )
+{
+	int value( 5 );
 	assertpp( value ) == 4;
 }
 
-TESTPP( test_simple_2 )
+TESTPP( test_inequality )
 {
 	int value( 5 );
-	// 5 == actual( value );
-	// 4 == actual( value );
+	assertpp( value ) != 4;
+}
+
+TESTPP( test_inequality_failure )
+{
+	int value( 5 );
+	assertpp( value ) != 5;
+}
+
+TESTPP( test_string )
+{
+	std::string value( "hello" );
+	assertpp( value ) == "hello";
 }
 
