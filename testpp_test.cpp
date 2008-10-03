@@ -29,7 +29,7 @@ class test_custom
 : public testpp_c
 {
 public:
-	void run()
+	void test()
 	{
 		assertpp( m_x ).t();
 		assertpp( m_x ) == 5;
@@ -53,12 +53,12 @@ REGISTER_TESTPP( test_custom );
 
 
 // expansion of what the TESTPP macro does
-class simple_test : public testpp_c { void run(); };
+class simple_test : public testpp_c { void test(); };
 /*
 static testpp_runner_i simple_test_runner( new simple_test(), "simple_test"
 		, __FILE__, __LINE__ );
 		*/
-void simple_test::run()
+void simple_test::test()
 {
 }
 

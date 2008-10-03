@@ -20,9 +20,14 @@ testpp_c::testpp_c()
 : m_result( NULL )
 {}
 
+void testpp_c::set_result( testpp_result_c &result )
+{
+	m_result = &result;
+}
 
 void testpp_c::fail( const char *filename, int line, const std::string &msg )
 {
+	m_result->fail( filename, line, msg );
 }
 
 
