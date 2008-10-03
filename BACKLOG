@@ -1,5 +1,10 @@
 put tests into suites
 
+make tests be created right before running
+	add a base test_runner and a templated implementation that can
+	create the test run it, and delete it, rather than creating
+	it when the test_runner is created
+
 call suites from command line
 
 call individual tests from command line
