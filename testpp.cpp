@@ -18,6 +18,7 @@
 
 testpp_c::testpp_c()
 : m_result( NULL )
+, m_suite( NULL )
 {}
 
 void testpp_c::test( testpp_result_c &result )
@@ -40,7 +41,8 @@ void testpp_c::fail( const char *filename, int line, const std::string &msg )
 }
 
 
-testpp_runner::testpp_runner( testpp_c *test, const char *test_name
+/*
+testpp_runner_i::testpp_runner_i( testpp_c *test, const char *test_name
 	       , const char *file_name, int line_number )
 : m_test( test )
 , m_test_name( test_name )
@@ -51,11 +53,13 @@ testpp_runner::testpp_runner( testpp_c *test, const char *test_name
 	static int i( 0 );
 	std::cerr << "runners().push_back( " << i++ << " )"
 		<< " = " << runners().size() << std::endl;
-	*/
+	* /
 	runners().push_back( this );
 }
+*/
 
-testpp_runner::~testpp_runner()
+/*
+testpp_runner_i::~testpp_runner_i()
 {
 	std::list< testpp_runner * >::iterator it;
 	it = std::find( runners().begin(), runners().end(), this );
@@ -63,8 +67,10 @@ testpp_runner::~testpp_runner()
 		runners().erase( it );
 	}
 }
+*/
 
-void testpp_runner::run( testpp_result_c &result )
+/*
+void testpp_runner_i::run( testpp_result_c &result )
 {
 	std::cout << "testpp( " << m_file_name << ':' << m_test_name;
 	std::cout << ':' << m_line_number << " )" << std::endl;
@@ -75,7 +81,7 @@ void testpp_runner::run( testpp_result_c &result )
 	}
 }
 
-void testpp_runner::run_all()
+void testpp_runner_i::run_all()
 {
 	// std::cerr << "run_all( " << runners().size() << " )\n";
 	std::list< testpp_runner * >::iterator it;
@@ -94,18 +100,19 @@ void testpp_runner::run_all()
 	std::cout << failures << " failures in " << runners().size()
 		<< " tests\n";
 }
+*/
 
 
-std::list< testpp_runner * > & testpp_runner::runners()
+std::list< testpp_runner_i * > & testpp_runner_i::runners()
 {
-	static std::list< testpp_runner * > static_runners;
+	static std::list< testpp_runner_i * > static_runners;
 	return static_runners;
 }
 
 
 int main( int argc, char **argv )
 {
-	testpp_runner::run_all();
+	testpp_runner_i::run_all();
 	return 0;
 }
 

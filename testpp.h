@@ -22,38 +22,74 @@
 
 
 /**
- * Create a testpp test.
+ * Create the most simple testpp test without attaching it to a suite.
  */
 #define TESTPP( test_class ) \
-	class test_class##_test : public testpp_c { void run(); }; \
-	static testpp_runner test_class##_runner( new test_class##_test() \
-			, #test_class, __FILE__, __LINE__ ); \
-	void test_class##_test::run()
+	class test_class : public testpp_c { public: void run(); }; \
+	static testpp_runner_c< test_class > test_class##_runner( #test_class \
+			, __FILE__, __LINE__ ); \
+	void test_class::run()
 
-#define TESTPP_2( test_class, suite ) \
-	class test_class##_test : public testpp_c {        \
-	public:                                            \
-		test_class##_test() : testpp_c( suite ) {} \
-		void run();                                \
-	}; \
-	static testpp_runner test_class##_runner( new test_class##_test() \
-			, #test_class, __FILE__, __LINE__ ); \
-	void test_class##_test::run()
+/**
+ * Create a testpp that belongs to the given suite.
+ */
+#define SUITE_TESTPP( test_class, suite ) \
+	class test_class : public testpp_c { public: void run(); }; \
+	static testpp_runner_c< test_class > test_class##_runner( #test_class \
+			, __FILE__, __LINE__ ); \
+	void test_class::run()
+
+/**
+ * Register a testpp class to be run.
+ */
+#define REGISTER_TESTPP( test_class ) \
+	static testpp_runner_c< test_class > test_class##_runner( #test_class \
+			, __FILE__, __LINE__ )
+
+/**
+ * Register a testpp class to be run.
+ */
+#define REGISTER_SUITE_TESTPP( test_class, suite_class ) \
+	static testpp_runner_c< test_class > test_class##_runner( #test_class \
+			, suite_class, __FILE__, __LINE__ )
 
 
+/**
+ * A suite class for grouping tests together.
+ */
 class testpp_suite_c
 {
 public:
-	testpp_suite_c( const std::string &name ) {}
+	/**
+	 * Construct a suite that has no parent.
+	 */
+	testpp_suite_c( const std::string &name )
+	: m_name( name )
+	, m_parent( NULL )
+	{}
+	/**
+	 * Construct a test suite with a parent.
+	 */
+	testpp_suite_c( const std::string &name, testpp_suite_c &parent )
+	: m_name( name )
+	, m_parent( &parent )
+	{}
+
+private:
+	std::string m_name;
+	testpp_suite_c *m_parent;
 };
 
 
 /**
- * Unit test class
+ * The core unit test class.  This should be implemented.
  */
 class testpp_c
 {
 public:
+	/**
+	 * Construct a testpp object
+	 */
 	testpp_c();
 
 	void test( testpp_result_c & );
@@ -77,41 +113,92 @@ protected:
 
 private:
 	testpp_result_c *m_result;
+	testpp_suite_c *m_suite;
 };
 
+
+/**
+ * Base interface for running tests
+ */
+class testpp_runner_i
+{
+public:
+	virtual ~testpp_runner_i() {}
+	virtual testpp_c * create_test() = 0;
+	virtual void run_test( testpp_c &, testpp_result_c & ) = 0;
+
+	static void run_all();
+
+protected:
+	testpp_runner_i( const std::string &name
+			, const char *filename = NULL, int line = -1 );
+	testpp_runner_i( const std::string &name, testpp_suite_c &
+			, const char *filename = NULL, int line = -1 );
+
+private:
+	std::string m_name;
+	testpp_suite_c *m_suite;
+	const char *m_filename;
+	int m_line;
+
+	static std::list< testpp_runner_i * > & runners();
+};
 
 /**
  * A class that takes a parameter as a testpp_func
  * and stores it to run later.
  */
-class testpp_runner
+template < class T >
+class testpp_runner_c
+: public testpp_runner_i
 {
 public:
-	testpp_runner( testpp_c *, const char *test_name
-		, const char *file_name, int line_number );
-	~testpp_runner();
+	/**
+	 * Construct a testpp_runner for a given name and no suite
+	 */
+	testpp_runner_c( const std::string &name
+			, const char *filename = NULL, int line = -1 )
+	: testpp_runner_i( name, filename, line )
+	{}
+	/**
+	 * Construct a testpp_runner for a given name and suite
+	 */
+	testpp_runner_c( const std::string &name, testpp_suite_c &suite
+			, const char *filename = NULL, int line = -1 )
+	: testpp_runner_i( name, suite, filename, line )
+	{}
 
 	/**
-	 * Run the test.
+	 * Create the test
 	 */
-	void run( testpp_result_c & );
+	virtual testpp_c * create_test()
+	{
+		return new T();
+	}
 
-	static void run_all();
-
-private:
-	testpp_c *m_test;
-	std::string m_test_name;
-	const char *m_file_name;
-	int m_line_number;
-
-	static std::list< testpp_runner * > & runners();
+	/**
+	 * Run the test.  Override this to do special exception handling
+	 * if necessary.
+	 */
+	virtual void run_test( testpp_c &test, testpp_result_c &result )
+	{
+		test.test( result );
+	}
 };
 
 
 
+/**
+ * Assert something from within a testpp_c::run() implementation
+ * The result of this call should be compared or evaluated to actually
+ * complete the assertion.  See testpp_assertion_c.
+ */
 #define assertpp( actual_value ) \
 	this->assertion( __FILE__, __LINE__, actual_value, #actual_value )
 
+/**
+ * Fail a test from within a testpp_c::run() implementation
+ */
 #define failpp( msg ) \
 	this->fail( __FILE__, __LINE__, msg )
 

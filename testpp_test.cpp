@@ -17,46 +17,47 @@
 #include "testpp.h"
 
 
-// TESTPP_SUITE( simple_suite );
+/**
+ * Define tests
+ */
+testpp_suite_c parent_suite( "parent" );
+testpp_suite_c simple_suite( "simple", parent_suite );
+testpp_suite_c special_suite( "special", parent_suite );
 
 
-/*
-class simple_test
-: public testpp< simple_test >
-{
-};
-*/
-
-
-class simple_test_x
+class test_custom
+: public testpp_c
 {
 public:
-	void test()
+	void run()
 	{
-		/*
-		int x( 5 );
-		assertpp( x ).t();
-		assertpp( x ) == 5;
-		*/
+		assertpp( m_x ).t();
+		assertpp( m_x ) == 5;
+	}
+
+	void setup()
+	{
+		m_x = 5;
+	}
+
+	void teardown()
+	{
+		m_x = 0;
 	}
 
 private:
-	void run_and_catch()
-	{
-		/*
-		try {
-			test();
-		} catch ( ... ) {
-			// failpp( "exception" );
-		}
-		*/
-	}
+	int m_x;
 };
+REGISTER_TESTPP( test_custom );
+// REGISTER_SUITE_TESTPP( test_custom, parent_suite );
 
 
+// expansion of what the TESTPP macro does
 class simple_test : public testpp_c { void run(); };
-static testpp_runner simple_test_runner( new simple_test(), "simple_test"
+/*
+static testpp_runner_i simple_test_runner( new simple_test(), "simple_test"
 		, __FILE__, __LINE__ );
+		*/
 void simple_test::run()
 {
 }
@@ -91,11 +92,13 @@ TESTPP( test_string )
 	assertpp( value ) == "hello";
 }
 
-testpp_suite_c simple_suite( "simple" );
-
-/*
-TESTPP_2( suite_test, simple_suite )
+SUITE_TESTPP( suite_test, simple_suite )
 {
+	assertpp( "hello" ) == "hello";
 }
-*/
+
+SUITE_TESTPP( multi_suite_test, parent_suite )
+{
+	assertpp( "hello" ) == "hello";
+}
 
