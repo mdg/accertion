@@ -102,7 +102,11 @@ std::list< testpp_runner_i * > & testpp_runner_i::runners()
 
 int main( int argc, char **argv )
 {
-	testpp_runner_i::run_all();
+	if ( argc == 1 ) {
+		testpp_runner_i::run_all();
+	} else if ( argc == 2 ) {
+		// testpp_runner_i::run_some( argv[1] );
+	}
 	return 0;
 }
 
