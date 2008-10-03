@@ -25,19 +25,19 @@
  * Create the most simple testpp test without attaching it to a suite.
  */
 #define TESTPP( test_class ) \
-	class test_class : public testpp_c { public: void run(); }; \
+	class test_class : public testpp_c { public: void test(); }; \
 	static testpp_runner_c< test_class > test_class##_runner( #test_class \
 			, __FILE__, __LINE__ ); \
-	void test_class::run()
+	void test_class::test()
 
 /**
  * Create a testpp that belongs to the given suite.
  */
 #define SUITE_TESTPP( test_class, suite ) \
-	class test_class : public testpp_c { public: void run(); }; \
+	class test_class : public testpp_c { public: void test(); }; \
 	static testpp_runner_c< test_class > test_class##_runner( #test_class \
 			, __FILE__, __LINE__ ); \
-	void test_class::run()
+	void test_class::test()
 
 /**
  * Register a testpp class to be run.
@@ -91,16 +91,13 @@ public:
 	 * Construct a testpp object
 	 */
 	testpp_c();
+	void set_result( testpp_result_c & );
 
-	void test( testpp_result_c & );
-	virtual void run() = 0;
-
+	virtual void test() = 0;
 	virtual void setup() {}
 	virtual void teardown() {}
 
 protected:
-	virtual void run_and_catch();
-
 	template < typename T >
 	testpp_assertion_c< T > assertion( const char *filename, int line
 			, const T &actual_value
@@ -113,7 +110,6 @@ protected:
 
 private:
 	testpp_result_c *m_result;
-	testpp_suite_c *m_suite;
 };
 
 
@@ -123,9 +119,9 @@ private:
 class testpp_runner_i
 {
 public:
-	virtual ~testpp_runner_i() {}
+	virtual ~testpp_runner_i();
 	virtual testpp_c * create_test() = 0;
-	virtual void run_test( testpp_c &, testpp_result_c & ) = 0;
+	virtual void run_test( testpp_result_c & );
 
 	static void run_all();
 
@@ -136,10 +132,10 @@ protected:
 			, const char *filename = NULL, int line = -1 );
 
 private:
-	std::string m_name;
+	std::string m_test_name;
 	testpp_suite_c *m_suite;
-	const char *m_filename;
-	int m_line;
+	const char *m_file_name;
+	int m_line_number;
 
 	static std::list< testpp_runner_i * > & runners();
 };
@@ -174,15 +170,6 @@ public:
 	virtual testpp_c * create_test()
 	{
 		return new T();
-	}
-
-	/**
-	 * Run the test.  Override this to do special exception handling
-	 * if necessary.
-	 */
-	virtual void run_test( testpp_c &test, testpp_result_c &result )
-	{
-		test.test( result );
 	}
 };
 

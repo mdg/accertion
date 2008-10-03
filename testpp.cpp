@@ -18,34 +18,18 @@
 
 testpp_c::testpp_c()
 : m_result( NULL )
-, m_suite( NULL )
 {}
 
-void testpp_c::test( testpp_result_c &result )
-{
-	m_result = &result;
-	try {
-		run_and_catch();
-	} catch ( ... ) {
-		failpp( "Uncaught exception" );
-	}
-}
-
-void testpp_c::run_and_catch()
-{
-	run();
-}
 
 void testpp_c::fail( const char *filename, int line, const std::string &msg )
 {
 }
 
 
-/*
-testpp_runner_i::testpp_runner_i( testpp_c *test, const char *test_name
+testpp_runner_i::testpp_runner_i( const std::string &test_name
 	       , const char *file_name, int line_number )
-: m_test( test )
-, m_test_name( test_name )
+: m_test_name( test_name )
+, m_suite( NULL )
 , m_file_name( file_name )
 , m_line_number( line_number )
 {
@@ -53,44 +37,46 @@ testpp_runner_i::testpp_runner_i( testpp_c *test, const char *test_name
 	static int i( 0 );
 	std::cerr << "runners().push_back( " << i++ << " )"
 		<< " = " << runners().size() << std::endl;
-	* /
+	*/
 	runners().push_back( this );
 }
-*/
 
-/*
 testpp_runner_i::~testpp_runner_i()
 {
-	std::list< testpp_runner * >::iterator it;
+	std::list< testpp_runner_i * >::iterator it;
 	it = std::find( runners().begin(), runners().end(), this );
 	if ( it == runners().end() ) {
 		runners().erase( it );
 	}
 }
-*/
 
-/*
-void testpp_runner_i::run( testpp_result_c &result )
+
+void testpp_runner_i::run_test( testpp_result_c &result )
 {
 	std::cout << "testpp( " << m_file_name << ':' << m_test_name;
 	std::cout << ':' << m_line_number << " )" << std::endl;
+	std::auto_ptr< testpp_c > test( create_test() );
+	test->set_result( result );
 	try {
-		m_test->test( result );
+		test->setup();
+		test->test();
+		test->teardown();
 	} catch (...) {
 		std::cerr << "catch...";
 	}
 }
 
+
 void testpp_runner_i::run_all()
 {
 	// std::cerr << "run_all( " << runners().size() << " )\n";
-	std::list< testpp_runner * >::iterator it;
+	std::list< testpp_runner_i * >::iterator it;
 	int i( 0 );
 	int failures( 0 );
 	for ( it=runners().begin(); it!=runners().end(); ++it ) {
 		testpp_result_c result;
 		// std::cerr << "run( " << i++ << " )" << std::endl;
-		(*it)->run( result );
+		(*it)->run_test( result );
 		if ( result.failure() ) {
 			++failures;
 			std::cout << "\t" << result.message() << std::endl;
@@ -100,7 +86,6 @@ void testpp_runner_i::run_all()
 	std::cout << failures << " failures in " << runners().size()
 		<< " tests\n";
 }
-*/
 
 
 std::list< testpp_runner_i * > & testpp_runner_i::runners()
