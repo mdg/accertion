@@ -1,5 +1,5 @@
-#ifndef TESTPP_OUTPUT_H
-#define TESTPP_OUTPUT_H
+#ifndef DEFAULT_TESTPP_OUTPUT_H
+#define DEFAULT_TESTPP_OUTPUT_H
 
 #include "testpp_output.h"
 
