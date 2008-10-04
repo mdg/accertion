@@ -16,6 +16,16 @@
 #include "testpp.h"
 
 
+bool testpp_suite_c::match( const std::string &suite_name ) const
+{
+	if ( m_name == suite_name )
+		return true;
+	if ( m_parent )
+		return m_parent->match( suite_name );
+	return false;
+}
+
+
 testpp_c::testpp_c()
 : m_result( NULL )
 {}
@@ -55,6 +65,18 @@ testpp_runner_i::~testpp_runner_i()
 	}
 }
 
+bool testpp_runner_i::in_suite( const std::string &suite_name ) const
+{
+	if ( suite_name == m_file_name ) {
+		return true;
+	} else if ( m_suite && m_suite->match( suite_name ) ) {
+		return true;
+	} else if ( ( suite_name +".cpp" ) == m_file_name ) {
+		return true;
+	}
+	return false;
+}
+
 
 void testpp_runner_i::run_test( testpp_result_c &result )
 {
@@ -92,6 +114,30 @@ void testpp_runner_i::run_all()
 		<< " tests\n";
 }
 
+void testpp_runner_i::run_some( const std::string &suite )
+{
+	std::list< testpp_runner_i * >::iterator it;
+	int i( 0 );
+	int failures( 0 );
+	int run_count( 0 );
+	for ( it=runners().begin(); it!=runners().end(); ++it ) {
+		if ( ! (*it)->in_suite( suite ) ) {
+			continue;
+		}
+		++run_count;
+		testpp_result_c result;
+		// std::cerr << "run( " << i++ << " )" << std::endl;
+		(*it)->run_test( result );
+		if ( result.failure() ) {
+			++failures;
+			std::cout << "\t" << result.message() << std::endl;
+		}
+	}
+
+	std::cout << failures << " failures in " << run_count
+		<< " tests\n";
+}
+
 
 std::list< testpp_runner_i * > & testpp_runner_i::runners()
 {
@@ -105,7 +151,7 @@ int main( int argc, char **argv )
 	if ( argc == 1 ) {
 		testpp_runner_i::run_all();
 	} else if ( argc == 2 ) {
-		// testpp_runner_i::run_some( argv[1] );
+		testpp_runner_i::run_some( argv[1] );
 	}
 	return 0;
 }

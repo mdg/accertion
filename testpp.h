@@ -75,6 +75,8 @@ public:
 	, m_parent( &parent )
 	{}
 
+	bool match( const std::string &suite_name ) const;
+
 private:
 	std::string m_name;
 	testpp_suite_c *m_parent;
@@ -122,8 +124,10 @@ public:
 	virtual ~testpp_runner_i();
 	virtual testpp_c * create_test() = 0;
 	virtual void run_test( testpp_result_c & );
+	bool in_suite( const std::string &suite ) const;
 
 	static void run_all();
+	static void run_some( const std::string &suite_name );
 
 protected:
 	testpp_runner_i( const std::string &name
