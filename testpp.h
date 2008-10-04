@@ -33,10 +33,10 @@
 /**
  * Create a testpp that belongs to the given suite.
  */
-#define SUITE_TESTPP( test_class, suite ) \
+#define SUITE_TESTPP( test_class, suite_class ) \
 	class test_class : public testpp_c { public: void test(); }; \
 	static testpp_runner_c< test_class > test_class##_runner( #test_class \
-			, __FILE__, __LINE__ ); \
+			, suite_class, __FILE__, __LINE__ ); \
 	void test_class::test()
 
 /**

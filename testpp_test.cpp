@@ -23,6 +23,7 @@
 testpp_suite_c parent_suite( "parent" );
 testpp_suite_c simple_suite( "simple", parent_suite );
 testpp_suite_c special_suite( "special", parent_suite );
+testpp_suite_c assertion_suite( "assertion" );
 
 
 class test_custom
@@ -62,7 +63,7 @@ void simple_test::test()
 {
 }
 
-TESTPP( test_equality_assertion )
+SUITE_TESTPP( test_equality_assertion, assertion_suite )
 {
 	int value( 5 );
 	assertpp( value ) == 5;
