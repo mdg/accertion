@@ -124,3 +124,16 @@ TESTPP( test_runner_in_suite )
 	*/
 }
 
+/*
+testpp_output_register< human_testpp_output_c > human_output( "human" );
+testpp_output_register< yaml_testpp_output_c > yaml_output( "yaml" );
+testpp_output_register< json_testpp_output_c > json_output( "json" );
+
+TESTPP_OUTPUT()
+{
+	add_output< human_testpp_output_c >();
+	add_output< yaml_testpp_output_c >();
+	add_output< json_testpp_output_c >();
+}
+*/
+
