@@ -77,35 +77,5 @@ public:
 };
 
 
-/**
- * Write the testpp output in a human readable format
- */
-class human_testpp_output_c
-: public testpp_output_i
-{
-public:
-};
-
-
-/**
- * Write the testpp output in the default YAML format
- */
-class yaml_testpp_output_c
-: public testpp_output_i
-{
-public:
-};
-
-
-/**
- * Write the testpp output in the default JSON format
- */
-class json_testpp_output_c
-: public testpp_output_i
-{
-public:
-};
-
-
 #endif
 
