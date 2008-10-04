@@ -30,6 +30,6 @@ desc "Build the main executable"
 task :build => [ "run_testpp" ]
 
 task :full => [] do
-    sh "g++ -o run_testpp testpp.cpp testpp_assertion.cpp testpp_test.cpp"
+    sh "g++ -g -o run_testpp testpp.cpp testpp_assertion.cpp testpp_test.cpp"
 end
 
