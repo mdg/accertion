@@ -1,6 +1,4 @@
 
-call suites from command line
-
 call individual tests from command line
 
 add customizable output writer
