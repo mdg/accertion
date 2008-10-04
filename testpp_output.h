@@ -26,32 +26,54 @@ private:
 };
 
 
-class testpp_output_register_i
+/**
+ * A base object for creating
+ */
+class testpp_output_type_i
 {
 public:
-	virtual testpp_output_type_i * create_output() = 0;
+	virtual testpp_output_i * create_output() = 0;
 
-	static const std::list< testpp_output_type_i * > & registry();
+	static const std::list< testpp_output_type_i * > & all_types();
+
 protected:
-	static std::list< testpp_output_type_i * > & output();
+	static std::list< testpp_output_type_i * > & types();
 };
 
 /**
- * Typed output registry
+ * Typed output register
  */
 template < class T >
-class testpp_output_register_c
+class testpp_output_type_c
+: public testpp_output_type_i
 {
 public:
-	testpp_output_register_c()
-	{
-		testpp_output_register_i::output().push_back( this );
-	}
+	virtual testpp_output_i * create_output() { return new T(); }
+};
 
-	virtual testpp_output_type_i * create_output()
+/**
+ * Registered output type.  Separated from the testpp_output_type_c for
+ * testing purposes.
+ */
+template < class T >
+class registered_testpp_output_type_c
+: public testpp_ouput_type_c< T >
+{
+public:
+	registered_testpp_output_type_c()
 	{
-		return new T();
+		types().push_back( this );
 	}
+};
+
+
+class testpp_output_set_c
+{
+public:
+	testpp_output_set( const std::list< testpp_output_type_i * > & );
+
+	const std::vector< std::string > & names() const;
+	testpp_output_i & output( const std::string &name );
 };
 
 
