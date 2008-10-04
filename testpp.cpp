@@ -56,6 +56,22 @@ testpp_runner_i::testpp_runner_i( const std::string &test_name
 	runners().push_back( this );
 }
 
+testpp_runner_i::testpp_runner_i( const std::string &test_name
+	       , testpp_suite_c &suite, const char *file_name
+	       , int line_number )
+: m_test_name( test_name )
+, m_suite( &suite )
+, m_file_name( file_name )
+, m_line_number( line_number )
+{
+	/*
+	static int i( 0 );
+	std::cerr << "runners().push_back( " << i++ << " )"
+		<< " = " << runners().size() << std::endl;
+	*/
+	runners().push_back( this );
+}
+
 testpp_runner_i::~testpp_runner_i()
 {
 	std::list< testpp_runner_i * >::iterator it;
@@ -110,7 +126,7 @@ void testpp_runner_i::run_all()
 		}
 	}
 
-	std::cout << failures << " failures in " << runners().size()
+	std::cerr << failures << " failures in " << runners().size()
 		<< " tests\n";
 }
 

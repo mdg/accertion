@@ -62,34 +62,65 @@ void simple_test::test()
 {
 }
 
-TESTPP( test_equality )
+TESTPP( test_equality_assertion )
 {
 	int value( 5 );
 	assertpp( value ) == 5;
 }
 
-TESTPP( test_equality_failure )
+TESTPP( test_equality_assertion_failure )
 {
 	int value( 5 );
 	assertpp( value ) == 4;
 }
 
-TESTPP( test_inequality )
+TESTPP( test_inequality_assertion )
 {
 	int value( 5 );
 	assertpp( value ) != 4;
 }
 
-TESTPP( test_inequality_failure )
+TESTPP( test_inequality_assertion_failure )
 {
 	int value( 5 );
 	assertpp( value ) != 5;
 }
 
-TESTPP( test_string )
+TESTPP( test_string_equality_assertion )
 {
 	std::string value( "hello" );
 	assertpp( value ) == "hello";
+}
+
+TESTPP( test_suite_match )
+{
+	testpp_suite_c suite( "special" );
+	assertpp( suite.match( "special" ) ).t();
+}
+
+TESTPP( test_parent_suite_match )
+{
+	testpp_suite_c parent( "parent" );
+	testpp_suite_c suite( "special", parent );
+	assertpp( suite.match( "parent" ) ).t();
+}
+
+TESTPP( test_duplicate_runner )
+{
+	/*
+	testpp_runner_c< test_duplicate_runner > runner( "tst_runner_in_suite"
+			, __FILE__, __LINE__ );
+	assertpp( runner.in_suite( "simple" ) ).f();
+	*/
+}
+
+TESTPP( test_runner_in_suite )
+{
+	/*
+	testpp_runner_c< test_runner_in_suite > runner( "tst_runner_in_suite"
+			, simple_suite, __FILE__, __LINE__ );
+	assertpp( runner.in_suite( "simple" ) ).t();
+	*/
 }
 
 SUITE_TESTPP( suite_test, simple_suite )
