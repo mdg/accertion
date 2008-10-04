@@ -123,13 +123,3 @@ TESTPP( test_runner_in_suite )
 	*/
 }
 
-SUITE_TESTPP( suite_test, simple_suite )
-{
-	assertpp( "hello" ) == "hello";
-}
-
-SUITE_TESTPP( multi_suite_test, parent_suite )
-{
-	assertpp( "hello" ) == "hello";
-}
-
