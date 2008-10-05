@@ -1,3 +1,4 @@
+CC = g++
 
 obj :
 	mkdir obj
@@ -18,7 +19,7 @@ testpp_project.o : lib/testpp_project.cpp include/testpp_project.h
 	$(CC) -c -Iinclude lib/testpp_project.cpp
 
 test/testpp_test.o : test/testpp_test.cpp
-	$(CC) -c -Iinclude test/testpp_test.cpp
+	$(CC) -c -o test/testpp_test.o -Iinclude test/testpp_test.cpp
 
 compile : testpp.o testpp_assertion.o testpp_output.o testpp_project.o
 
@@ -28,7 +29,13 @@ compile_test : test/testpp_test.o
 
 build_test : compile compile_test
 	$(CC) -o run_testpp testpp.o testpp_assertion.o testpp_output.o \
-		testpp_project.o lib/testpp_test.o
+		testpp_project.o test/testpp_test.o
+
+build_full_test :
+	$(CC) -g -o run_testpp -Iinclude lib/testpp.cpp \
+		lib/testpp_assertion.cpp \
+		lib/testpp_output.cpp lib/testpp_project.cpp \
+		test/testpp_test.cpp
 
 test : build_test
 	./run_testpp
