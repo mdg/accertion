@@ -18,7 +18,9 @@ void human_testpp_output_c::begin( const testpp_id_c &id )
 void human_testpp_output_c::complete( const testpp_id_c &id
 		, const testpp_result_c &result )
 {
-	stream() << "\t" << result.message() << std::endl;
+	if ( result.failure() ) {
+		stream() << "\t" << result.message() << std::endl;
+	}
 }
 
 void human_testpp_output_c::summarize( int passed, int failed )
