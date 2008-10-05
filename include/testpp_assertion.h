@@ -108,9 +108,29 @@ public:
 
 	/**
 	 * Assert that the actual value is between the upper and lower.
+	 * This is inclusive of both values.
 	 */
 	template < class T2 >
-	void between( const T2 &lower, const T2 &upper );
+	void between( const T2 &v1, const T2 &v2 )
+	{
+		between_ii( v1, v2 );
+	}
+	/**
+	 * Assert that the actual value is between the upper and lower.
+	 * This is inclusive of both values.
+	 */
+	template < class T2 >
+	void between_ii( const T2 &v1, const T2 &v2 )
+	{
+		if ( ( v1 <= m_actual && m_actual <= v2 )
+				&& ( v2 <= m_actual && m_actual <= v1 ) ) {
+			return;
+		}
+		std::ostringstream out;
+		out << m_expression << " == " << m_actual << " not between "
+			<< v1 << " and " << v2;
+		fail( out.str() );
+	}
 	/**
 	 * Assert that the actual value is within delta of
 	 * the expected value.
