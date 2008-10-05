@@ -1,5 +1,5 @@
 
-modify test_result_c so it stores and reports file and line of failures
+modify human reporting to give line info of failures
 
 user documentation
 
