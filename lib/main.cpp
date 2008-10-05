@@ -65,6 +65,12 @@ int main( int argc, char **argv )
 			testpp_project_loader_i::project_loader() );
 	std::auto_ptr< testpp_project_c > project(
 			project_loader.create_project() );
+	/*
+	std::auto_ptr< testpp_project_c > project(
+			testpp_project_loader_i
+			::project< testpp_project_c >() );
+			*/
+	project->init();
 
 	// set the output stream
 	std::ostream *out( &std::cout );

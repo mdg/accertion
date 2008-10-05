@@ -46,8 +46,14 @@ testpp_output_i & testpp_project_c::output( const std::string &format )
 }
 
 
+testpp_project_loader_i::testpp_project_loader_i()
+{
+	int i( 0 );
+}
+
 testpp_project_loader_i * & testpp_project_loader_i::settable_loader()
 {
+	std::cerr << "testpp_project_loader::settable_loader()\n";
 	static default_testpp_project_loader_c default_loader;
 	static testpp_project_loader_i * loader( &default_loader );
 	return loader;

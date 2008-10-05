@@ -17,7 +17,31 @@
 #include "output_test.h"
 
 
+/*
 TESTPP_PROJECT()
+{
+	std::cerr << "add test project\n";
+	add_output< output_test_1 >();
+}
+*/
+
+class override_testpp_project_c
+: public testpp_project_c
+{
+public:
+	virtual void init();
+};
+
+testpp_project_loader_c< override_testpp_project_c > project_loader;
+
+template <>
+testpp_project_c * testpp_project_loader_i
+		::project< override_testpp_project_c >()
+{
+	return new override_testpp_project_c();
+}
+
+void override_testpp_project_c::init()
 {
 	std::cerr << "add test project\n";
 	add_output< output_test_1 >();

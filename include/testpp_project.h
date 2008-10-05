@@ -72,7 +72,15 @@ public:
 		return *settable_loader();
 	}
 
+	template < class T >
+	static testpp_project_c * project()
+	{
+		return new testpp_project_c();
+	}
+
 protected:
+	testpp_project_loader_i();
+
 	/**
 	 * Static function for clarifying initialization order.
 	 */
