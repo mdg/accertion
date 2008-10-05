@@ -43,10 +43,7 @@ void testpp_c::fail( const char *filename, int line, const std::string &msg )
 
 testpp_runner_i::testpp_runner_i( const std::string &test_name
 	       , const char *file_name, int line_number )
-: m_test_name( test_name )
-, m_suite( NULL )
-, m_file_name( file_name )
-, m_line_number( line_number )
+: m_id( test_name, file_name, line_number )
 {
 	/*
 	static int i( 0 );
@@ -59,10 +56,7 @@ testpp_runner_i::testpp_runner_i( const std::string &test_name
 testpp_runner_i::testpp_runner_i( const std::string &test_name
 	       , testpp_suite_c &suite, const char *file_name
 	       , int line_number )
-: m_test_name( test_name )
-, m_suite( &suite )
-, m_file_name( file_name )
-, m_line_number( line_number )
+: m_id( suite, test_name, file_name, line_number )
 {
 	/*
 	static int i( 0 );
@@ -81,25 +75,12 @@ testpp_runner_i::~testpp_runner_i()
 	}
 }
 
-bool testpp_runner_i::in_suite( const std::string &suite_name ) const
-{
-	if ( suite_name == m_file_name ) {
-		return true;
-	} else if ( suite_name == m_test_name ) {
-		return true;
-	} else if ( m_suite && m_suite->match( suite_name ) ) {
-		return true;
-	} else if ( ( suite_name +".cpp" ) == m_file_name ) {
-		return true;
-	}
-	return false;
-}
-
 
 void testpp_runner_i::run_test( testpp_result_c &result )
 {
-	std::cout << "testpp( " << m_file_name << ':' << m_test_name;
-	std::cout << ':' << m_line_number << " )" << std::endl;
+	std::cout << "testpp( " << m_id.file_name() << ':' \
+		<< m_id.test_name()
+		<< ':' << m_id.line_number() << " )" << std::endl;
 	std::auto_ptr< testpp_c > test( create_test() );
 	test->set_result( result );
 	try {

@@ -12,6 +12,9 @@ default_output.o : lib/default_output.cpp lib/default_output.h
 testpp_assertion.o : lib/testpp_assertion.cpp
 	$(CC) -c -o testpp_assertion.o -Iinclude lib/testpp_assertion.cpp
 
+testpp_id.o : lib/testpp_id.cpp include/testpp_id.h
+	$(CC) -c -Iinclude lib/testpp_id.cpp
+
 testpp_output.o : lib/testpp_output.cpp include/testpp_output.h
 	$(CC) -c -Iinclude lib/testpp_output.cpp
 
@@ -28,7 +31,8 @@ test/default_output_test.o : test/default_output_test.cpp
 test/project_test.o : test/project_test.cpp
 	$(CC) -c -o test/project_test.o -Iinclude test/project_test.cpp
 
-compile : testpp.o default_output.o testpp_assertion.o testpp_output.o \
+compile : testpp.o default_output.o testpp_assertion.o testpp_id.o \
+	testpp_output.o \
 	testpp_project.o
 
 build : compile

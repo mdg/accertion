@@ -19,6 +19,7 @@
 #include <iostream>
 #include <list>
 #include "testpp_assertion.h"
+#include "testpp_id.h"
 
 
 /**
@@ -124,7 +125,9 @@ public:
 	virtual ~testpp_runner_i();
 	virtual testpp_c * create_test() = 0;
 	virtual void run_test( testpp_result_c & );
-	bool in_suite( const std::string &suite ) const;
+
+	bool in_suite( const std::string &suite_name ) const
+		{ return m_id.in_suite( suite_name ); }
 
 	static void run_all( std::ostream & );
 	static void run_some( std::ostream &, const std::string &suite_name );
@@ -136,10 +139,7 @@ protected:
 			, const char *filename = NULL, int line = -1 );
 
 private:
-	std::string m_test_name;
-	testpp_suite_c *m_suite;
-	const char *m_file_name;
-	int m_line_number;
+	testpp_id_c m_id;
 
 	static std::list< testpp_runner_i * > & runners();
 };
