@@ -16,10 +16,13 @@
  */
 
 
-#include <iostream>
+#include <string>
 #include <list>
 #include "testpp_assertion.h"
 #include "testpp_id.h"
+
+
+class testpp_output_i;
 
 
 /**
@@ -97,11 +100,13 @@ public:
 	virtual testpp_c * create_test() = 0;
 	virtual void run_test( testpp_result_c & );
 
+	const testpp_id_c & id() const { return m_id; }
 	bool in_suite( const std::string &suite_name ) const
 		{ return m_id.in_suite( suite_name ); }
 
-	static void run_all( std::ostream & );
-	static void run_some( std::ostream &, const std::string &suite_name );
+	static void run_all( testpp_output_i & );
+	static void run_some( testpp_output_i &
+			, const std::string &suite_name );
 
 protected:
 	testpp_runner_i( const std::string &name

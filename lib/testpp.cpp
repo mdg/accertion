@@ -14,6 +14,7 @@
  */
 
 #include "testpp.h"
+#include "default_output.h"
 
 
 testpp_c::testpp_c()
@@ -68,9 +69,11 @@ testpp_runner_i::~testpp_runner_i()
 
 void testpp_runner_i::run_test( testpp_result_c &result )
 {
+	/*
 	std::cout << "testpp( " << m_id.file_name() << ':' \
 		<< m_id.test_name()
 		<< ':' << m_id.line_number() << " )" << std::endl;
+		*/
 	std::auto_ptr< testpp_c > test( create_test() );
 	test->set_result( result );
 	try {
@@ -83,48 +86,66 @@ void testpp_runner_i::run_test( testpp_result_c &result )
 }
 
 
-void testpp_runner_i::run_all( std::ostream &out )
+void testpp_runner_i::run_all( testpp_output_i &out )
 {
 	// std::cerr << "run_all( " << runners().size() << " )\n";
 	std::list< testpp_runner_i * >::iterator it;
 	int i( 0 );
-	int failures( 0 );
+	int passed( 0 );
+	int failed( 0 );
 	for ( it=runners().begin(); it!=runners().end(); ++it ) {
+		out.begin( (*it)->id() );
+
 		testpp_result_c result;
-		// std::cerr << "run( " << i++ << " )" << std::endl;
 		(*it)->run_test( result );
 		if ( result.failure() ) {
-			++failures;
-			out << "\t" << result.message() << std::endl;
+			++failed;
+			// out << "\t" << result.message() << std::endl;
+		} else {
+			++passed;
 		}
+
+		out.complete( (*it)->id() );
 	}
 
+	out.summarize( passed, failed );
+	/*
 	out << failures << " failures in " << runners().size()
 		<< " tests\n";
+		*/
 }
 
-void testpp_runner_i::run_some( std::ostream &out, const std::string &suite )
+void testpp_runner_i::run_some( testpp_output_i &out, const std::string &suite )
 {
 	std::list< testpp_runner_i * >::iterator it;
 	int i( 0 );
-	int failures( 0 );
-	int run_count( 0 );
+	int passed( 0 );
+	int failed( 0 );
 	for ( it=runners().begin(); it!=runners().end(); ++it ) {
 		if ( ! (*it)->in_suite( suite ) ) {
 			continue;
 		}
-		++run_count;
+
+		out.begin( (*it)->id() );
+
 		testpp_result_c result;
 		// std::cerr << "run( " << i++ << " )" << std::endl;
 		(*it)->run_test( result );
 		if ( result.failure() ) {
-			++failures;
-			out << "\t" << result.message() << std::endl;
+			++failed;
+			// out << "\t" << result.message() << std::endl;
+		} else {
+			++passed;
 		}
+
+		out.complete( (*it)->id() );
 	}
 
+	out.summarize( passed, failed );
+	/*
 	out << failures << " failures in " << run_count
 		<< " tests\n";
+		*/
 }
 
 
@@ -137,10 +158,14 @@ std::list< testpp_runner_i * > & testpp_runner_i::runners()
 
 int main( int argc, char **argv )
 {
+	human_testpp_output_c human;
+	testpp_output_i &output( human );
+	output.set_stream( std::cout );
+
 	if ( argc == 1 ) {
-		testpp_runner_i::run_all( std::cout );
+		testpp_runner_i::run_all( output );
 	} else if ( argc == 2 ) {
-		testpp_runner_i::run_some( std::cout, argv[1] );
+		testpp_runner_i::run_some( output, argv[1] );
 	}
 	return 0;
 }
