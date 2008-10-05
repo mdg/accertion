@@ -19,6 +19,7 @@
 
 TESTPP_PROJECT()
 {
+	std::cerr << "add test project\n";
 	add_output< output_test_1 >();
 }
 

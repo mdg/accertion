@@ -21,6 +21,7 @@
 
 static void print_usage()
 {
+	std::cerr << "usage error\n";
 }
 
 
