@@ -4,20 +4,23 @@ DBG = -g
 clean :
 	rm -rf *.o test/*.o
 
-testpp.o : lib/testpp.cpp include/testpp.h
+testpp.o : lib/testpp.cpp include/testpp.h include/testpp_assertion.h
 	$(CC) $(DBG) -c -Iinclude lib/testpp.cpp
 
-default_output.o : lib/default_output.cpp lib/default_output.h
+default_output.o : lib/default_output.cpp lib/default_output.h \
+	include/testpp.h include/testpp_assertion.h
 	$(CC) $(DBG) -c -Iinclude lib/default_output.cpp
 
 main.o : lib/main.cpp lib/default_output.h include/testpp.h \
-	include/testpp_project.h
+	include/testpp_assertion.h include/testpp_project.h
 	$(CC) $(DBG) -c -Iinclude -Ilib lib/main.cpp
 
-testpp_id.o : lib/testpp_id.cpp include/testpp_id.h
+testpp_id.o : lib/testpp_id.cpp include/testpp_id.h \
+	include/testpp.h include/testpp_assertion.h
 	$(CC) $(DBG) -c -Iinclude lib/testpp_id.cpp
 
-testpp_project.o : lib/testpp_project.cpp include/testpp_project.h
+testpp_project.o : lib/testpp_project.cpp include/testpp_project.h \
+	include/testpp.h include/testpp_assertion.h
 	$(CC) $(DBG) -c -Iinclude lib/testpp_project.cpp
 
 test/testpp_test.o : test/testpp_test.cpp
