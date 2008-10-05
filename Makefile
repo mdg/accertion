@@ -21,15 +21,18 @@ testpp_project.o : lib/testpp_project.cpp include/testpp_project.h
 test/testpp_test.o : test/testpp_test.cpp
 	$(CC) -c -o test/testpp_test.o -Iinclude test/testpp_test.cpp
 
+test/project_test.o : test/project_test.cpp
+	$(CC) -c -o test/project_test.o -Iinclude test/project_test.cpp
+
 compile : testpp.o testpp_assertion.o testpp_output.o testpp_project.o
 
 build : compile
 
-compile_test : test/testpp_test.o
+compile_test : test/testpp_test.o test/project_test.o
 
 build_test : compile compile_test
 	$(CC) -o run_testpp testpp.o testpp_assertion.o testpp_output.o \
-		testpp_project.o test/testpp_test.o
+		testpp_project.o test/testpp_test.o test/project_test.o
 
 build_full_test :
 	$(CC) -g -o run_testpp -Iinclude lib/testpp.cpp \

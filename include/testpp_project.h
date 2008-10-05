@@ -85,6 +85,7 @@ protected:
  */
 template < class T >
 class testpp_project_loader_c
+: public testpp_project_loader_i
 {
 public:
 	testpp_project_loader_c()
