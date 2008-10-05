@@ -9,6 +9,6 @@ TESTPP( test_human_summary )
 	output.set_stream( out );
 	output.summarize( 8, 2 );
 
-	assertpp( out.str() ) == "2 failures in 10 tests";
+	assertpp( out.str() ) == "2 failures in 10 tests\n";
 }
 

@@ -12,8 +12,8 @@ class human_testpp_output_c
 {
 public:
 	human_testpp_output_c();
-	// virtual void begin( const testpp_id_i & ) = 0;
-	// virtual void complete( const testpp_id_i & ) = 0;
+	virtual void begin( const testpp_id_c & );
+	virtual void complete( const testpp_id_c & );
 	virtual void summarize( int passed, int failed );
 };
 
