@@ -126,8 +126,8 @@ public:
 	virtual void run_test( testpp_result_c & );
 	bool in_suite( const std::string &suite ) const;
 
-	static void run_all();
-	static void run_some( const std::string &suite_name );
+	static void run_all( std::ostream & );
+	static void run_some( std::ostream &, const std::string &suite_name );
 
 protected:
 	testpp_runner_i( const std::string &name

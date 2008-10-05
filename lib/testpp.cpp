@@ -112,7 +112,7 @@ void testpp_runner_i::run_test( testpp_result_c &result )
 }
 
 
-void testpp_runner_i::run_all()
+void testpp_runner_i::run_all( std::ostream &out )
 {
 	// std::cerr << "run_all( " << runners().size() << " )\n";
 	std::list< testpp_runner_i * >::iterator it;
@@ -124,15 +124,15 @@ void testpp_runner_i::run_all()
 		(*it)->run_test( result );
 		if ( result.failure() ) {
 			++failures;
-			std::cout << "\t" << result.message() << std::endl;
+			out << "\t" << result.message() << std::endl;
 		}
 	}
 
-	std::cerr << failures << " failures in " << runners().size()
+	out << failures << " failures in " << runners().size()
 		<< " tests\n";
 }
 
-void testpp_runner_i::run_some( const std::string &suite )
+void testpp_runner_i::run_some( std::ostream &out, const std::string &suite )
 {
 	std::list< testpp_runner_i * >::iterator it;
 	int i( 0 );
@@ -148,11 +148,11 @@ void testpp_runner_i::run_some( const std::string &suite )
 		(*it)->run_test( result );
 		if ( result.failure() ) {
 			++failures;
-			std::cout << "\t" << result.message() << std::endl;
+			out << "\t" << result.message() << std::endl;
 		}
 	}
 
-	std::cout << failures << " failures in " << run_count
+	out << failures << " failures in " << run_count
 		<< " tests\n";
 }
 
@@ -167,9 +167,9 @@ std::list< testpp_runner_i * > & testpp_runner_i::runners()
 int main( int argc, char **argv )
 {
 	if ( argc == 1 ) {
-		testpp_runner_i::run_all();
+		testpp_runner_i::run_all( std::cout );
 	} else if ( argc == 2 ) {
-		testpp_runner_i::run_some( argv[1] );
+		testpp_runner_i::run_some( std::cout, argv[1] );
 	}
 	return 0;
 }
