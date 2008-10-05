@@ -1,8 +1,4 @@
 
-add customizable output writer
-
-yaml/json output writers
-
 user documentation
 
 start a testpp user group on google
@@ -10,6 +6,8 @@ start a testpp user group on google
 submit testpp framework to some lists
 	need to clean up code for public consumption first
 	include comp.lang.c++
+
+json output writers
 
 xml output writer
 
