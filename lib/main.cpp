@@ -26,7 +26,6 @@ static void print_usage()
 
 int main( int argc, char **argv )
 {
-	std::cerr << "main\n";
 	bool usage_error( false );
 	std::string arg;
 	std::string suite_name;
