@@ -18,9 +18,20 @@ void human_testpp_output_c::begin( const testpp_id_c &id )
 void human_testpp_output_c::complete( const testpp_id_c &id
 		, const testpp_result_c &result )
 {
-	if ( result.failure() ) {
-		stream() << "\t" << result.message() << std::endl;
+	if ( ! result.failure() ) {
+		return;
 	}
+
+	stream() << "\t" << result.message() << " (";
+	if ( 0 && result.filename().empty() ) {
+		// nothing to write
+	} else if ( id.file_name() == result.filename() ) {
+		stream() << "line " << result.line_number();
+	} else {
+		stream() << result.filename() << ":"
+			<< result.line_number();
+	}
+	stream() << ")\n";
 }
 
 void human_testpp_output_c::summarize( int passed, int failed )

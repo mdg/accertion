@@ -27,7 +27,7 @@ public:
 	testpp_result_c()
 	: m_failure( false )
 	, m_message()
-	, m_filename()
+	, m_file_name()
 	, m_line_number( -1 )
 	{}
 
@@ -39,7 +39,7 @@ public:
 	{
 		m_failure = true;
 		m_message = msg;
-		m_filename = filename;
+		m_file_name = filename;
 		m_line_number = line;
 	}
 
@@ -55,7 +55,7 @@ public:
 	/**
 	 * Get the file where the failure happened.
 	 */
-	inline const std::string & filename() const { return m_filename; }
+	inline const std::string & file_name() const { return m_file_name; }
 	/**
 	 * Get the line number where the failure happened.
 	 */
@@ -64,7 +64,7 @@ public:
 private:
 	bool m_failure;
 	std::string m_message;
-	std::string m_filename;
+	std::string m_file_name;
 	int m_line_number;
 };
 
