@@ -47,12 +47,6 @@ compile_test : test/testpp_test.o test/default_output_test.o \
 build_test : compile compile_test
 	$(CC) $(DBG) -o run_testpp *.o test/*.o
 
-build_full_test :
-	$(CC) -g -o run_testpp -Iinclude lib/testpp.cpp \
-		lib/testpp_assertion.cpp \
-		lib/testpp_project.cpp \
-		test/testpp_test.cpp
-
 test : build_test
 	./run_testpp
 
