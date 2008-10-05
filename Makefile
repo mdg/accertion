@@ -20,9 +20,6 @@ testpp_id.o : lib/testpp_id.cpp include/testpp_id.h
 testpp_project.o : lib/testpp_project.cpp include/testpp_project.h
 	$(CC) $(DBG) -c -Iinclude lib/testpp_project.cpp
 
-testpp_result.o : lib/testpp_result.cpp include/testpp_result.h
-	$(CC) $(DBG) -c -Iinclude lib/testpp_result.cpp
-
 test/testpp_test.o : test/testpp_test.cpp
 	$(CC) $(DBG) -c -o test/testpp_test.o -Iinclude test/testpp_test.cpp
 
@@ -38,8 +35,7 @@ test/project_test.o : test/project_test.cpp include/testpp_project.h \
 	$(CC) $(DBG) -c -o test/project_test.o -Iinclude test/project_test.cpp
 
 compile : testpp.o default_output.o main.o testpp_id.o \
-	testpp_project.o \
-	testpp_result.o
+	testpp_project.o
 
 build : compile
 	ar r libtestpp.a *.o
