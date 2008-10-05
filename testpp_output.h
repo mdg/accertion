@@ -8,6 +8,7 @@
 class testpp_output_i
 {
 public:
+	virtual ~testpp_output_i();
 	void set_stream( std::ostream &out ) { m_out = &out; }
 
 	const std::string & name() const { return m_name; }
