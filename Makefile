@@ -9,14 +9,14 @@ testpp.o : lib/testpp.cpp include/testpp.h
 default_output.o : lib/default_output.cpp lib/default_output.h
 	$(CC) -c -Iinclude lib/default_output.cpp
 
-testpp_assertion.o : lib/testpp_assertion.cpp
-	$(CC) -c -o testpp_assertion.o -Iinclude lib/testpp_assertion.cpp
-
 testpp_id.o : lib/testpp_id.cpp include/testpp_id.h
 	$(CC) -c -Iinclude lib/testpp_id.cpp
 
 testpp_project.o : lib/testpp_project.cpp include/testpp_project.h
 	$(CC) -c -Iinclude lib/testpp_project.cpp
+
+testpp_result.o : lib/testpp_result.cpp include/testpp_result.h
+	$(CC) -c -Iinclude lib/testpp_result.cpp
 
 test/testpp_test.o : test/testpp_test.cpp
 	$(CC) -c -o test/testpp_test.o -Iinclude test/testpp_test.cpp

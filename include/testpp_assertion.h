@@ -17,28 +17,7 @@
 
 #include <sstream>
 #include <iostream>
-
-
-/**
- * A class for storing the result of a testpp unit test.
- */
-class testpp_result_c
-{
-public:
-	testpp_result_c();
-
-	/**
-	 * Mark this test as failed and give a message.
-	 */
-	void fail( const char *filename, int line, const std::string &msg );
-
-	inline bool failure() const { return m_failure; }
-	inline const std::string & message() const { return m_message; }
-
-private:
-	bool m_failure;
-	std::string m_message;
-};
+#include "testpp_result.h"
 
 
 /**

@@ -100,7 +100,7 @@ void testpp_runner_i::run_all( testpp_output_i &out )
 			++passed;
 		}
 
-		out.complete( (*it)->id() );
+		out.complete( (*it)->id(), result );
 	}
 
 	out.summarize( passed, failed );
@@ -133,7 +133,7 @@ void testpp_runner_i::run_some( testpp_output_i &out, const std::string &suite )
 			++passed;
 		}
 
-		out.complete( (*it)->id() );
+		out.complete( (*it)->id(), result );
 	}
 
 	out.summarize( passed, failed );

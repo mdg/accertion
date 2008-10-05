@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-#include "testpp_assertion.h"
+#include "testpp_result.h"
 #include <sstream>
 
 
@@ -27,8 +27,8 @@ void testpp_result_c::fail( const char *filename, int line
 		, const std::string &msg )
 {
 	m_failure = true;
-	std::ostringstream out;
-	out << filename << ':' << line << ' ' << msg;
-	m_message = out.str();
+	// std::ostringstream out;
+	// out << filename << ':' << line << ' ' << msg;
+	m_message = msg;
 }
 

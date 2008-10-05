@@ -1,6 +1,7 @@
 
 #include "default_output.h"
 #include "testpp_id.h"
+#include "testpp_result.h"
 
 
 human_testpp_output_c::human_testpp_output_c()
@@ -14,8 +15,10 @@ void human_testpp_output_c::begin( const testpp_id_c &id )
 		<< ':' << id.line_number() << " )" << std::endl;
 }
 
-void human_testpp_output_c::complete( const testpp_id_c &id )
+void human_testpp_output_c::complete( const testpp_id_c &id
+		, const testpp_result_c &result )
 {
+	stream() << "\t" << result.message() << std::endl;
 }
 
 void human_testpp_output_c::summarize( int passed, int failed )

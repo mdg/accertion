@@ -5,6 +5,7 @@
 
 
 class testpp_id_c;
+class testpp_result_c;
 
 /**
  * An interface for writing test events to be recovered later.
@@ -18,7 +19,8 @@ public:
 	const std::string & name() const { return m_name; }
 
 	virtual void begin( const testpp_id_c & ) = 0;
-	virtual void complete( const testpp_id_c & ) = 0;
+	virtual void complete( const testpp_id_c &
+			, const testpp_result_c & ) = 0;
 	virtual void summarize( int passed, int failed ) = 0;
 
 protected:
