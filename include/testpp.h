@@ -158,7 +158,7 @@ public:
 protected:
 	testpp_runner_i( const std::string &name
 			, const char *filename = NULL, int line = -1 );
-	testpp_runner_i( const std::string &name, testpp_suite_c &
+	testpp_runner_i( testpp_suite_c &, const std::string &name
 			, const char *filename = NULL, int line = -1 );
 
 private:

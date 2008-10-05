@@ -26,9 +26,9 @@ void testpp_c::set_result( testpp_result_c &result )
 	m_result = &result;
 }
 
-void testpp_c::fail( const char *filename, int line, const std::string &msg )
+void testpp_c::fail( const std::string &msg, const char *filename, int line )
 {
-	m_result->fail( filename, line, msg );
+	m_result->fail( msg, filename, line );
 }
 
 
@@ -39,8 +39,8 @@ testpp_runner_i::testpp_runner_i( const std::string &test_name
 	runners().push_back( this );
 }
 
-testpp_runner_i::testpp_runner_i( const std::string &test_name
-	       , testpp_suite_c &suite, const char *file_name
+testpp_runner_i::testpp_runner_i( testpp_suite_c &suite
+	       , const std::string &test_name, const char *file_name
 	       , int line_number )
 : m_id( suite, test_name, file_name, line_number )
 {

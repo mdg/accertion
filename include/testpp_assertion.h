@@ -16,7 +16,6 @@
  */
 
 #include <sstream>
-#include <iostream>
 #include "testpp_result.h"
 
 
@@ -47,7 +46,7 @@ public:
 	{
 		if ( m_actual )
 			return;
-		m_result.fail( m_filename, m_line, "not true" );
+		m_result.fail( "not true", m_filename, m_line );
 	}
 	/**
 	 * Assert actual value is false.
@@ -56,7 +55,7 @@ public:
 	{
 		if ( ! m_actual )
 			return;
-		m_result.fail( m_filename, m_line, "not false" );
+		m_result.fail( "not false", m_filename, m_line );
 	}
 
 	/**
@@ -70,7 +69,7 @@ public:
 		std::ostringstream out;
 		out << m_expression << " == " << m_actual << " != "
 			<< expected;
-		m_result.fail( m_filename, m_line, out.str() );
+		m_result.fail( out.str(), m_filename, m_line );
 	}
 
 	/**
@@ -84,7 +83,7 @@ public:
 		std::ostringstream out;
 		out << m_expression << " == " << m_actual << " == "
 			<< expected;
-		m_result.fail( m_filename, m_line, out.str() );
+		m_result.fail( out.str(), m_filename, m_line );
 	}
 	/**
 	 * Assert actual value less than expected value.

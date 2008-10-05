@@ -22,8 +22,8 @@ testpp_result_c::testpp_result_c()
 {}
 
 
-void testpp_result_c::fail( const char *filename, int line
-		, const std::string &msg )
+void testpp_result_c::fail( const std::string &msg, const char *filename
+		, int line )
 {
 	m_failure = true;
 	// std::ostringstream out;
