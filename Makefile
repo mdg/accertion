@@ -37,7 +37,7 @@ test/project_test.o : test/project_test.cpp include/testpp_project.h \
 compile : testpp.o default_output.o main.o testpp_id.o \
 	testpp_project.o
 
-build : compile
+lib : compile
 	ar r libtestpp.a *.o
 
 compile_test : test/testpp_test.o test/default_output_test.o \
