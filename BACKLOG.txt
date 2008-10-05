@@ -1,5 +1,5 @@
 
-modify human reporting to give line info of failures
+write tests for any code that doesn't have it yet
 
 user documentation
 
