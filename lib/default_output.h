@@ -11,6 +11,10 @@ class human_testpp_output_c
 : public testpp_output_i
 {
 public:
+	human_testpp_output_c();
+	// virtual void begin( const testpp_id_i & ) = 0;
+	// virtual void complete( const testpp_id_i & ) = 0;
+	virtual void summarize( int passed, int failed );
 };
 
 
@@ -31,16 +35,6 @@ class json_testpp_output_c
 : public testpp_output_i
 {
 public:
-};
-
-
-class default_testpp_output_c
-{
-public:
-private:
-	registered_testpp_output_type< human_testpp_output_c > s_human;
-	registered_testpp_output_type< yaml_testpp_output_c > s_yaml;
-	registered_testpp_output_type< json_testpp_output_c > s_json;
 };
 
 
