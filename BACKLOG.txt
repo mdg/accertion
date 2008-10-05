@@ -1,4 +1,6 @@
 
+modify test_result_c so it stores and reports file and line of failures
+
 user documentation
 
 start a testpp user group on google
