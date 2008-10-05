@@ -16,16 +16,6 @@
 #include "testpp.h"
 
 
-bool testpp_suite_c::match( const std::string &suite_name ) const
-{
-	if ( m_name == suite_name )
-		return true;
-	if ( m_parent )
-		return m_parent->match( suite_name );
-	return false;
-}
-
-
 testpp_c::testpp_c()
 : m_result( NULL )
 {}

@@ -56,35 +56,6 @@
 
 
 /**
- * A suite class for grouping tests together.
- */
-class testpp_suite_c
-{
-public:
-	/**
-	 * Construct a suite that has no parent.
-	 */
-	testpp_suite_c( const std::string &name )
-	: m_name( name )
-	, m_parent( NULL )
-	{}
-	/**
-	 * Construct a test suite with a parent.
-	 */
-	testpp_suite_c( const std::string &name, testpp_suite_c &parent )
-	: m_name( name )
-	, m_parent( &parent )
-	{}
-
-	bool match( const std::string &suite_name ) const;
-
-private:
-	std::string m_name;
-	testpp_suite_c *m_parent;
-};
-
-
-/**
  * The core unit test class.  This should be implemented.
  */
 class testpp_c

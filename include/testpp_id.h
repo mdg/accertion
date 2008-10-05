@@ -18,8 +18,38 @@
 #include <string>
 
 
-class testpp_suite_c;
+/**
+ * A suite class for grouping tests together.
+ */
+class testpp_suite_c
+{
+public:
+	/**
+	 * Construct a suite that has no parent.
+	 */
+	testpp_suite_c( const std::string &name )
+	: m_name( name )
+	, m_parent( NULL )
+	{}
+	/**
+	 * Construct a test suite with a parent.
+	 */
+	testpp_suite_c( const std::string &name, testpp_suite_c &parent )
+	: m_name( name )
+	, m_parent( &parent )
+	{}
 
+	bool match( const std::string &suite_name ) const;
+
+private:
+	std::string m_name;
+	testpp_suite_c *m_parent;
+};
+
+
+/**
+ * An object for holding identifying information about tests
+ */
 class testpp_id_c
 {
 public:

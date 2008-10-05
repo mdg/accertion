@@ -1,7 +1,14 @@
 #include "testpp_id.h"
 
-// take this out when suite is moved here
-#include "testpp.h"
+
+bool testpp_suite_c::match( const std::string &suite_name ) const
+{
+	if ( m_name == suite_name )
+		return true;
+	if ( m_parent )
+		return m_parent->match( suite_name );
+	return false;
+}
 
 
 testpp_id_c::testpp_id_c( const std::string &test_name
