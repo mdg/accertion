@@ -25,6 +25,10 @@ class yaml_testpp_output_c
 : public testpp_output_i
 {
 public:
+	yaml_testpp_output_c();
+	virtual void begin( const testpp_id_c & );
+	virtual void complete( const testpp_id_c &, const testpp_result_c & );
+	virtual void summarize( int passed, int failed );
 };
 
 
@@ -35,6 +39,10 @@ class json_testpp_output_c
 : public testpp_output_i
 {
 public:
+	json_testpp_output_c();
+	virtual void begin( const testpp_id_c & );
+	virtual void complete( const testpp_id_c &, const testpp_result_c & );
+	virtual void summarize( int passed, int failed );
 };
 
 
