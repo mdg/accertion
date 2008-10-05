@@ -39,8 +39,8 @@ class testpp_output_i;
  */
 #define SUITE_TESTPP( test_class, suite_class ) \
 	class test_class : public testpp_c { public: void test(); }; \
-	static testpp_runner_c< test_class > test_class##_runner( #test_class \
-			, suite_class, __FILE__, __LINE__ ); \
+	static testpp_runner_c< test_class > test_class##_runner( suite_class \
+			, #test_class, __FILE__, __LINE__ ); \
 	void test_class::test()
 
 /**
@@ -64,13 +64,13 @@ class testpp_output_i;
  * complete the assertion.  See testpp_assertion_c.
  */
 #define assertpp( actual_value ) \
-	this->assertion( __FILE__, __LINE__, actual_value, #actual_value )
+	this->assertion( actual_value, #actual_value, __FILE__, __LINE__ )
 
 /**
  * Fail a test from within a testpp_c::run() implementation
  */
 #define failpp( msg ) \
-	this->fail( __FILE__, __LINE__, msg )
+	this->fail( msg, __FILE__, __LINE__ )
 
 
 #if 0
@@ -123,8 +123,9 @@ protected:
 			, const std::string &actual_expression
 			, const char *filename = NULL, int line = -1 )
 	{
-		return testpp_assertion_c< T >( *m_result, filename, line
-				, actual_value, actual_expression );
+		return testpp_assertion_c< T >( *m_result
+				, actual_value, actual_expression
+				, filename, line );
 	}
 	/**
 	 * Fail this test with the given message.
@@ -186,9 +187,9 @@ public:
 	/**
 	 * Construct a testpp_runner for a given name and suite
 	 */
-	testpp_runner_c( const std::string &name, testpp_suite_c &suite
+	testpp_runner_c( testpp_suite_c &suite, const std::string &name
 			, const char *filename = NULL, int line = -1 )
-	: testpp_runner_i( name, suite, filename, line )
+	: testpp_runner_i( suite, name, filename, line )
 	{}
 
 	/**

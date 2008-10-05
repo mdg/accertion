@@ -29,14 +29,14 @@ public:
 	/**
 	 * Construct an assertion class
 	 */
-	testpp_assertion_c( testpp_result_c &result, const char *filename
-			, int line, const T &actual_value
-			, const std::string &actual_expression )
+	testpp_assertion_c( testpp_result_c &result, const T &actual_value
+			, const std::string &actual_expression
+			, const char *filename, int line )
 	: m_result( result )
-	, m_filename( filename )
-	, m_line( line )
 	, m_actual( actual_value )
 	, m_expression( actual_expression )
+	, m_filename( filename )
+	, m_line( line )
 	{}
 
 	/**
@@ -46,7 +46,7 @@ public:
 	{
 		if ( m_actual )
 			return;
-		m_result.fail( "not true", m_filename, m_line );
+		fail( "not_true" );
 	}
 	/**
 	 * Assert actual value is false.
@@ -55,7 +55,7 @@ public:
 	{
 		if ( ! m_actual )
 			return;
-		m_result.fail( "not false", m_filename, m_line );
+		fail( "not false" );
 	}
 
 	/**
@@ -69,7 +69,7 @@ public:
 		std::ostringstream out;
 		out << m_expression << " == " << m_actual << " != "
 			<< expected;
-		m_result.fail( out.str(), m_filename, m_line );
+		fail( out.str() );
 	}
 
 	/**
@@ -83,7 +83,7 @@ public:
 		std::ostringstream out;
 		out << m_expression << " == " << m_actual << " == "
 			<< expected;
-		m_result.fail( out.str(), m_filename, m_line );
+		fail( out.str() );
 	}
 	/**
 	 * Assert actual value less than expected value.
@@ -119,11 +119,19 @@ public:
 	void within( const T2 &expected, const T2 &delta );
 
 private:
+	/**
+	 * Mark the result as failed with the given message.
+	 */
+	void fail( const std::string &msg )
+	{
+		m_result.fail( msg, m_filename, m_line );
+	}
+
 	testpp_result_c &m_result;
-	const char *m_filename;
-	int m_line;
 	const T &m_actual;
 	const std::string &m_expression;
+	const char *m_filename;
+	int m_line;
 };
 
 
