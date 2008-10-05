@@ -109,6 +109,7 @@ TESTPP( test_parent_suite_match )
 TESTPP( test_duplicate_runner )
 {
 	/*
+	can't run these b/c they alter the list of runners.  need to fix this.
 	testpp_runner_c< test_duplicate_runner > runner( "tst_runner_in_suite"
 			, __FILE__, __LINE__ );
 	assertpp( runner.in_suite( "simple" ) ).f();
@@ -118,22 +119,10 @@ TESTPP( test_duplicate_runner )
 TESTPP( test_runner_in_suite )
 {
 	/*
+	can't run these b/c they alter the list of runners.  need to fix this.
 	testpp_runner_c< test_runner_in_suite > runner( "tst_runner_in_suite"
 			, simple_suite, __FILE__, __LINE__ );
 	assertpp( runner.in_suite( "simple" ) ).t();
 	*/
 }
-
-/*
-testpp_output_register< human_testpp_output_c > human_output( "human" );
-testpp_output_register< yaml_testpp_output_c > yaml_output( "yaml" );
-testpp_output_register< json_testpp_output_c > json_output( "json" );
-
-TESTPP_OUTPUT()
-{
-	add_output< human_testpp_output_c >();
-	add_output< yaml_testpp_output_c >();
-	add_output< json_testpp_output_c >();
-}
-*/
 
