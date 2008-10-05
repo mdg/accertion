@@ -23,12 +23,12 @@ void human_testpp_output_c::complete( const testpp_id_c &id
 	}
 
 	stream() << "\t" << result.message() << " (";
-	if ( 0 && result.filename().empty() ) {
+	if ( 0 && result.file_name().empty() ) {
 		// nothing to write
-	} else if ( id.file_name() == result.filename() ) {
+	} else if ( id.file_name() == result.file_name() ) {
 		stream() << "line " << result.line_number();
 	} else {
-		stream() << result.filename() << ":"
+		stream() << result.file_name() << ":"
 			<< result.line_number();
 	}
 	stream() << ")\n";
