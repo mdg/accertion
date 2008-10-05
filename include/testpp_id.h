@@ -53,15 +53,33 @@ private:
 class testpp_id_c
 {
 public:
+	/**
+	 * Construct a test id object.
+	 */
 	testpp_id_c( const std::string &test_name, const std::string &file_name
 			, int line_number );
+	/**
+	 * Construct a test id object with a suite.
+	 */
 	testpp_id_c( testpp_suite_c &, const std::string &test_name
 			, const std::string &file_name
 			, int line_number );
 
+	/**
+	 * Check if this test id is in a given suite.
+	 */
 	bool in_suite( const std::string &suite ) const;
+	/**
+	 * Get the name of this test.
+	 */
 	const std::string & test_name() const { return m_test_name; }
+	/**
+	 * Get the file that this test is in.
+	 */
 	const std::string & file_name() const { return m_file_name; }
+	/**
+	 * Get the line number where this test is created.
+	 */
 	int line_number() const { return m_line_number; }
 
 private:

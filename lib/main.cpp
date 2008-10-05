@@ -19,12 +19,18 @@
 #include "testpp_project.h"
 
 
+/**
+ * There was a problem with usage, so print it out and exit.
+ */
 static void print_usage()
 {
 	std::cerr << "usage error\n";
 }
 
 
+/**
+ * Implemented main function.
+ */
 int main( int argc, char **argv )
 {
 	bool usage_error( false );
@@ -39,11 +45,16 @@ int main( int argc, char **argv )
 		if ( arg[0] == '-' && arg[1] == '-' ) {
 			std::string format_option( "--format=" );
 			std::string file_option( "--file=" );
+			std::string help_option( "--help" );
 
 			if ( arg.find( format_option ) == 0 ) {
 				format = arg.substr( format_option.length() );
 			} else if ( arg.find( file_option ) == 0 ) {
 				file = arg.substr( file_option.length() );
+			} else if ( arg == help_option ) {
+				// print the usage but no error
+				print_usage();
+				return 0;
 			}
 		} else if ( arg[0] == '-' ) {
 			usage_error = true;

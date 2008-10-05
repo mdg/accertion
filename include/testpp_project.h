@@ -35,11 +35,21 @@ public:
 	 */
 	~testpp_project_c();
 
+	/**
+	 * Iniitialize a testpp_project.  This is the hook where the project
+	 * can be customized.
+	 */
 	virtual void init() {}
 
+	/**
+	 * Find an output object for the given format string.
+	 */
 	testpp_output_i & output( const std::string &format );
 
 protected:
+	/**
+	 * Add an available output class as an option.
+	 */
 	template < class T >
 	void add_output()
 	{
@@ -72,6 +82,9 @@ public:
 		return *settable_loader();
 	}
 
+	/**
+	 * Create the project for a given type.
+	 */
 	template < class T >
 	static testpp_project_c * project()
 	{
@@ -79,6 +92,9 @@ public:
 	}
 
 protected:
+	/**
+	 * Default constructor.
+	 */
 	testpp_project_loader_i();
 
 	/**

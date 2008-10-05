@@ -41,3 +41,4 @@ bool testpp_id_c::in_suite( const std::string &suite_name ) const
 	}
 	return false;
 }
+

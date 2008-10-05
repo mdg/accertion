@@ -29,9 +29,16 @@ public:
 	/**
 	 * Mark this test as failed and give a message.
 	 */
-	void fail( const char *filename, int line, const std::string &msg );
+	void fail( const std::string &msg, const char *filename = NULL
+			, int line = -1 );
 
+	/**
+	 * Check if this test failed.
+	 */
 	inline bool failure() const { return m_failure; }
+	/**
+	 * Get the error message for this test.
+	 */
 	inline const std::string & message() const { return m_message; }
 
 private:

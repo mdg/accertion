@@ -36,11 +36,6 @@ testpp_runner_i::testpp_runner_i( const std::string &test_name
 	       , const char *file_name, int line_number )
 : m_id( test_name, file_name, line_number )
 {
-	/*
-	static int i( 0 );
-	std::cerr << "runners().push_back( " << i++ << " )"
-		<< " = " << runners().size() << std::endl;
-	*/
 	runners().push_back( this );
 }
 
@@ -49,11 +44,6 @@ testpp_runner_i::testpp_runner_i( const std::string &test_name
 	       , int line_number )
 : m_id( suite, test_name, file_name, line_number )
 {
-	/*
-	static int i( 0 );
-	std::cerr << "runners().push_back( " << i++ << " )"
-		<< " = " << runners().size() << std::endl;
-	*/
 	runners().push_back( this );
 }
 
@@ -83,7 +73,6 @@ void testpp_runner_i::run_test( testpp_result_c &result )
 
 void testpp_runner_i::run_all( testpp_output_i &out )
 {
-	// std::cerr << "run_all( " << runners().size() << " )\n";
 	std::list< testpp_runner_i * >::iterator it;
 	int i( 0 );
 	int passed( 0 );
@@ -95,7 +84,6 @@ void testpp_runner_i::run_all( testpp_output_i &out )
 		(*it)->run_test( result );
 		if ( result.failure() ) {
 			++failed;
-			// out << "\t" << result.message() << std::endl;
 		} else {
 			++passed;
 		}
@@ -104,10 +92,6 @@ void testpp_runner_i::run_all( testpp_output_i &out )
 	}
 
 	out.summarize( passed, failed );
-	/*
-	out << failures << " failures in " << runners().size()
-		<< " tests\n";
-		*/
 }
 
 void testpp_runner_i::run_some( testpp_output_i &out, const std::string &suite )
@@ -124,11 +108,9 @@ void testpp_runner_i::run_some( testpp_output_i &out, const std::string &suite )
 		out.begin( (*it)->id() );
 
 		testpp_result_c result;
-		// std::cerr << "run( " << i++ << " )" << std::endl;
 		(*it)->run_test( result );
 		if ( result.failure() ) {
 			++failed;
-			// out << "\t" << result.message() << std::endl;
 		} else {
 			++passed;
 		}
@@ -137,10 +119,6 @@ void testpp_runner_i::run_some( testpp_output_i &out, const std::string &suite )
 	}
 
 	out.summarize( passed, failed );
-	/*
-	out << failures << " failures in " << run_count
-		<< " tests\n";
-		*/
 }
 
 

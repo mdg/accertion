@@ -59,6 +59,34 @@ class testpp_output_i;
 
 
 /**
+ * Assert something from within a testpp_c::run() implementation
+ * The result of this call should be compared or evaluated to actually
+ * complete the assertion.  See testpp_assertion_c.
+ */
+#define assertpp( actual_value ) \
+	this->assertion( __FILE__, __LINE__, actual_value, #actual_value )
+
+/**
+ * Fail a test from within a testpp_c::run() implementation
+ */
+#define failpp( msg ) \
+	this->fail( __FILE__, __LINE__, msg )
+
+
+#if 0
+TESTPP( sample_test )
+{
+	assertpp( x ).t();
+	assertpp( x ).f();
+	assertpp( x ) < 0;
+	assertpp( x ) != NULL;
+	failpp( "this didn't work" );
+}
+#endif
+
+
+
+/**
  * The core unit test class.  This should be implemented.
  */
 class testpp_c
@@ -68,22 +96,41 @@ public:
 	 * Construct a testpp object
 	 */
 	testpp_c();
+	/**
+	 * Set the result that this test should run with.
+	 */
 	void set_result( testpp_result_c & );
 
+	/**
+	 * Run the actual testing code.
+	 */
 	virtual void test() = 0;
+	/**
+	 * Set up this particular test.
+	 */
 	virtual void setup() {}
+	/**
+	 * teardown this particular test.
+	 */
 	virtual void teardown() {}
 
 protected:
+	/**
+	 * Create an assertion object for this test.
+	 */
 	template < typename T >
-	testpp_assertion_c< T > assertion( const char *filename, int line
-			, const T &actual_value
-			, const std::string &actual_expression )
+	testpp_assertion_c< T > assertion( const T &actual_value
+			, const std::string &actual_expression
+			, const char *filename = NULL, int line = -1 )
 	{
 		return testpp_assertion_c< T >( *m_result, filename, line
 				, actual_value, actual_expression );
 	}
-	void fail( const char *filename, int line, const std::string &msg );
+	/**
+	 * Fail this test with the given message.
+	 */
+	void fail( const std::string &msg, const char *filename = NULL
+			, int line = -1 );
 
 private:
 	testpp_result_c *m_result;
@@ -152,34 +199,6 @@ public:
 		return new T();
 	}
 };
-
-
-
-/**
- * Assert something from within a testpp_c::run() implementation
- * The result of this call should be compared or evaluated to actually
- * complete the assertion.  See testpp_assertion_c.
- */
-#define assertpp( actual_value ) \
-	this->assertion( __FILE__, __LINE__, actual_value, #actual_value )
-
-/**
- * Fail a test from within a testpp_c::run() implementation
- */
-#define failpp( msg ) \
-	this->fail( __FILE__, __LINE__, msg )
-
-
-#if 0
-TESTPP( sample_test )
-{
-	assertpp( x ).t();
-	assertpp( x ).f();
-	assertpp( x ) < 0;
-	assertpp( x ) != NULL;
-	failpp( "this didn't work" );
-}
-#endif
 
 
 #endif

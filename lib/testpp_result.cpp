@@ -14,7 +14,6 @@
  */
 
 #include "testpp_result.h"
-#include <sstream>
 
 
 testpp_result_c::testpp_result_c()
