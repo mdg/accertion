@@ -29,10 +29,12 @@ test/project_test.o : test/project_test.cpp include/testpp_project.h \
 	include/testpp_output.h test/output_test.h
 	$(CC) -c -o test/project_test.o -Iinclude test/project_test.cpp
 
-compile : testpp.o default_output.o testpp_assertion.o testpp_id.o \
-	testpp_project.o
+compile : testpp.o default_output.o testpp_id.o \
+	testpp_project.o \
+	testpp_result.o
 
 build : compile
+	ar r libtestpp.a *.o
 
 compile_test : test/testpp_test.o test/default_output_test.o test/project_test.o
 
