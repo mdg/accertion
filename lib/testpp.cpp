@@ -69,11 +69,6 @@ testpp_runner_i::~testpp_runner_i()
 
 void testpp_runner_i::run_test( testpp_result_c &result )
 {
-	/*
-	std::cout << "testpp( " << m_id.file_name() << ':' \
-		<< m_id.test_name()
-		<< ':' << m_id.line_number() << " )" << std::endl;
-		*/
 	std::auto_ptr< testpp_c > test( create_test() );
 	test->set_result( result );
 	try {
