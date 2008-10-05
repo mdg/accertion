@@ -1,10 +1,11 @@
 #include "testpp_project.h"
+#include "testpp_output.h"
 
 
 /**
  * The default project loader class.
  */
-class default_project_loader_c
+class default_testpp_project_loader_c
 : public testpp_project_loader_i
 {
 public:
@@ -17,16 +18,18 @@ public:
 
 testpp_project_c::testpp_project_c()
 {
+	/*
 	add_output< human_testpp_output_c >();
 	add_output< yaml_testpp_output_c >();
 	add_output< json_testpp_output_c >();
+	*/
 }
 
 testpp_project_c::~testpp_project_c()
 {
 	std::list< testpp_output_i * >::iterator output;
 	for ( output=m_output.begin(); output!=m_output.end(); ++output ) {
-		delete *it;
+		delete *output;
 	}
 	m_output.clear();
 }

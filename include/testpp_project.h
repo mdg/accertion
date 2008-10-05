@@ -65,16 +65,16 @@ public:
 	 * This may be set with the testpp_project_loader_c class
 	 * or preferably, with the TESTPP_PROJECT macro.
 	 */
-	static testpp_project_loader_i & project()
+	static testpp_project_loader_i & project_loader()
 	{
-		return *settable_project();
+		return *settable_loader();
 	}
 
 protected:
 	/**
 	 * Static function for clarifying initialization order.
 	 */
-	static testpp_project_loader_i * & settable_project_loader();
+	static testpp_project_loader_i * & settable_loader();
 };
 
 /**
@@ -89,7 +89,7 @@ class testpp_project_loader_c
 public:
 	testpp_project_loader_c()
 	{
-		settable_project() = this;
+		testpp_project_loader_i::settable_loader() = this;
 	}
 	virtual testpp_project_c * create_project() { return new T(); }
 };
