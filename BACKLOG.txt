@@ -3,15 +3,12 @@ add customizable output writer
 
 yaml/json output writers
 
-rearrange code into lib & test folders
-
-add a makefile
-
 user documentation
 
 start a testpp user group on google
 
 submit testpp framework to some lists
+	need to clean up code for public consumption first
 
 xml output writer
 
