@@ -37,6 +37,8 @@ public:
 
 	virtual void init() {}
 
+	testpp_output_i & output( const std::string &format );
+
 protected:
 	template < class T >
 	void add_output()

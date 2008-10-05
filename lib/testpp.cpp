@@ -15,7 +15,6 @@
 
 #include "testpp.h"
 #include "default_output.h"
-#include "testpp_project.h"
 
 
 testpp_c::testpp_c()
@@ -149,51 +148,5 @@ std::list< testpp_runner_i * > & testpp_runner_i::runners()
 {
 	static std::list< testpp_runner_i * > static_runners;
 	return static_runners;
-}
-
-
-int main( int argc, char **argv )
-{
-	human_testpp_output_c human;
-	testpp_output_i &output( human );
-	output.set_stream( std::cout );
-
-	testpp_project_loader_i &project_loader(
-			testpp_project_loader_i::project_loader() );
-	std::auto_ptr< testpp_project_c > project(
-			project_loader.create_project() );
-
-	std::string suite_name;
-	std::string whole_format;
-	std::string format;
-
-	if ( argc == 1 ) {
-		// do nothing here
-	} else if ( argc == 2 ) {
-		whole_format = argv[1];
-		std::string output( "--output=" );
-		if ( whole_format.find( output ) == 0 ) {
-			format = whole_format.substr( output.length() );
-			std::cerr << "output = " << format << std::endl;
-		} else {
-			suite_name = argv[1];
-		}
-	} else if ( argc == 3 ) {
-		whole_format = argv[1];
-		std::string output( "--output=" );
-		if ( whole_format.find( output ) == 0 ) {
-			format = whole_format.substr( output.length() );
-			std::cerr << "output = " << format << std::endl;
-		}
-		suite_name = argv[2];
-	}
-
-	if ( suite_name.empty() ) {
-		testpp_runner_i::run_all( output );
-	} else {
-		testpp_runner_i::run_some( output, suite_name );
-	}
-
-	return 0;
 }
 

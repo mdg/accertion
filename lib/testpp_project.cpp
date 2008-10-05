@@ -1,5 +1,6 @@
 #include "testpp_project.h"
 #include "testpp_output.h"
+#include "default_output.h"
 
 
 /**
@@ -18,11 +19,9 @@ public:
 
 testpp_project_c::testpp_project_c()
 {
-	/*
 	add_output< human_testpp_output_c >();
 	add_output< yaml_testpp_output_c >();
-	add_output< json_testpp_output_c >();
-	*/
+	// add_output< json_testpp_output_c >();
 }
 
 testpp_project_c::~testpp_project_c()
@@ -32,6 +31,18 @@ testpp_project_c::~testpp_project_c()
 		delete *output;
 	}
 	m_output.clear();
+}
+
+testpp_output_i & testpp_project_c::output( const std::string &format )
+{
+	std::list< testpp_output_i * >::iterator it;
+	for ( it=m_output.begin(); it!=m_output.end(); ++it ) {
+		if ( (*it)->name() == format ) {
+			return **it;
+		}
+	}
+	// return the first output format as set in the constructor
+	return *m_output.front();
 }
 
 
