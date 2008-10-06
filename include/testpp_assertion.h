@@ -123,7 +123,7 @@ public:
 	void between_ii( const T2 &v1, const T2 &v2 )
 	{
 		if ( ( v1 <= m_actual && m_actual <= v2 )
-				&& ( v2 <= m_actual && m_actual <= v1 ) ) {
+				|| ( v2 <= m_actual && m_actual <= v1 ) ) {
 			return;
 		}
 		std::ostringstream out;
