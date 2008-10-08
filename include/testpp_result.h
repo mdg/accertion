@@ -16,37 +16,25 @@
  */
 
 #include <string>
+#include <vector>
 
 
 /**
- * A class for storing the result of a testpp unit test.
+ * An object to report each test failure.
  */
-class testpp_result_c
+class testpp_failure_c
 {
 public:
-	testpp_result_c()
-	: m_failure( false )
-	, m_message()
-	, m_file_name()
-	, m_line_number( -1 )
+	/**
+	 * Construct a failure object.
+	 */
+	testpp_failure_c( const std::string &msg, const char *filename
+			, int line )
+	: m_message( msg )
+	, m_file_name( filename )
+	, m_line_number( line )
 	{}
 
-	/**
-	 * Mark this test as failed and give a message.
-	 */
-	void fail( const std::string &msg, const char *filename = NULL
-			, int line = -1 )
-	{
-		m_failure = true;
-		m_message = msg;
-		m_file_name = filename;
-		m_line_number = line;
-	}
-
-	/**
-	 * Check if this test failed.
-	 */
-	inline bool failure() const { return m_failure; }
 	/**
 	 * Get the error message for this test.
 	 */
@@ -62,10 +50,63 @@ public:
 	inline int line_number() const { return m_line_number; }
 
 private:
-	bool m_failure;
 	std::string m_message;
 	std::string m_file_name;
 	int m_line_number;
+};
+
+
+/**
+ * A class for storing the result of a testpp unit test.
+ */
+class testpp_result_c
+{
+public:
+	typedef std::vector< testpp_failure_c > failure_list;
+	typedef failure_list::const_iterator failure_iterator;
+public:
+	testpp_result_c()
+	: m_failure()
+	{}
+
+	/**
+	 * Mark this test as failed and give a message.
+	 */
+	void fail( const std::string &msg, const char *filename = NULL
+			, int line = -1 )
+	{
+		m_failure.push_back( testpp_failure_c( msg, filename, line ) );
+	}
+
+	/**
+	 * Check if this test failed.
+	 */
+	inline bool failure() const { return ! m_failure.empty(); }
+
+	/**
+	 * Get the number of failures for this test result.
+	 */
+	inline int size() const { return m_failure.size(); }
+
+	/**
+	 * Get the ith failure.
+	 */
+	inline const testpp_failure_c & operator [] ( int i ) const
+	{
+		return m_failure[i];
+	}
+
+	/**
+	 * Get the begin iterator for the list of failures.
+	 */
+	inline failure_iterator begin() const { return m_failure.begin(); }
+	/**
+	 * Get the end iterator for the list of failures.
+	 */
+	inline failure_iterator end() const { return m_failure.end(); }
+
+private:
+	failure_list m_failure;
 };
 
 

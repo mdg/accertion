@@ -22,16 +22,19 @@ void human_testpp_output_c::complete( const testpp_id_c &id
 		return;
 	}
 
-	stream() << "\t" << result.message() << " (";
-	if ( 0 && result.file_name().empty() ) {
-		// nothing to write
-	} else if ( id.file_name() == result.file_name() ) {
-		stream() << "line " << result.line_number();
-	} else {
-		stream() << result.file_name() << ":"
-			<< result.line_number();
+	testpp_result_c::failure_iterator it;
+	for ( it=result.begin(); it!=result.end(); ++it ) {
+		stream() << "\t" << it->message() << " (";
+		if ( 0 && it->file_name().empty() ) {
+			// nothing to write
+		} else if ( id.file_name() == it->file_name() ) {
+			stream() << "line " << it->line_number();
+		} else {
+			stream() << it->file_name() << ":"
+				<< it->line_number();
+		}
+		stream() << ")\n";
 	}
-	stream() << ")\n";
 }
 
 void human_testpp_output_c::summarize( int passed, int failed )
@@ -57,7 +60,18 @@ void yaml_testpp_output_c::complete( const testpp_id_c &id
 {
 	if ( result.failure() ) {
 		stream() << "    success: f\n";
-		stream() << "    message: " << result.message() << std::endl;
+		stream() << "    failures:\n";
+		testpp_result_c::failure_iterator it;
+		for ( it=result.begin(); it!=result.end(); ++it ) {
+			stream() << "      - message: " << it->message()
+				<< std::endl;
+			stream() << "        failure-file: "
+				<< it->file_name()
+				<< std::endl;
+			stream() << "        failure-line: "
+				<< it->line_number()
+				<< std::endl;
+		}
 	} else {
 		stream() << "    success: t\n";
 	}
