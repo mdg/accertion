@@ -11,7 +11,7 @@ TESTPP( test_truth_check )
 	assertion.t();
 
 	assertpp( result.failure() ).f();
-	assertpp( result.message() ) == "";
+	assertpp( result.size() ) == 0;
 }
 
 TESTPP( test_false_check )
@@ -23,7 +23,7 @@ TESTPP( test_false_check )
 	assertion.f();
 
 	assertpp( result.failure() ).f();
-	assertpp( result.message() ) == "";
+	assertpp( result.size() ) == 0;
 }
 
 TESTPP( test_between_double )
@@ -34,6 +34,6 @@ TESTPP( test_between_double )
 	assertion.between( 3.89, 3.91 );
 
 	assertpp( result.failure() ).f();
-	assertpp( result.message() ) == "";
+	assertpp( result.size() ) == 0;
 }
 
