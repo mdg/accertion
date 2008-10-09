@@ -1,5 +1,6 @@
-
 write tests for any code that doesn't have it yet
+
+make installable through makefile
 
 user documentation
 
@@ -9,7 +10,10 @@ submit testpp framework to some lists
 	need to clean up code for public consumption first
 	include comp.lang.c++
 
+make debian installable
+
 json output writers
 
 xml output writer
 
+make rpm installable
