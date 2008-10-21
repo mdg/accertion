@@ -57,3 +57,7 @@ build_test : compile compile_test
 test : build_test
 	./run_testpp
 
+install :
+	cp libtestpp.a /usr/lib
+	cp include/*.h /usr/include
+
