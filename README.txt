@@ -6,6 +6,24 @@ behind the macros so it can be used without the macros.
 Features:
 * Easy to use
 * Simple enough to be used without macros if desired
-* Can run individual tests or suites from the command line
+* Can run individual tests, files or suites from the command line
 * Various output formats, user-definable
+* Clear, operator-based assertion syntax
+
+
+Example:
+
+#include <testpp.h>
+
+/**
+ * This is a simple test to show the syntax in testpp.
+ */
+TESTPP( simple_test )
+{
+	// construct an object in the test
+	my_object o( 5 );
+	// assert that the methods return the expected values
+	assertpp( o.doubled() ) == 10;
+	assertpp( o.tripled() ) == 15;
+}
 
