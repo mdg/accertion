@@ -1,5 +1,5 @@
 
-#include <testpp.h>
+#include <testpp/test.h>
 #include "sample_object.h"
 
 
