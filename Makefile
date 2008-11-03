@@ -1,8 +1,10 @@
 CC = g++
 DBG = -g
 
+all : lib
+
 clean :
-	rm -rf *.o test/*.o
+	rm -rf *.o test/*.o libtestpp.a
 
 testpp.o : lib/testpp.cpp include/testpp/test.h include/testpp/assertion.h
 	$(CC) $(DBG) -c -Iinclude lib/testpp.cpp
@@ -48,7 +50,7 @@ compile : testpp.o default_output.o main.o testpp_id.o \
 libtestpp.a : compile
 	ar r libtestpp.a *.o
 
-lib : compile
+lib : libtestpp.a
 
 compile_test : test/testpp_test.o test/assertion_test.o test/default_output_test.o \
 	test/output_test.o \
