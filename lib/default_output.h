@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#include "testpp_output.h"
+#include <testpp/output.h>
 
 
 /**

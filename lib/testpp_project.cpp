@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#include "testpp_project.h"
-#include "testpp_output.h"
+#include <testpp/project.h>
+#include <testpp/output.h>
 #include "default_output.h"
 
 

@@ -14,8 +14,8 @@
  */
 
 #include "default_output.h"
-#include "testpp_id.h"
-#include "testpp_result.h"
+#include <testpp/id.h>
+#include <testpp/result.h>
 
 
 human_testpp_output_c::human_testpp_output_c()

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-#include "testpp_id.h"
+#include <testpp/id.h>
 
 
 bool testpp_suite_c::match( const std::string &suite_name ) const
