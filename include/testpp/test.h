@@ -18,8 +18,8 @@
 
 #include <string>
 #include <list>
-#include "testpp_assertion.h"
-#include "testpp_id.h"
+#include <testpp/assertion.h>
+#include <testpp/id.h>
 
 
 class testpp_output_i;

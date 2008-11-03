@@ -16,7 +16,7 @@
  */
 
 #include <sstream>
-#include "testpp_result.h"
+#include <testpp/result.h>
 
 
 /**
