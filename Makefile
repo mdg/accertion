@@ -64,5 +64,5 @@ test : build_test
 
 install :
 	cp libtestpp.a /usr/lib
-	cp include/*.h /usr/include
+	cp -r include/testpp /usr/include
 
