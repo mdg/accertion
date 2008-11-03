@@ -1,5 +1,5 @@
-#include "testpp.h"
-#include "default_output.h"
+#include <testpp/test.h>
+#include <default_output.h>
 
 
 TESTPP( test_human_summary )

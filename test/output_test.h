@@ -1,7 +1,7 @@
 #ifndef OUTPUT_TEST_H
 #define OUTPUT_TEST_H
 
-#include "testpp_output.h"
+#include <testpp/output.h>
 
 
 class output_test_1

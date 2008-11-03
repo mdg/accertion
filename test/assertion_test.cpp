@@ -1,5 +1,5 @@
-#include "testpp.h"
-#include "testpp_assertion.h"
+#include <testpp/test.h>
+#include <testpp/assertion.h>
 
 
 TESTPP( test_truth_check )
