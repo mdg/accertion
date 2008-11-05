@@ -1,0 +1,13 @@
+Package: testpp
+Maintainer: Matthew Graham <mdg149@gmail.com>
+Architecture: i386
+Version: 0.3.0
+Description: C++ testpp framework
+ A simple framework for unit testing C++ code.
+ Features:
+ * Easy to use
+ * Individual tests or suites can be run from the command line
+ * Various output formats, user-definable
+ * Clear, operator-based assertion syntax
+ * Simple enough to be used without macros if desired
+ README.txt should be concatenated in here.
