@@ -19,4 +19,8 @@ command line option to write output to stderr rather than file or stdout
 make rpm installable
 
 consider modifying test to optionally run tests externally to handle exceptions and errors
+	potentially a standalone "runner" program that runs all tests individually as separate processes
+	maybe multiple runner classes that either launch remotely, fork or something
+
+integrate gcov for coverage analysis
 
