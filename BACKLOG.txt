@@ -1,10 +1,6 @@
 write tests for any code that doesn't have it yet
 
-make installable through makefile
-
 user documentation
-
-start a testpp user group on google
 
 submit testpp framework to some lists
 	need to clean up code for public consumption first
@@ -12,8 +8,15 @@ submit testpp framework to some lists
 
 make debian installable
 
-json output writers
+json output writer
 
 xml output writer
 
+allow writing to multiple output formats at once
+
+command line option to write output to stderr rather than file or stdout
+
 make rpm installable
+
+consider modifying test to optionally run tests externally to handle exceptions and errors
+
