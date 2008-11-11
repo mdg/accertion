@@ -5,7 +5,7 @@ behind the macros so it can be used without the macros.
 
 Goals:
 * Easy to use
-* Simple enough to be used without macros if desired
+* Brief syntax, simple enough to be used without macros if desired
 * Can run individual tests, files or suites from the command line
 * Various output formats, user-definable
 * Clear, operator-based assertion syntax
