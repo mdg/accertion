@@ -9,6 +9,9 @@ submit testpp framework to some lists
 make debian installable
 	add deb command to the Makefile
 
+add --ls-tests command line option (or equivalent)
+	also add --ls-files and --ls-suites
+
 json output writer
 
 xml output writer
@@ -20,8 +23,12 @@ command line option to write output to stderr rather than file or stdout
 make rpm installable
 
 consider modifying test to optionally run tests externally to handle exceptions and errors
-	potentially a standalone "runner" program that runs all tests individually as separate processes
+	potentially a standalone "runner" program that runs all tests individually
+		as separate processes
 	maybe multiple runner classes that either launch remotely, fork or something
+
+support testing for memory leaks
+	may require running in a special memory leak mode
 
 integrate gcov for coverage analysis
 
