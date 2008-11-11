@@ -9,6 +9,10 @@ Features:
 * Can run individual tests, files or suites from the command line
 * Various output formats, user-definable
 * Clear, operator-based assertion syntax
+* Support linux & windows
+
+NOT Goals:
+* Supporting every obscure C++ compiler in existence
 
 
 Example:
