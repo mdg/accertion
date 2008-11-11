@@ -10,6 +10,7 @@ Goals:
 * Various output formats, user-definable
 * Clear, operator-based assertion syntax
 * Support linux & windows
+* C++ only build process, no code generation
 
 NOT Goals:
 * Supporting every obscure C++ compiler in existence
