@@ -16,10 +16,11 @@
  */
 
 
-#include <string>
-#include <list>
 #include <testpp/assertion.h>
 #include <testpp/id.h>
+#include <string>
+#include <list>
+#include <set>
 
 
 class testpp_output_i;

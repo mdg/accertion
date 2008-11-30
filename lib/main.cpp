@@ -14,9 +14,11 @@
  */
 
 #include <fstream>
-#include <testpp/test.h>
-#include <testpp/project.h>
+#include "testpp/test.h"
+#include "testpp/project.h"
 #include "default_output.h"
+#include <iostream>
+#include <memory>
 
 
 /**

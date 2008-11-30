@@ -15,6 +15,8 @@
 
 #include <testpp/test.h>
 #include "default_output.h"
+#include <memory>
+#include <algorithm>
 
 
 testpp_c::testpp_c()

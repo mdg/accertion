@@ -16,6 +16,7 @@
  */
 
 #include <list>
+#include <string>
 
 
 /**
