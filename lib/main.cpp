@@ -29,6 +29,19 @@ static void print_usage()
 	std::cerr << "usage error\n";
 }
 
+static void print_test_files( std::ostream &out )
+{
+	out << "print test files\n";
+}
+
+/**
+ * Print the available test suites to the output stream.
+ */
+static void print_test_suites( std::ostream &out )
+{
+	out << "print test suites\n";
+}
+
 
 /**
  * Implemented main function.
@@ -36,27 +49,36 @@ static void print_usage()
 int main( int argc, char **argv )
 {
 	bool usage_error( false );
+	bool print_help( false );
+	bool print_ls_files( false );
+	bool print_ls_suites( false );
+
 	std::string arg;
 	std::string suite_name;
 	std::string format;
 	std::string file;
+	// usage options
+	std::string help_option( "--help" );
+	std::string ls_files_option( "--ls-files" );
+	std::string ls_suites_option( "--ls-suites" );
+	std::string format_option( "--format=" );
+	std::string file_option( "--file=" );
 
 	// parse command line arguments
 	for ( int i(1); i<argc; ++i ) {
 		arg = argv[i];
 		if ( arg[0] == '-' && arg[1] == '-' ) {
-			std::string format_option( "--format=" );
-			std::string file_option( "--file=" );
-			std::string help_option( "--help" );
-
-			if ( arg.find( format_option ) == 0 ) {
+			if ( arg == help_option ) {
+				// print the usage but no error
+				print_help = true;
+			} else if ( arg == ls_files_option ) {
+				print_ls_files = true;
+			} else if ( arg == ls_suites_option ) {
+				print_ls_suites = true;
+			} else if ( arg.find( format_option ) == 0 ) {
 				format = arg.substr( format_option.length() );
 			} else if ( arg.find( file_option ) == 0 ) {
 				file = arg.substr( file_option.length() );
-			} else if ( arg == help_option ) {
-				// print the usage but no error
-				print_usage();
-				return 0;
 			}
 		} else if ( arg[0] == '-' ) {
 			usage_error = true;
@@ -73,6 +95,10 @@ int main( int argc, char **argv )
 		print_usage();
 		return 1;
 	}
+	if ( print_help ) {
+		print_usage();
+		return 0;
+	}
 
 	testpp_project_loader_i &project_loader(
 			testpp_project_loader_i::project_loader() );
@@ -84,6 +110,16 @@ int main( int argc, char **argv )
 			::project< testpp_project_c >() );
 			*/
 	project->init();
+
+	// print test info
+	if ( print_ls_files ) {
+		print_test_files( std::cout );
+		return 0;
+	}
+	if ( print_ls_suites ) {
+		print_test_suites( std::cout );
+		return 0;
+	}
 
 	// set the output stream
 	std::ostream *out( &std::cout );
