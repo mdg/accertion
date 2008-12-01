@@ -25,8 +25,10 @@ testpp_project.o : lib/testpp_project.cpp include/testpp/project.h \
 	include/testpp/test.h include/testpp/assertion.h
 	$(CC) $(DBG) -c -Iinclude lib/testpp_project.cpp
 
-test/testpp_test.o : test/testpp_test.cpp include/testpp/test.h include/testpp/id.h
-	$(CC) $(DBG) -c -o test/testpp_test.o -Iinclude test/testpp_test.cpp
+test/testpp_test.o : test/testpp_test.cpp include/testpp/test.h \
+	include/testpp/id.h
+	$(CC) $(DBG) -c -o test/testpp_test.o -Iinclude -Ilib \
+		test/testpp_test.cpp
 
 test/assertion_test.o : test/assertion_test.cpp include/testpp/assertion.h
 	$(CC) $(DBG) -c -o test/assertion_test.o -Iinclude -Ilib \
