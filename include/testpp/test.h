@@ -212,6 +212,44 @@ public:
 
 
 /**
+ * Interface for matching a test ID to an implemented testpp class.
+ */
+class testpp_type_i
+{
+public:
+	testpp_id_c id() const { return m_id; }
+	virtual testpp_c * create_test() const = 0;
+protected:
+	testpp_type_i( const testpp_id_c &id )
+	: m_id( id )
+	{}
+private:
+	testpp_id_c m_id;
+};
+
+/**
+ * An object to match a test ID to an implemented test class.
+ */
+template < typename T >
+class testpp_type_c
+: public testpp_type_i
+{
+public:
+	/**
+	 * Construct a testpp object to match a test ID to an implemented
+	 * test class.
+	 */
+	testpp_type_c( const testpp_id_c &id )
+	: testpp_type_i( id )
+	{}
+
+	/**
+	 * Create an instance of the test class.
+	 */
+	virtual testpp_c * create_test() const { return new T(); }
+};
+
+/**
  * A storage class for holding all the tests & test runners.
  */
 class testpp_set_c
