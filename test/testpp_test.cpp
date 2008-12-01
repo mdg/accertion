@@ -14,6 +14,7 @@
  */
 
 #include <testpp/test.h>
+#include "default_output.h"
 
 
 /**
@@ -151,5 +152,26 @@ TESTPP( test_testpp_set_constructor )
 
 	assertpp( set.test_files().empty() ).t();
 	assertpp( set.test_suites().empty() ).t();
+}
+
+/**
+ * Test that adding tests to the testpp_set works and the test_files
+ * and test_suites work better.
+ */
+TESTPP( test_testpp_add_tests )
+{
+	testpp_set_c set;
+	human_testpp_output_c output;
+
+	set.add< test_sample< 1 > >( "sample1", "file1.cpp", 118 );
+	set.add< test_sample< 2 > >( "sample2", "file2.cpp", 120 );
+
+	assertpp( set.test_files().size() ) == 2;
+	assertpp( set.test_suites().size() ) == 0;
+
+	// set.run( output );
+
+	assertpp( test_sample< 1 >::tested ).t();
+	assertpp( test_sample< 2 >::tested ).t();
 }
 
