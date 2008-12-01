@@ -1,5 +1,4 @@
-add --ls-tests command line option (or equivalent)
-	also add --ls-files and --ls-suites
+add --ls-tests command line option
 
 write tests for any code that doesn't have it yet
 
