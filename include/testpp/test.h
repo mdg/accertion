@@ -256,12 +256,30 @@ class testpp_set_c
 {
 public:
 	/**
-	 * Add a test runner to this test set.
+	 * Add a test to this test set.
 	 */
 	template < typename T >
-	void add( const std::string &test_name
+	int add( const std::string &test_name
 			, const std::string &file_name = std::string()
-			, int line_number = 0 );
+			, int line_num = 0 )
+	{
+		testpp_id_c id( test_name, file_name, line_num );
+		m_files.insert( file_name );
+		m_tests.push_back( new testpp_type_c< T >( id ) );
+	}
+	/**
+	 * Add a test in a suite to this test set.
+	 */
+	template < typename T >
+	int add( testpp_suite_c &suite, const std::string &test_name
+			, const std::string &file_name = std::string()
+			, int line_num = 0 )
+	{
+		testpp_id_c id( suite, test_name, file_name, line_num );
+		m_files.insert( file_name );
+		m_suites.insert( suite.name() );
+		m_tests.push_back( new testpp_type_c< T >( id ) );
+	}
 
 	/**
 	 * Run all tests with this output type.
@@ -282,7 +300,7 @@ public:
 	const std::set< std::string > & test_suites() const { return m_suites; }
 
 private:
-	std::list< testpp_runner_i * > m_runners;
+	std::list< testpp_type_i * > m_tests;
 	std::set< std::string > m_files;
 	std::set< std::string > m_suites;
 };
