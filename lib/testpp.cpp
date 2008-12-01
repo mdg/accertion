@@ -66,9 +66,10 @@ void testpp_set_c::run( testpp_output_i &out )
 	int passed( 0 );
 	int failed( 0 );
 	for ( it=m_tests.begin(); it!=m_tests.end(); ++it ) {
-		out.begin( (*it)->id() );
+		testpp_type_i &type( **it );
+		out.begin( type.id() );
 
-		std::auto_ptr< testpp_c > test( (*it)->create_test() );
+		std::auto_ptr< testpp_c > test( type.create_test() );
 		testpp_result_c result;
 		run_test( *test, result );
 		if ( result.failure() ) {
@@ -77,7 +78,7 @@ void testpp_set_c::run( testpp_output_i &out )
 			++passed;
 		}
 
-		out.complete( (*it)->id(), result );
+		out.complete( type.id(), result );
 	}
 
 	out.summarize( passed, failed );
