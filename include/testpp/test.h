@@ -29,6 +29,14 @@ class testpp_output_i;
 /**
  * Create the most simple testpp test without attaching it to a suite.
  */
+#define TESTPP2( test_class ) \
+	class test_class : public testpp_c { public: void test(); }; \
+	testpp_tests().add< test_class >( #test_class, __FILE__, __LINE__ ); \
+	void test_class::test()
+
+/**
+ * Create the most simple testpp test without attaching it to a suite.
+ */
 #define TESTPP( test_class ) \
 	class test_class : public testpp_c { public: void test(); }; \
 	static testpp_runner_c< test_class > test_class##_runner( #test_class \
@@ -201,6 +209,47 @@ public:
 		return new T();
 	}
 };
+
+
+/**
+ * A storage class for holding all the tests & test runners.
+ */
+class testpp_set_c
+{
+public:
+	/**
+	 * Add a test runner to this test set.
+	 */
+	template < typename T >
+	void add( const std::string &test_name
+			, const std::string &file_name = std::string()
+			, int line_number = 0 );
+
+	/**
+	 * Run all tests with this output type.
+	 */
+	void run( testpp_output_i & );
+	/**
+	 * Run some tests as identified by the test name
+	 */
+	void run( testpp_output_i &, const std::string &test_name );
+
+	/**
+	 * Get the set of files included in these tests.
+	 */
+	const std::set< std::string > & test_files() const { return m_files; }
+	/**
+	 * Get the set of tests available.
+	 */
+	const std::set< std::string > & test_suites() const { return m_suites; }
+
+private:
+	std::list< testpp_runner_i * > m_runners;
+	std::set< std::string > m_files;
+	std::set< std::string > m_suites;
+};
+
+testpp_set_c & testpp_tests();
 
 
 #endif

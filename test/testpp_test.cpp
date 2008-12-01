@@ -125,3 +125,15 @@ TESTPP( test_runner_in_suite )
 	*/
 }
 
+
+/**
+ * Test that the testpp_set constructor works and defaults values properly.
+ */
+TESTPP( test_testpp_set_constructor )
+{
+	testpp_set_c set;
+
+	assertpp( set.test_files().empty() ).t();
+	assertpp( set.test_suites().empty() ).t();
+}
+

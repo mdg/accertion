@@ -130,3 +130,10 @@ std::list< testpp_runner_i * > & testpp_runner_i::runners()
 	return static_runners;
 }
 
+
+testpp_set_c & testpp_tests()
+{
+	static testpp_set_c static_set;
+	return static_set;
+}
+
