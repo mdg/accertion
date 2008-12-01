@@ -25,6 +25,22 @@ testpp_suite_c special_suite( "special", parent_suite );
 testpp_suite_c assertion_suite( "assertion" );
 
 
+/**
+ * This is a sample test for using in tests.
+ */
+template < int N >
+class test_sample
+: public testpp_c
+{
+public:
+	void test() { tested = true; }
+	static bool tested;
+};
+
+template < int N >
+bool test_sample< N >::tested = false;
+
+
 class test_custom
 : public testpp_c
 {
