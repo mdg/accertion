@@ -35,7 +35,7 @@ test/assertion_test.o : test/assertion_test.cpp include/testpp/assertion.h
 		test/assertion_test.cpp
 
 test/default_output_test.o : test/default_output_test.cpp
-	$(CC) $(DBG) -c -o test/default_ouput_test.o -Iinclude -Ilib \
+	$(CC) $(DBG) -c -o test/default_output_test.o -Iinclude -Ilib \
 		test/default_output_test.cpp
 
 test/output_test.o : test/output_test.cpp include/testpp/test.h \
