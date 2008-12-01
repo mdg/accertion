@@ -29,17 +29,15 @@ static void print_usage()
 	std::cerr << "usage error\n";
 }
 
-static void print_test_files( std::ostream &out )
-{
-	out << "print test files\n";
-}
-
 /**
- * Print the available test suites to the output stream.
+ * Print the available test suites or files to the stream.
  */
-static void print_test_suites( std::ostream &out )
+static void print_ls( std::ostream &out, const std::set< std::string > &ls )
 {
-	out << "print test suites\n";
+	std::set< std::string >::const_iterator it( ls.begin() );
+	for ( ; it!=ls.end(); ++it ) {
+		out << *it << std::endl;
+	}
 }
 
 
@@ -111,13 +109,15 @@ int main( int argc, char **argv )
 			*/
 	project->init();
 
+	testpp_set_c &tests( testpp_tests() );
+
 	// print test info
 	if ( print_ls_files ) {
-		print_test_files( std::cout );
+		print_ls( std::cout, tests.test_files() );
 		return 0;
 	}
 	if ( print_ls_suites ) {
-		print_test_suites( std::cout );
+		print_ls( std::cout, tests.test_suites() );
 		return 0;
 	}
 
@@ -132,7 +132,6 @@ int main( int argc, char **argv )
 	testpp_output_i &output( project->output( format ) );
 	output.set_stream( *out );
 
-	testpp_set_c &tests( testpp_tests() );
 	if ( suite_name.empty() ) {
 		tests.run( output );
 	} else {
