@@ -1,12 +1,12 @@
+add --ls-tests command line option (or equivalent)
+	also add --ls-files and --ls-suites
+
 write tests for any code that doesn't have it yet
 
 user documentation
 
 make debian installable
 	add deb command to the Makefile
-
-add --ls-tests command line option (or equivalent)
-	also add --ls-files and --ls-suites
 
 json output writer
 
