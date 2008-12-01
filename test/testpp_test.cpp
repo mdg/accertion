@@ -158,7 +158,7 @@ TESTPP( test_testpp_set_constructor )
  * Test that adding tests to the testpp_set works and the test_files
  * and test_suites work better.
  */
-TESTPP( test_testpp_add_tests )
+TESTPP( test_testpp_set_add_tests )
 {
 	testpp_set_c set;
 	human_testpp_output_c output;
