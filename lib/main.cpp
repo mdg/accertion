@@ -132,10 +132,11 @@ int main( int argc, char **argv )
 	testpp_output_i &output( project->output( format ) );
 	output.set_stream( *out );
 
+	testpp_set_c &tests( testpp_tests() );
 	if ( suite_name.empty() ) {
-		testpp_runner_i::run_all( output );
+		tests.run( output );
 	} else {
-		testpp_runner_i::run_some( output, suite_name );
+		tests.run( output, suite_name );
 	}
 
 	return 0;

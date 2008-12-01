@@ -29,18 +29,10 @@ class testpp_output_i;
 /**
  * Create the most simple testpp test without attaching it to a suite.
  */
-#define TESTPP2( test_class ) \
-	class test_class : public testpp_c { public: void test(); }; \
-	testpp_tests().add< test_class >( #test_class, __FILE__, __LINE__ ); \
-	void test_class::test()
-
-/**
- * Create the most simple testpp test without attaching it to a suite.
- */
 #define TESTPP( test_class ) \
 	class test_class : public testpp_c { public: void test(); }; \
-	static testpp_runner_c< test_class > test_class##_runner( #test_class \
-			, __FILE__, __LINE__ ); \
+	int test_class##_value = testpp_tests().add< test_class >( \
+		#test_class, __FILE__, __LINE__ ); \
 	void test_class::test()
 
 /**
@@ -48,23 +40,23 @@ class testpp_output_i;
  */
 #define SUITE_TESTPP( test_class, suite_class ) \
 	class test_class : public testpp_c { public: void test(); }; \
-	static testpp_runner_c< test_class > test_class##_runner( suite_class \
-			, #test_class, __FILE__, __LINE__ ); \
+	int test_class##_value = testpp_tests().add< test_class >( \
+		suite_class, #test_class, __FILE__, __LINE__ ); \
 	void test_class::test()
 
 /**
  * Register a testpp class to be run.
  */
 #define REGISTER_TESTPP( test_class ) \
-	static testpp_runner_c< test_class > test_class##_runner( #test_class \
-			, __FILE__, __LINE__ )
+	int test_class##_value = testpp_tests().add< test_class >( \
+		#test_class, __FILE__, __LINE__ )
 
 /**
  * Register a testpp class to be run.
  */
 #define REGISTER_SUITE_TESTPP( test_class, suite_class ) \
-	static testpp_runner_c< test_class > test_class##_runner( #test_class \
-			, suite_class, __FILE__, __LINE__ )
+	int test_class##_value = testpp_tests().add< test_class >( \
+		suite_class, #test_class, __FILE__, __LINE__ )
 
 
 /**
@@ -256,6 +248,11 @@ class testpp_set_c
 {
 public:
 	/**
+	 * Destructor.
+	 */
+	~testpp_set_c();
+
+	/**
 	 * Add a test to this test set.
 	 */
 	template < typename T >
@@ -301,12 +298,18 @@ public:
 	 */
 	const std::set< std::string > & test_suites() const { return m_suites; }
 
+protected:
+	void run_test( testpp_c &, testpp_result_c & );
+
 private:
 	std::list< testpp_type_i * > m_tests;
 	std::set< std::string > m_files;
 	std::set< std::string > m_suites;
 };
 
+/**
+ * Get the static testpp_set for adding
+ */
 testpp_set_c & testpp_tests();
 
 

@@ -34,56 +34,43 @@ void testpp_c::fail( const std::string &msg, const char *filename, int line )
 }
 
 
-testpp_runner_i::testpp_runner_i( const std::string &test_name
-	       , const char *file_name, int line_number )
-: m_id( test_name, file_name, line_number )
+testpp_set_c::~testpp_set_c()
 {
-	runners().push_back( this );
-}
-
-testpp_runner_i::testpp_runner_i( testpp_suite_c &suite
-	       , const std::string &test_name, const char *file_name
-	       , int line_number )
-: m_id( suite, test_name, file_name, line_number )
-{
-	runners().push_back( this );
-}
-
-testpp_runner_i::~testpp_runner_i()
-{
-	std::list< testpp_runner_i * >::iterator it;
-	it = std::find( runners().begin(), runners().end(), this );
-	if ( it == runners().end() ) {
-		runners().erase( it );
+	std::list< testpp_type_i * >::iterator it;
+	for ( it=m_tests.begin(); it!=m_tests.end(); ++it ) {
+		delete *it;
 	}
+	m_tests.clear();
+	m_files.clear();
+	m_suites.clear();
 }
 
 
-void testpp_runner_i::run_test( testpp_result_c &result )
+void testpp_set_c::run_test( testpp_c & test, testpp_result_c &result )
 {
-	std::auto_ptr< testpp_c > test( create_test() );
-	test->set_result( result );
+	test.set_result( result );
 	try {
-		test->setup();
-		test->test();
-		test->teardown();
+		test.setup();
+		test.test();
+		test.teardown();
 	} catch (...) {
 		std::cerr << "catch...";
 	}
 }
 
 
-void testpp_runner_i::run_all( testpp_output_i &out )
+void testpp_set_c::run( testpp_output_i &out )
 {
-	std::list< testpp_runner_i * >::iterator it;
+	std::list< testpp_type_i * >::const_iterator it;
 	int i( 0 );
 	int passed( 0 );
 	int failed( 0 );
-	for ( it=runners().begin(); it!=runners().end(); ++it ) {
+	for ( it=m_tests.begin(); it!=m_tests.end(); ++it ) {
 		out.begin( (*it)->id() );
 
+		std::auto_ptr< testpp_c > test( (*it)->create_test() );
 		testpp_result_c result;
-		(*it)->run_test( result );
+		run_test( *test, result );
 		if ( result.failure() ) {
 			++failed;
 		} else {
@@ -96,21 +83,22 @@ void testpp_runner_i::run_all( testpp_output_i &out )
 	out.summarize( passed, failed );
 }
 
-void testpp_runner_i::run_some( testpp_output_i &out, const std::string &suite )
+void testpp_set_c::run( testpp_output_i &out, const std::string &test_name )
 {
-	std::list< testpp_runner_i * >::iterator it;
+	std::list< testpp_type_i * >::iterator it;
 	int i( 0 );
 	int passed( 0 );
 	int failed( 0 );
-	for ( it=runners().begin(); it!=runners().end(); ++it ) {
-		if ( ! (*it)->in_suite( suite ) ) {
+	for ( it=m_tests.begin(); it!=m_tests.end(); ++it ) {
+		if ( ! (*it)->id().in_suite( test_name ) ) {
 			continue;
 		}
 
 		out.begin( (*it)->id() );
 
+		std::auto_ptr< testpp_c > test( (*it)->create_test() );
 		testpp_result_c result;
-		(*it)->run_test( result );
+		run_test( *test, result );
 		if ( result.failure() ) {
 			++failed;
 		} else {
@@ -121,13 +109,6 @@ void testpp_runner_i::run_some( testpp_output_i &out, const std::string &suite )
 	}
 
 	out.summarize( passed, failed );
-}
-
-
-std::list< testpp_runner_i * > & testpp_runner_i::runners()
-{
-	static std::list< testpp_runner_i * > static_runners;
-	return static_runners;
 }
 
 
