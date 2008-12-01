@@ -266,6 +266,7 @@ public:
 		testpp_id_c id( test_name, file_name, line_num );
 		m_files.insert( file_name );
 		m_tests.push_back( new testpp_type_c< T >( id ) );
+		return m_tests.size();
 	}
 	/**
 	 * Add a test in a suite to this test set.
@@ -279,6 +280,7 @@ public:
 		m_files.insert( file_name );
 		m_suites.insert( suite.name() );
 		m_tests.push_back( new testpp_type_c< T >( id ) );
+		return m_tests.size();
 	}
 
 	/**
