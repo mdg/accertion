@@ -39,6 +39,8 @@ public:
 	, m_parent( &parent )
 	{}
 
+	const std::string & name() const { return m_name; }
+
 	bool match( const std::string &suite_name ) const;
 
 private:
