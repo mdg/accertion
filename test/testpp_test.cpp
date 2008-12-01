@@ -162,6 +162,8 @@ TESTPP( test_testpp_set_add_tests )
 {
 	testpp_set_c set;
 	human_testpp_output_c output;
+	std::ostringstream stream;
+	output.set_stream( stream );
 
 	set.add< test_sample< 1 > >( "sample1", "file1.cpp", 118 );
 	set.add< test_sample< 2 > >( "sample2", "file2.cpp", 120 );
@@ -169,7 +171,7 @@ TESTPP( test_testpp_set_add_tests )
 	assertpp( set.test_files().size() ) == 2;
 	assertpp( set.test_suites().size() ) == 0;
 
-	// set.run( output );
+	set.run( output );
 
 	assertpp( test_sample< 1 >::tested ).t();
 	assertpp( test_sample< 2 >::tested ).t();
