@@ -43,7 +43,6 @@ testpp_project_c * testpp_project_loader_i
 
 void override_testpp_project_c::init()
 {
-	std::cerr << "add test project\n";
 	add_output< output_test_1 >();
 }
 
