@@ -9,7 +9,7 @@ Goals:
 * Can run individual tests, files or suites from the command line
 * Various output formats, user-definable
 * Clear, operator-based assertion syntax
-* Support linux & windows
+* Support linux, windows & mac os X
 * C++ only build process, no code generation
 
 NOT Goals:
