@@ -1,6 +1,8 @@
 fix boolean assert message. it just says true or not true now,
 	not what was asserted
 
+add tested scoping: private for live, public for tests
+
 add --ls-tests command line option
 
 write tests for any code that doesn't have it yet
