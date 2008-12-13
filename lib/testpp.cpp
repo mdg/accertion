@@ -54,7 +54,7 @@ void testpp_set_c::run_test( testpp_c & test, testpp_result_c &result )
 		test.test();
 		test.teardown();
 	} catch (...) {
-		std::cerr << "catch...";
+		std::cerr << "catch...\n";
 	}
 }
 
