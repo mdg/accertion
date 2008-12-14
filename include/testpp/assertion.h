@@ -31,7 +31,7 @@ public:
 	 */
 	testpp_assertion_c( testpp_result_c &result, const T &actual_value
 			, const std::string &actual_expression
-			, const char *filename, int line )
+			, const std::string &filename, int line )
 	: m_result( result )
 	, m_actual( actual_value )
 	, m_expression( actual_expression )
@@ -46,7 +46,9 @@ public:
 	{
 		if ( m_actual )
 			return;
-		fail( "not_true" );
+		std::ostringstream out;
+		out << m_expression << " is not true";
+		fail( out.str() );
 	}
 	/**
 	 * Assert actual value is false.
@@ -55,7 +57,9 @@ public:
 	{
 		if ( ! m_actual )
 			return;
-		fail( "not false" );
+		std::ostringstream out;
+		out << m_expression << " is not false";
+		fail( out.str() );
 	}
 
 	/**
@@ -148,9 +152,9 @@ private:
 	}
 
 	testpp_result_c &m_result;
-	const T &m_actual;
-	const std::string &m_expression;
-	const char *m_filename;
+	const T m_actual;
+	const std::string m_expression;
+	const std::string m_filename;
 	int m_line;
 };
 

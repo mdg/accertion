@@ -28,7 +28,7 @@ public:
 	/**
 	 * Construct a failure object.
 	 */
-	testpp_failure_c( const std::string &msg, const char *filename
+	testpp_failure_c( const std::string &msg, const std::string &filename
 			, int line )
 	: m_message( msg )
 	, m_file_name( filename )
@@ -43,9 +43,22 @@ public:
 	/**
 	 * Get the file where the failure happened.
 	 */
+	inline const std::string & file() const { return m_file_name; }
+	/**
+	 * Get the line number where the failure happened.
+	 */
+	inline int line() const { return m_line_number; }
+
+	/**
+	 * Get the file where the failure happened.
+	 * This is older and more undesirable syntax.
+	 * Please use file() instead.
+	 */
 	inline const std::string & file_name() const { return m_file_name; }
 	/**
 	 * Get the line number where the failure happened.
+	 * This is older and more undesirable syntax.
+	 * Please use line() instead.
 	 */
 	inline int line_number() const { return m_line_number; }
 
@@ -72,7 +85,7 @@ public:
 	/**
 	 * Mark this test as failed and give a message.
 	 */
-	void fail( const std::string &msg, const char *filename = NULL
+	void fail( const std::string &msg, const std::string &filename = NULL
 			, int line = -1 )
 	{
 		m_failure.push_back( testpp_failure_c( msg, filename, line ) );
