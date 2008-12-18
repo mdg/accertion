@@ -1,5 +1,6 @@
-
 add tested scoping: private for live, public for tests
+
+add synchronization tests for testing multi-threaded code
 
 add --ls-tests command line option
 
