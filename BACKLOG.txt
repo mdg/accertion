@@ -1,4 +1,7 @@
 
+add a "not implemented" test failure type to allow tests to be defined
+	without being implemented right away, or forgotten later
+
 add tested scoping: private for live, public for tests
 
 add --ls-tests command line option
