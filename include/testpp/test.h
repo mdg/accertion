@@ -115,6 +115,23 @@ public:
 	 */
 	virtual void teardown() {}
 
+	/**
+	 * Flag this test as not implemented yet.
+	 */
+	void not_implemented();
+
+	/**
+	 * Flag this test as not implemented yet, until a given date.
+	 */
+	void not_implemented( short year, short month, short day );
+
+	/**
+	 * Ignore any failures from this test until a given day.
+	 * Useful for tests that have been implemented but whose
+	 * functionality has not yet been added.
+	 */
+	void ignore_until( short year, short month, short day );
+
 protected:
 	/**
 	 * Create an assertion object for this test.
