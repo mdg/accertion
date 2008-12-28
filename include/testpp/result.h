@@ -80,6 +80,8 @@ public:
 public:
 	testpp_result_c()
 	: m_failure()
+	, m_ignored( false )
+	, m_not_implemented( false )
 	{}
 
 	/**
@@ -92,9 +94,32 @@ public:
 	}
 
 	/**
+	 * Ignore any errors that may come from a test.
+	 */
+	void set_ignored() { m_ignored = true; }
+
+	/**
+	 * Flag a test as not implemented.
+	 */
+	void set_not_implemented() { m_not_implemented = true; }
+
+	/**
 	 * Check if this test failed.
 	 */
-	inline bool failure() const { return ! m_failure.empty(); }
+	inline bool failure() const
+	{
+		return ( ! m_failure.empty() ) && ! m_ignored;
+	}
+
+	/**
+	 * Check if the test should be ignored.
+	 */
+	inline bool ignored() const { return m_ignored; }
+
+	/**
+	 * Check if the test is not yet implemented.
+	 */
+	inline bool not_implemented() const { return m_not_implemented; }
 
 	/**
 	 * Get the number of failures for this test result.
@@ -120,6 +145,8 @@ public:
 
 private:
 	failure_list m_failure;
+	bool m_not_implemented;
+	bool m_ignored;
 };
 
 
