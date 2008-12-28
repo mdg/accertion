@@ -132,6 +132,11 @@ public:
 	 */
 	void ignore_until( short year, short month, short day );
 
+	/**
+	 * Check if the current time is before the given time.
+	 */
+	static bool is_before( short year, short month, short day );
+
 protected:
 	/**
 	 * Create an assertion object for this test.

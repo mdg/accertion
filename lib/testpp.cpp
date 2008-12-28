@@ -17,6 +17,7 @@
 #include "default_output.h"
 #include <memory>
 #include <algorithm>
+#include <ctime>
 
 
 testpp_c::testpp_c()
@@ -26,6 +27,18 @@ testpp_c::testpp_c()
 void testpp_c::set_result( testpp_result_c &result )
 {
 	m_result = &result;
+}
+
+bool testpp_c::is_before( short year, short month, short day )
+{
+	tm t = { 0 };
+	t.tm_year = year - 1900;
+	t.tm_mon = month - 1;
+	t.tm_mday = day;
+	t.tm_isdst = -1;
+	time_t then( mktime( &t ) );
+	time_t now( time( NULL ) );
+	return ( now < then );
 }
 
 void testpp_c::fail( const std::string &msg, const char *filename, int line )

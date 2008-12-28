@@ -109,6 +109,16 @@ TESTPP( test_string_equality_assertion )
 	assertpp( value ) == "hello";
 }
 
+TESTPP( test_is_before_yes )
+{
+	assertpp( testpp_c::is_before( 2030, 12, 28 ) ).t();
+}
+
+TESTPP( test_is_before_no )
+{
+	assertpp( testpp_c::is_before( 2004, 7, 24 ) ).f();
+}
+
 TESTPP( test_suite_match )
 {
 	testpp_suite_c suite( "special" );
