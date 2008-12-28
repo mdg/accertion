@@ -29,6 +29,26 @@ void testpp_c::set_result( testpp_result_c &result )
 	m_result = &result;
 }
 
+void testpp_c::not_implemented()
+{
+	m_result->not_implemented();
+}
+
+void testpp_c::not_implemented( short year, short month, short day )
+{
+	if ( is_before( year, month, day ) ) {
+		m_result->set_not_implemented();
+	}
+	m_result->fail( "not implemented" );
+}
+
+void testpp_c::ignore_until( short year, short month, short day )
+{
+	if ( is_before( year, month, day ) ) {
+		m_result->set_ignored();
+	}
+}
+
 bool testpp_c::is_before( short year, short month, short day )
 {
 	tm t = { 0 };
