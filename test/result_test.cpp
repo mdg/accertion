@@ -32,8 +32,8 @@ TESTPP( test_result_constructor )
 	testpp_result_c r;
 
 	assertpp( r.failure() ).f();
-	assertpp( r.ignored() ).f();
-	assertpp( r.not_implemented() ).f();
+	assertpp( r.ignore_failures() ).f();
+	assertpp( r.test_not_implemented() ).f();
 	assertpp( r.size() ) == 0;
 }
 
@@ -43,11 +43,11 @@ TESTPP( test_result_constructor )
 TESTPP( test_ignored_result )
 {
 	testpp_result_c r;
-	r.set_ignored();
+	r.set_ignore_failures();
 
 	assertpp( r.failure() ).f();
-	assertpp( r.ignored() ).t();
-	assertpp( r.not_implemented() ).f();
+	assertpp( r.ignore_failures() ).t();
+	assertpp( r.test_not_implemented() ).f();
 	assertpp( r.size() ) == 0;
 }
 
@@ -57,12 +57,12 @@ TESTPP( test_ignored_result )
 TESTPP( test_ignored_result_with_failures )
 {
 	testpp_result_c r;
-	r.set_ignored();
+	r.set_ignore_failures();
 	r.fail( "this failed", "test.cpp", 80 );
 
 	assertpp( r.failure() ).f();
-	assertpp( r.ignored() ).t();
-	assertpp( r.not_implemented() ).f();
+	assertpp( r.ignore_failures() ).t();
+	assertpp( r.test_not_implemented() ).f();
 	assertpp( r.size() ) == 1;
 }
 
