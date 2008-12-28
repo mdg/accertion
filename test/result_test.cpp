@@ -26,3 +26,43 @@ TESTPP( test_failure_constructor )
 	assertpp( f.line() ) == 99;
 }
 
+
+TESTPP( test_result_constructor )
+{
+	testpp_result_c r;
+
+	assertpp( r.failure() ).f();
+	assertpp( r.ignored() ).f();
+	assertpp( r.not_implemented() ).f();
+	assertpp( r.size() ) == 0;
+}
+
+/**
+ * Test that an ignored test has the right output.
+ */
+TESTPP( test_ignored_result )
+{
+	testpp_result_c r;
+	r.set_ignored();
+
+	assertpp( r.failure() ).f();
+	assertpp( r.ignored() ).t();
+	assertpp( r.not_implemented() ).f();
+	assertpp( r.size() ) == 0;
+}
+
+/**
+ * Test that an ignored test with failures has the right output.
+ */
+TESTPP( test_ignored_result_with_failures )
+{
+	testpp_result_c r;
+	r.set_ignored();
+	r.fail( "this failed", "test.cpp", 80 );
+
+	assertpp( r.failure() ).f();
+	assertpp( r.ignored() ).t();
+	assertpp( r.not_implemented() ).f();
+	assertpp( r.size() ) == 1;
+}
+

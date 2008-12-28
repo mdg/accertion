@@ -108,7 +108,7 @@ public:
 	 */
 	inline bool failure() const
 	{
-		return ( ! m_failure.empty() ) && ! m_ignored;
+		return ! ( m_failure.empty() || m_ignored );
 	}
 
 	/**
