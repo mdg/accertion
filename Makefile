@@ -46,6 +46,9 @@ test/project_test.o : test/project_test.cpp include/testpp/project.h \
 	include/testpp/output.h test/output_test.h
 	$(CC) $(DBG) -c -o test/project_test.o -Iinclude test/project_test.cpp
 
+test/result_test.o : test/result_test.cpp include/testpp/result.h
+	$(CC) $(DBG) -c -o test/result_test.o -Iinclude test/result_test.cpp
+
 compile : testpp.o default_output.o main.o testpp_id.o \
 	testpp_project.o
 
@@ -54,9 +57,11 @@ libtestpp.a : compile
 
 lib : libtestpp.a
 
-compile_test : test/testpp_test.o test/assertion_test.o test/default_output_test.o \
+compile_test : test/testpp_test.o test/assertion_test.o \
+	test/default_output_test.o \
 	test/output_test.o \
-	test/project_test.o
+	test/project_test.o \
+	test/result_test.o
 
 build_test : compile compile_test
 	$(CC) $(DBG) -o run_testpp *.o test/*.o
