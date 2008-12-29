@@ -126,7 +126,6 @@ void testpp_set_c::run( testpp_output_i &out )
 void testpp_set_c::run( testpp_output_i &out, const std::string &test_name )
 {
 	std::list< testpp_type_i * >::iterator it;
-	int i( 0 );
 	int passed( 0 );
 	int failed( 0 );
 	for ( it=m_tests.begin(); it!=m_tests.end(); ++it ) {
