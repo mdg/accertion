@@ -11,7 +11,8 @@ public:
 	output_test_1();
 	virtual void begin( const testpp_id_c & );
 	virtual void complete( const testpp_id_c &, const testpp_result_c & );
-	virtual void summarize( int passed, int failed );
+	virtual void summarize( int passed, int failed, int ignored
+			, int not_implemented );
 };
 
 

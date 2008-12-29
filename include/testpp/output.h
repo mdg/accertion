@@ -53,7 +53,8 @@ public:
 	/**
 	 * Write test summary to the output.
 	 */
-	virtual void summarize( int passed, int failed ) = 0;
+	virtual void summarize( int passed, int failed, int ignored
+			, int not_implemented ) = 0;
 
 protected:
 	/**

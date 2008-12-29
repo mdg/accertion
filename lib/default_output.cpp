@@ -51,7 +51,8 @@ void human_testpp_output_c::complete( const testpp_id_c &id
 	}
 }
 
-void human_testpp_output_c::summarize( int passed, int failed )
+void human_testpp_output_c::summarize( int passed, int failed, int ignored
+		, int not_implemented )
 {
 	stream() << failed << " failures in " << passed + failed
 		<< " tests\n";
@@ -91,7 +92,8 @@ void yaml_testpp_output_c::complete( const testpp_id_c &id
 	}
 }
 
-void yaml_testpp_output_c::summarize( int passed, int failed )
+void yaml_testpp_output_c::summarize( int passed, int failed, int ignored
+		, int not_implemented )
 {
 	stream() << "passed: " << passed << std::endl;
 	stream() << "failed: " << failed << std::endl;

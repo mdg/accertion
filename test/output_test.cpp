@@ -22,7 +22,8 @@ void output_test_1::complete( const testpp_id_c &id
 	}
 }
 
-void output_test_1::summarize( int passed, int failed )
+void output_test_1::summarize( int passed, int failed, int ignored
+			, int not_implemented )
 {
 	stream() << "test1, pass " << passed << ", failed " << failed
 		<< std::endl;

@@ -120,7 +120,7 @@ void testpp_set_c::run( testpp_output_i &out )
 		out.complete( type.id(), result );
 	}
 
-	out.summarize( passed, failed );
+	out.summarize( passed, failed, ignored, not_implemented );
 }
 
 void testpp_set_c::run( testpp_output_i &out, const std::string &test_name )
@@ -154,7 +154,7 @@ void testpp_set_c::run( testpp_output_i &out, const std::string &test_name )
 		out.complete( (*it)->id(), result );
 	}
 
-	out.summarize( passed, failed );
+	out.summarize( passed, failed, ignored, not_implemented );
 }
 
 
