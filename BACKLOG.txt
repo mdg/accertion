@@ -12,6 +12,8 @@ fix the human output so it's easier to read
 
 add tested scoping: private for live, public for tests
 
+add test filter class, and have only a single implementation of testpp_set::run
+
 add --ls-tests command line option
 
 write tests for any code that doesn't have it yet
