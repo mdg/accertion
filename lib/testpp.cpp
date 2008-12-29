@@ -95,7 +95,6 @@ void testpp_set_c::run_test( testpp_c & test, testpp_result_c &result )
 void testpp_set_c::run( testpp_output_i &out )
 {
 	std::list< testpp_type_i * >::const_iterator it;
-	int i( 0 );
 	int passed( 0 );
 	int failed( 0 );
 	for ( it=m_tests.begin(); it!=m_tests.end(); ++it ) {
