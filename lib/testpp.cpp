@@ -128,6 +128,9 @@ void testpp_set_c::run( testpp_output_i &out, const std::string &test_name )
 	std::list< testpp_type_i * >::iterator it;
 	int passed( 0 );
 	int failed( 0 );
+	int ignored( 0 );
+	int not_implemented( 0 );
+
 	for ( it=m_tests.begin(); it!=m_tests.end(); ++it ) {
 		if ( ! (*it)->id().in_suite( test_name ) ) {
 			continue;
@@ -140,6 +143,10 @@ void testpp_set_c::run( testpp_output_i &out, const std::string &test_name )
 		run_test( *test, result );
 		if ( result.failure() ) {
 			++failed;
+		} else if ( result.ignore_failures() ) {
+			++ignored;
+		} else if ( result.test_not_implemented() ) {
+			++not_implemented;
 		} else {
 			++passed;
 		}
