@@ -66,3 +66,20 @@ TESTPP( test_ignored_result_with_failures )
 	assertpp( r.size() ) == 1;
 }
 
+/**
+ * Test what happens when calling not_implemented and fail
+ * on the same result.
+ */
+TESTPP( test_not_implemented_and_failed )
+{
+	testpp_result_c r;
+
+	r.set_test_not_implemented();
+	r.fail( "this also failed", "test.cpp", 80 );
+
+	assertpp( r.failure() ).f();
+	assertpp( r.ignore_failures() ).f();
+	assertpp( r.test_not_implemented() ).t();
+	assertpp( r.size() ) == 1;
+}
+
