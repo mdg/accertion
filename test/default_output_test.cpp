@@ -2,6 +2,9 @@
 #include "default_output.h"
 
 
+/**
+ * Test the summary for the human output class.
+ */
 TESTPP( test_human_summary )
 {
 	std::ostringstream out;
