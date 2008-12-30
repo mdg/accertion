@@ -109,11 +109,17 @@ TESTPP( test_string_equality_assertion )
 	assertpp( value ) == "hello";
 }
 
+/**
+ * Test the static is_before() function when the result should be true.
+ */
 TESTPP( test_is_before_yes )
 {
 	assertpp( testpp_c::is_before( 2030, 12, 28 ) ).t();
 }
 
+/**
+ * Test the static is_before() function when the result should be false.
+ */
 TESTPP( test_is_before_no )
 {
 	assertpp( testpp_c::is_before( 2004, 7, 24 ) ).f();
