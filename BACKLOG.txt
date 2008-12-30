@@ -1,13 +1,4 @@
 
-add a "not implemented" test failure type to allow tests to be defined
-	without being implemented right away, or forgotten later
-	report # of not implemented tests
-
-add an option to "ignore tests until <date>"
-	TESTPP( ... ) { ignore_until( 2009, 10, 11 ); }
-	test automatically runs silently until Oct 11, 2009
-	report # of "ignored/postponed" tests
-
 fix the human output so it's easier to read
 
 add tested scoping: private for live, public for tests
