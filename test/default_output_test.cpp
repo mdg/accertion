@@ -18,6 +18,43 @@ TESTPP( test_human_summary )
 
 
 /**
+ * Test the output for a successful test
+ */
+TESTPP( test_yaml_complete_success )
+{
+	std::ostringstream out;
+	yaml_testpp_output_c output;
+	output.set_stream( out );
+
+	testpp_id_c id( "special_test", "special.cpp", 99 );
+	testpp_result_c result;
+	output.complete( id, result );
+	assertpp( out.str() ) == "    result: success\n";
+}
+
+/**
+ * Test the output for a failed test
+ */
+TESTPP( test_yaml_complete_failure )
+{
+	std::ostringstream out;
+	yaml_testpp_output_c output;
+	output.set_stream( out );
+
+	testpp_result_c result;
+	result.fail( "didn't work", "special.cpp", 80 );
+
+	testpp_id_c id( "special_test", "special_test.cpp", 99 );
+	output.complete( id, result );
+	assertpp( out.str() ) ==
+		"    result: failure\n"
+		"    failures:\n"
+		"      - message: \"didn't work\"\n"
+		"        failure-file: special.cpp\n"
+		"        failure-line: 80\n";
+}
+
+/**
  * Test the summary output for the yaml_output class
  */
 TESTPP( test_yaml_summary )
