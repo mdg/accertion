@@ -108,7 +108,8 @@ public:
 	 */
 	inline bool failure() const
 	{
-		return ! ( m_failure.empty() || m_ignore_failures );
+		return ! ( m_failure.empty() || m_ignore_failures
+				|| m_test_not_implemented );
 	}
 
 	/**
