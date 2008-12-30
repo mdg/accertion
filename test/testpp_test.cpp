@@ -125,6 +125,34 @@ TESTPP( test_is_before_no )
 	assertpp( testpp_c::is_before( 2004, 7, 24 ) ).f();
 }
 
+/**
+ * Exercise the ignore_until function.  Doesn't actually assert anything,
+ * just gets it used in the testpp tests.
+ */
+TESTPP( test_use_ignore_until )
+{
+	ignore_until( 2030, 12, 29 );
+}
+
+/**
+ * Exercise the not_implemented function.  Doesn't actually assert
+ * anything.
+ */
+TESTPP( test_use_not_implemented )
+{
+	not_implemented();
+}
+
+/**
+ * Exercise the not_implemented (until) funciton.  Verify what happens
+ * when it's still before the not implemented date.
+ */
+TESTPP( test_use_not_implemented_until )
+{
+	not_implemented( 2030, 12, 29 );
+}
+
+
 TESTPP( test_suite_match )
 {
 	testpp_suite_c suite( "special" );
