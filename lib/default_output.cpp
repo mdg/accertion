@@ -75,17 +75,27 @@ void yaml_testpp_output_c::begin( const testpp_id_c &id )
 void yaml_testpp_output_c::complete( const testpp_id_c &id
 		, const testpp_result_c &result )
 {
+	std::string result_text;
+	bool write_failures( false );
+
 	if ( result.ignore_failures() ) {
-		stream() << "    ignore: t\n";
+		result_text = "ignore";
 	} else if ( result.test_not_implemented() ) {
-		stream() << "    not_implemented: t\n";
+		result_text = "not_implemented";
 	} else if ( result.failure() ) {
-		stream() << "    failure: t\n";
+		result_text = "failure";
+		write_failures = true;
+	} else {
+		result_text = "success";
+	}
+
+	stream() << "    result: " << result_text << std::endl;
+	if ( write_failures ) {
 		stream() << "    failures:\n";
 		testpp_result_c::failure_iterator it;
 		for ( it=result.begin(); it!=result.end(); ++it ) {
-			stream() << "      - message: " << it->message()
-				<< std::endl;
+			stream() << "      - message: \"" << it->message()
+				<< "\"" << std::endl;
 			stream() << "        failure-file: "
 				<< it->file_name()
 				<< std::endl;
@@ -93,8 +103,6 @@ void yaml_testpp_output_c::complete( const testpp_id_c &id
 				<< it->line_number()
 				<< std::endl;
 		}
-	} else {
-		stream() << "    success: t\n";
 	}
 }
 
