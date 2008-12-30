@@ -56,6 +56,8 @@ void human_testpp_output_c::summarize( int passed, int failed, int ignored
 {
 	stream() << failed << " failures in " << passed + failed
 		<< " tests\n";
+	stream() << ignored << " ignored and " << not_implemented
+		<< " not implemented\n";
 }
 
 
