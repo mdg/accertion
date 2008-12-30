@@ -75,8 +75,12 @@ void yaml_testpp_output_c::begin( const testpp_id_c &id )
 void yaml_testpp_output_c::complete( const testpp_id_c &id
 		, const testpp_result_c &result )
 {
-	if ( result.failure() ) {
-		stream() << "    success: f\n";
+	if ( result.ignore_failures() ) {
+		stream() << "    ignore: t\n";
+	} else if ( result.test_not_implemented() ) {
+		stream() << "    not_implemented: t\n";
+	} else if ( result.failure() ) {
+		stream() << "    failure: t\n";
 		stream() << "    failures:\n";
 		testpp_result_c::failure_iterator it;
 		for ( it=result.begin(); it!=result.end(); ++it ) {
@@ -99,5 +103,7 @@ void yaml_testpp_output_c::summarize( int passed, int failed, int ignored
 {
 	stream() << "passed: " << passed << std::endl;
 	stream() << "failed: " << failed << std::endl;
+	stream() << "ignored: " << ignored << std::endl;
+	stream() << "not_implemented: " << not_implemented << std::endl;
 }
 
