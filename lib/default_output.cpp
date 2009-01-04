@@ -32,7 +32,12 @@ void human_testpp_output_c::begin( const testpp_id_c &id )
 void human_testpp_output_c::complete( const testpp_id_c &id
 		, const testpp_result_c &result )
 {
-	if ( ! result.failure() ) {
+	if ( result.ignore_failures() ) {
+		stream() << "\tignored\n";
+	} else if ( result.test_not_implemented() ) {
+		stream() << "\tnot implemented\n";
+	} else if ( ! result.failure() ) {
+		// if not a failure, return
 		return;
 	}
 

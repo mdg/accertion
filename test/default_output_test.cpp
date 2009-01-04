@@ -3,6 +3,22 @@
 
 
 /**
+ * Test the output of the human output for not implemented tests.
+ */
+TESTPP( test_human_complete_not_implemented )
+{
+	std::ostringstream out;
+	human_testpp_output_c output;
+	output.set_stream( out );
+
+	testpp_id_c id( "special_test", "special.cpp", 99 );
+	testpp_result_c result;
+	result.set_test_not_implemented();
+	output.complete( id, result );
+	assertpp( out.str() ) == "\tnot implemented\n";
+}
+
+/**
  * Test the summary for the human output class.
  */
 TESTPP( test_human_summary )
