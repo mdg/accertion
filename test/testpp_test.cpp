@@ -152,6 +152,14 @@ TESTPP( test_use_not_implemented_until )
 	not_implemented( 2030, 12, 29 );
 }
 
+/**
+ * Test the behavior of not implemented if the time has already passed.
+ */
+TESTPP( test_use_not_implemented_until_past_date )
+{
+	not_implemented( 2003, 12, 29 );
+}
+
 
 TESTPP( test_suite_match )
 {

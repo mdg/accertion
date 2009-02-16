@@ -153,8 +153,9 @@ protected:
 	/**
 	 * Fail this test with the given message.
 	 */
-	void fail( const std::string &msg, const char *filename = NULL
-			, int line = -1 );
+	void fail( const std::string &msg
+			, const std::string &filename = std::string()
+			, int line = 0 );
 
 private:
 	testpp_result_c *m_result;

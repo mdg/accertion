@@ -62,7 +62,8 @@ bool testpp_c::is_before( short year, short month, short day )
 	return ( now < then );
 }
 
-void testpp_c::fail( const std::string &msg, const char *filename, int line )
+void testpp_c::fail( const std::string &msg, const std::string &filename
+		, int line )
 {
 	m_result->fail( msg, filename, line );
 }

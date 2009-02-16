@@ -87,8 +87,9 @@ public:
 	/**
 	 * Mark this test as failed and give a message.
 	 */
-	void fail( const std::string &msg, const std::string &filename = NULL
-			, int line = -1 )
+	void fail( const std::string &msg
+			, const std::string &filename = std::string()
+			, int line = 0 )
 	{
 		m_failure.push_back( testpp_failure_c( msg, filename, line ) );
 	}
