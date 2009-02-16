@@ -39,7 +39,7 @@ void testpp_c::not_implemented( short year, short month, short day )
 	if ( is_before( year, month, day ) ) {
 		m_result->set_test_not_implemented();
 	} else {
-		m_result->fail( "not implemented" );
+		m_result->fail( "failure: not implemented expiration" );
 	}
 }
 

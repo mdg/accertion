@@ -16,6 +16,7 @@
 #include "default_output.h"
 #include <testpp/id.h>
 #include <testpp/result.h>
+#include <sstream>
 
 
 human_testpp_output_c::human_testpp_output_c()
@@ -43,16 +44,19 @@ void human_testpp_output_c::complete( const testpp_id_c &id
 
 	testpp_result_c::failure_iterator it;
 	for ( it=result.begin(); it!=result.end(); ++it ) {
-		stream() << "\t" << it->message() << " (";
-		if ( 0 && it->file_name().empty() ) {
+		stream() << "\t" << it->message();
+
+		if ( it->file_name().empty() || it->line_number() == 0 ) {
 			// nothing to write
 		} else if ( id.file_name() == it->file_name() ) {
-			stream() << "line " << it->line_number();
+			// line is from the test file
+			stream() << " (line " << it->line_number() << ")";
 		} else {
-			stream() << it->file_name() << ":"
-				<< it->line_number();
+			// file is different, include filename
+			stream() << " (" << it->file_name() << ":"
+				<< it->line_number() << ")";
 		}
-		stream() << ")\n";
+		stream() << "\n";
 	}
 }
 
