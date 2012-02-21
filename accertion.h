@@ -1,5 +1,5 @@
-#ifndef ACCERT_ASSERTION_H
-#define ACCERT_ASSERTION_H
+#ifndef ACCERTION_H
+#define ACCERTION_H
 
 #include <string>
 #include <stdint.h>
@@ -79,5 +79,18 @@ struct IntAssertion
 BoolAssertion accertion(bool actual, const AssertionResult &);
 IntAssertion accertion(int actual, const AssertionResult &);
 IntAssertion accertion(int64_t actual, const AssertionResult &);
+
+
+typedef void (*AccertionTest)();
+
+int add_test(const std::string &name, AccertionTest);
+bool run_test(const std::string &name);
+void run_tests();
+void print_tests(std::ostream &);
+
+#define CCTEST(test) \
+	void test(); \
+	int x_##test = add_test(#test, test); \
+	void test()
 
 #endif

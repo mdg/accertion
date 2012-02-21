@@ -1,4 +1,5 @@
-#include "test.h"
+#include "accertion.h"
+#include <iostream>
 
 using namespace std;
 
@@ -13,7 +14,7 @@ CCTEST(test_times2)
 
 CCTEST(test_triple)
 {
-	accert(triple(5)) == 15;
+	accert(triple(5)) == 14;
 }
 
 

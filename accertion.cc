@@ -3,10 +3,27 @@
 #include <list>
 
 using namespace std;
-
 struct TestRunner;
 struct TestResult;
 TestResult *g_current = NULL;
+
+AssertionResult & attach_result(const AssertionResult &);
+
+
+BoolAssertion accertion(bool actual, const AssertionResult &result)
+{
+	return BoolAssertion(attach_result(result), actual);
+}
+
+IntAssertion accertion(int actual, const AssertionResult &result)
+{
+	return IntAssertion(attach_result(result), actual);
+}
+
+IntAssertion accertion(int64_t actual, const AssertionResult &result)
+{
+	return IntAssertion(attach_result(result), actual);
+}
 
 
 struct TestRunner
