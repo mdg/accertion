@@ -87,6 +87,7 @@ int add_test(const std::string &name, AccertionTest);
 bool run_test(const std::string &name);
 void run_tests();
 void print_tests(std::ostream &);
+int accertion_main(int, const char **);
 
 #define CCTEST(test) \
 	void test(); \

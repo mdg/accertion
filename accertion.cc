@@ -1,6 +1,7 @@
-#include "test.h"
+#include "accertion.h"
 #include <map>
 #include <list>
+#include <iostream>
 
 using namespace std;
 struct TestRunner;
@@ -107,4 +108,24 @@ AssertionResult & attach_result(const AssertionResult &result)
 {
 	g_current->result.push_back(result);
 	return g_current->result.back();
+}
+
+int accertion_main(int argc, const char **argv)
+{
+	int result(0);
+	if (argc == 1) {
+		print_tests(cout);
+	} else if (argc == 2) {
+		bool success(run_test(argv[1]));
+		if (success) {
+			cout << "pass\n";
+		} else {
+			cout << "fail\n";
+		}
+		result = success ? 0 : 1;
+	} else {
+		cerr << "missing test\n";
+		result = -1;
+	}
+	return result;
 }
