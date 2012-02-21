@@ -77,6 +77,15 @@ bool run_test(const string &name)
 	return success;
 }
 
+void print_tests(ostream &out)
+{
+	map< string, TestRunner * >::const_iterator it(tests().begin());
+	map< string, TestRunner * >::const_iterator end(tests().end());
+	for (; it!=end; ++it) {
+		out << it->first << endl;
+	}
+}
+
 AssertionResult & attach_result(const AssertionResult &result)
 {
 	g_current->result.push_back(result);
