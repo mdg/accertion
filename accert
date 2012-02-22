@@ -1,0 +1,71 @@
+#! /usr/bin/env ruby
+
+require 'optparse'
+
+
+def parse_args()
+	options = {}
+	OptionParser.new do |opts|
+		opts.banner = 'Usage: accert testfile [file]'
+	end.parse!
+
+	return options, ARGV
+end
+
+def fetch_tests(file)
+	return `#{file}`
+end
+
+def filter_tests(tests, filter)
+	if filter.nil?
+		return tests
+	end
+	selection = []
+	tests.each do |t|
+		if t == (filter +"\n")
+			selection << t
+		end
+	end
+	return selection
+end
+
+def run_test(file, test)
+	cmd = "#{file} #{test}"
+	system cmd
+	result = $?.exitstatus
+	if result == 0
+		print '.'
+	else
+		print 'F'
+	end
+	return result == 0
+end
+
+def run_tests(file, tests)
+	success = true
+	tests.each do |t|
+		success = run_test(file, t) and success
+	end
+	print "\n"
+	return success
+end
+
+def main()
+	opts, args = parse_args()
+	if args.length < 1
+		print "too few arguments\n"
+		return -1
+	end
+	cmd = args[0]
+	filter = nil
+	if args.length == 2
+		filter = args[1]
+	end
+
+	tests = fetch_tests(cmd)
+	selection = filter_tests(tests, filter)
+	success = run_tests(cmd, selection)
+	return success
+end
+
+exit main()
