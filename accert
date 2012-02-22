@@ -1,6 +1,7 @@
-#! /usr/bin/env ruby
+#! /usr/bin/env ruby1.9.1
 
 require 'optparse'
+require 'open3'
 
 
 def parse_args()
@@ -13,7 +14,7 @@ def parse_args()
 end
 
 def fetch_tests(file)
-	return `#{file}`
+	return `#{file}`.split("\n")
 end
 
 def filter_tests(tests, filter)
@@ -22,7 +23,7 @@ def filter_tests(tests, filter)
 	end
 	selection = []
 	tests.each do |t|
-		if t == (filter +"\n")
+		if /#{filter}/ =~ t
 			selection << t
 		end
 	end
@@ -30,15 +31,14 @@ def filter_tests(tests, filter)
 end
 
 def run_test(file, test)
-	cmd = "#{file} #{test}"
-	system cmd
-	result = $?.exitstatus
+	stdout, stderr, status = Open3.capture3(file, test)
+	result = status.exitstatus
 	if result == 0
 		print '.'
-	elsif result == 139
-		print 'E'
-	else
+	elsif result == 1
 		print 'F'
+	else
+		print 'E'
 	end
 	return result == 0
 end
