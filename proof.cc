@@ -2,6 +2,12 @@
 
 int times2(int i) { return 2 * i; }
 int triple(int i) { return 3 * i; }
+int fault()
+{
+	(*(int *) 0) = 0;
+	return 0;
+}
+
 
 CCTEST(test_times2)
 {
@@ -12,6 +18,11 @@ CCTEST(test_times2)
 CCTEST(test_triple)
 {
 	accert(triple(5)) == 14;
+}
+
+CCTEST(test_fault)
+{
+	accert(fault()) == 0;
 }
 
 

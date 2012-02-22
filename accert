@@ -35,6 +35,8 @@ def run_test(file, test)
 	result = $?.exitstatus
 	if result == 0
 		print '.'
+	elsif result == 139
+		print 'E'
 	else
 		print 'F'
 	end
