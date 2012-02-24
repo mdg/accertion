@@ -76,9 +76,25 @@ struct IntAssertion
 	}
 };
 
+struct StringAssertion
+: public Assertion
+{
+	StringAssertion(AssertionResult &r, const std::string &s)
+		: Assertion(r)
+		, actual(s)
+	{}
+	std::string actual;
+
+	void operator == (const std::string &exp)
+	{
+		result.set(actual == exp);
+	}
+};
+
 BoolAssertion accertion(bool actual, const AssertionResult &);
 IntAssertion accertion(int actual, const AssertionResult &);
 IntAssertion accertion(int64_t actual, const AssertionResult &);
+StringAssertion accertion(const std::string &actual, const AssertionResult &);
 
 
 typedef void (*AccertionTest)();
