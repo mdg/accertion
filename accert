@@ -3,6 +3,104 @@
 require 'optparse'
 require 'open3'
 
+class TestSuccess
+	def pass?
+		return true
+	end
+
+	def failure?
+		return false
+	end
+
+	def error?
+		return false
+	end
+
+	def symbol
+		return '.'
+	end
+end
+
+class TestFailure
+	def pass?
+		return false
+	end
+
+	def failure?
+		return true
+	end
+
+	def error?
+		return false
+	end
+
+	def symbol
+		return 'F'
+	end
+
+	def initialize(name, stdout, stderr)
+		@name = name
+		@stdout = stdout
+		@stderr = stderr
+	end
+
+	def output
+		output = ''
+		if not @stdout.empty?
+			output += "stdout:\n"
+			output += r.stdout
+		end
+		if not r.stderr.empty?
+			output += "stderr:\n"
+			output += r.stderr
+		end
+		return output
+	end
+end
+
+class TestError
+	attr_reader :name
+	attr_reader :stdout
+	attr_reader :stderr
+	attr_reader :termsig
+
+	def pass?
+		return false
+	end
+
+	def failure?
+		return false
+	end
+
+	def error?
+		return true
+	end
+
+	def symbol
+		return 'E'
+	end
+
+	def initialize(name, stdout, stderr, termsig)
+		@name = name
+		@stdout = stdout
+		@stderr = stderr
+		@termsig = termsig
+	end
+
+	def output
+		output = "ERROR: #{@name}\n"
+		output += "Term Signal: #{@termsig}\n"
+		if not @stdout.empty?
+			output += "stdout:\n"
+			output += @stdout
+		end
+		if not @stderr.empty?
+			output += "stderr:\n"
+			output += @stderr
+		end
+		return output
+	end
+end
 
 def parse_args()
 	options = {}
@@ -34,22 +132,33 @@ def run_test(file, test)
 	stdout, stderr, status = Open3.capture3(file, test)
 	result = status.exitstatus
 	if result == 0
-		print '.'
+		return TestSuccess.new
 	elsif result == 1
-		print 'F'
-	else
-		print 'E'
+		return TestFailure.new(test, stdout, stderr)
 	end
-	return result == 0
+	return TestError.new(test, stdout, stderr, status.termsig)
 end
 
 def run_tests(file, tests)
 	success = true
+	results = []
 	tests.each do |t|
-		success = run_test(file, t) and success
+		result = run_test(file, t)
+		success = result.pass? and success
+		print result.symbol
+		results << result
 	end
 	print "\n"
-	return success
+	return success, results
+end
+
+def print_failures(results)
+	results.each do |r|
+		if not r.pass?
+			print "\n"
+			print r.output
+		end
+	end
 end
 
 def main()
@@ -66,7 +175,8 @@ def main()
 
 	tests = fetch_tests(cmd)
 	selection = filter_tests(tests, filter)
-	success = run_tests(cmd, selection)
+	success, results = run_tests(cmd, selection)
+	print_failures(results)
 	return success
 end
 
