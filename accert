@@ -48,11 +48,11 @@ class TestFailure
 		output = ''
 		if not @stdout.empty?
 			output += "stdout:\n"
-			output += r.stdout
+			output += @stdout
 		end
-		if not r.stderr.empty?
+		if not @stderr.empty?
 			output += "stderr:\n"
-			output += r.stderr
+			output += @stderr
 		end
 		return output
 	end
