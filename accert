@@ -45,7 +45,7 @@ class TestFailure
 	end
 
 	def output
-		output = ''
+		output = "FAILURE: #{@name}\n"
 		if not @stdout.empty?
 			output += "stdout:\n"
 			output += @stdout
@@ -89,7 +89,11 @@ class TestError
 
 	def output
 		output = "ERROR: #{@name}\n"
-		output += "Term Signal: #{@termsig}\n"
+		if @termsig == 11
+			output += "Segmentation fault\n"
+		else
+			output += "Term Signal: #{@termsig}\n"
+		end
 		if not @stdout.empty?
 			output += "stdout:\n"
 			output += @stdout
