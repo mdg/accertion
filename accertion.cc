@@ -2,6 +2,7 @@
 #include <map>
 #include <list>
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 struct TestRunner;
@@ -9,6 +10,48 @@ struct TestResult;
 TestResult *g_current = NULL;
 
 AssertionResult & attach_result(const AssertionResult &);
+
+
+void BoolAssertion::t()
+{
+	result.set(actual);
+	if (!actual) {
+		cerr << "bool is not true as expected\n";
+		cerr << "@" << result.file << ':' << result.line << endl;
+		exit(1);
+	}
+}
+void BoolAssertion::f()
+{
+	result.set(!actual);
+	if (actual) {
+		cerr << "bool is not false as expected\n";
+		cerr << "@" << result.file << ':' << result.line << endl;
+		exit(1);
+	}
+}
+
+void IntAssertion::operator == (int64_t exp)
+{
+	if (actual != exp) {
+		result.set(false);
+		cerr << actual << " != " << exp << endl;
+		cerr << "@" << result.file << ':' << result.line << endl;
+		exit(1);
+	}
+	result.set(true);
+}
+
+void StringAssertion::operator == (const std::string &exp)
+{
+	if (actual != exp) {
+		result.set(false);
+		cerr << actual << " != " << exp << endl;
+		cerr << "@" << result.file << ':' << result.line << endl;
+		exit(1);
+	}
+	result.set(true);
+}
 
 
 BoolAssertion accertion(bool actual, const AssertionResult &result)
@@ -122,6 +165,9 @@ int accertion_main(int argc, const char **argv)
 		print_tests(cout);
 	} else if (argc == 2) {
 		bool success(run_test(argv[1]));
+		if (success) {
+			cout << ".";
+		}
 		result = success ? 0 : 1;
 	} else {
 		cerr << "missing test\n";

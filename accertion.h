@@ -51,14 +51,8 @@ struct BoolAssertion
 	{}
 	bool actual;
 
-	void t()
-	{
-		result.set(actual);
-	}
-	void f()
-	{
-		result.set(!actual);
-	}
+	void t();
+	void f();
 };
 
 struct IntAssertion
@@ -70,10 +64,7 @@ struct IntAssertion
 	{}
 	int64_t actual;
 
-	void operator == (int64_t exp)
-	{
-		result.set(actual == exp);
-	}
+	void operator == (int64_t expected);
 };
 
 struct StringAssertion
@@ -85,10 +76,7 @@ struct StringAssertion
 	{}
 	std::string actual;
 
-	void operator == (const std::string &exp)
-	{
-		result.set(actual == exp);
-	}
+	void operator == (const std::string &expected);
 };
 
 BoolAssertion accertion(bool actual, const AssertionResult &);
