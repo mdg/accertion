@@ -157,12 +157,17 @@ def run_tests(file, tests)
 end
 
 def print_failures(results)
+	passes = 0
 	results.each do |r|
-		if not r.pass?
+		if r.pass?
+			passes += 1
+		else
 			print "\n"
 			print r.output
 		end
 	end
+
+	print "\nPassed #{passes} of #{results.count} tests\n"
 end
 
 def main()
