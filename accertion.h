@@ -67,6 +67,19 @@ struct IntAssertion
 	void operator == (int64_t expected);
 };
 
+struct PtrAssertion
+: public Assertion
+{
+	PtrAssertion(AssertionResult &r, const void *ptr)
+		: Assertion(r)
+		, actual(ptr)
+	{}
+	const void *actual;
+
+	void null();
+	void not_null();
+};
+
 struct StringAssertion
 : public Assertion
 {
@@ -82,6 +95,7 @@ struct StringAssertion
 BoolAssertion accertion(bool actual, const AssertionResult &);
 IntAssertion accertion(int actual, const AssertionResult &);
 IntAssertion accertion(int64_t actual, const AssertionResult &);
+PtrAssertion accertion(const void *actual, const AssertionResult &);
 StringAssertion accertion(const std::string &actual, const AssertionResult &);
 
 

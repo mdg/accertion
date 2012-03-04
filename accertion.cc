@@ -42,6 +42,28 @@ void IntAssertion::operator == (int64_t exp)
 	result.set(true);
 }
 
+void PtrAssertion::null()
+{
+	if (actual) {
+		result.set(false);
+		cerr << "pointer is not null as expected\n";
+		cerr << "@" << result.file << ':' << result.line << endl;
+		exit(1);
+	}
+	result.set(true);
+}
+
+void PtrAssertion::not_null()
+{
+	if (!actual) {
+		result.set(false);
+		cerr << "pointer is null not and should be\n";
+		cerr << "@" << result.file << ':' << result.line << endl;
+		exit(1);
+	}
+	result.set(true);
+}
+
 void StringAssertion::operator == (const std::string &exp)
 {
 	if (actual != exp) {
@@ -67,6 +89,11 @@ IntAssertion accertion(int actual, const AssertionResult &result)
 IntAssertion accertion(int64_t actual, const AssertionResult &result)
 {
 	return IntAssertion(attach_result(result), actual);
+}
+
+PtrAssertion accertion(const void *actual, const AssertionResult &result)
+{
+	return PtrAssertion(attach_result(result), actual);
 }
 
 StringAssertion accertion(const string &actual, const AssertionResult &result)
