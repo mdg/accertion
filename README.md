@@ -8,12 +8,8 @@ Goals:
 * Brief syntax, simple enough to be used without macros if desired
 * Run individual tests, files or suites from the command line
 * Various output formats, user-definable
-* Clear, operator-based assertion syntax
-* Support linux, windows & mac os X
+* Transparent, operator-based assertion syntax
 * C++ only build process, no code generation
-
-NOT Goals:
-* Supporting every obscure C++ compiler in existence
 
 
 Example:

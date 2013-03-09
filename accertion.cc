@@ -1,3 +1,6 @@
+// Copyright (c) 2013 Matthew Graham
+// See LICENSE.txt for copying permission
+
 #include "accertion.h"
 #include <map>
 #include <list>

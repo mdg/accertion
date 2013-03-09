@@ -1,4 +1,8 @@
+// Copyright (c) 2013 Matthew Graham
+// See LICENSE.txt for copying permission
+
 #include "accertion.h"
+
 
 int times2(int i) { return 2 * i; }
 int triple(int i) { return 3 * i; }

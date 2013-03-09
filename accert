@@ -1,4 +1,8 @@
-#! /usr/bin/env ruby1.9.1
+#! /usr/bin/env ruby
+
+# Copyright (c) 2013 Matthew Graham
+# See LICENSE.txt for copying permission
+
 
 require 'optparse'
 require 'open3'

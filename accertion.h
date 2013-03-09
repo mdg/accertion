@@ -1,8 +1,11 @@
 #ifndef ACCERTION_H
 #define ACCERTION_H
+// Copyright (c) 2013 Matthew Graham
+// See LICENSE.txt for copying permission
 
 #include <string>
 #include <stdint.h>
+
 
 struct AssertionResult
 {

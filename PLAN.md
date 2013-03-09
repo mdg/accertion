@@ -14,6 +14,6 @@ support testing for memory leaks?
 
 integrate gcov for coverage analysis
 
-make debian installable
 make rpm installable
+make debian installable
 	add deb/rpm command to the Makefile
