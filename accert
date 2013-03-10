@@ -120,7 +120,13 @@ def parse_args()
 end
 
 def fetch_tests(file)
-	return `#{file}`.split("\n")
+	begin
+		result = `#{file}`;
+	rescue Exception => e
+		print "#{e}\n"
+		exit $?.exitstatus
+	end
+	return result.split("\n")
 end
 
 def filter_tests(tests, filter)
