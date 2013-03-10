@@ -4,33 +4,46 @@
 // See LICENSE.txt for copying permission
 
 #include <string>
+#include <sstream>
 #include <stdint.h>
 
 
 struct AssertionResult
 {
-	AssertionResult(const std::string &file, int line)
+private:
+	std::ostringstream msg;
+
+public:
+	const char *file;
+	int line;
+	bool asserted;
+	bool passed;
+
+	AssertionResult(const char *file, int line)
 		: file(file)
 		, line(line)
 		, asserted(false)
-		, pass(false)
+		, passed(false)
+		, msg()
+	{}
+	AssertionResult( const AssertionResult &r)
+	: file(r.file)
+	, line(r.line)
+	, asserted(r.asserted)
+	, passed(r.passed)
+	, msg(r.msg.str())
 	{}
 
-	void set(bool p)
+	void pass()
 	{
-		pass = p;
-		asserted = true;
+		passed = asserted = true;
 	}
+	std::ostream & fail();
 
 	operator bool () const
 	{
-		return pass && asserted;
+		return passed && asserted;
 	}
-
-	std::string file;
-	int line;
-	bool asserted;
-	bool pass;
 };
 
 #define ASSERTION_RESULT (AssertionResult(__FILE__, __LINE__))
@@ -45,29 +58,83 @@ struct Assertion
 	{}
 };
 
-struct BoolAssertion
+template < typename T >
+struct TypedAssertion
 : public Assertion
 {
-	BoolAssertion(AssertionResult &r, bool b)
-		: Assertion(r)
-		, actual(b)
+	typedef T CType;
+	T actual;
+
+	TypedAssertion(AssertionResult &r, const T &v)
+	: Assertion(r)
+	, actual(v)
 	{}
-	bool actual;
+};
+
+template < typename T >
+void equal_assertion(T &a, const typename T::CType &expected)
+{
+	if (expected == a.actual) {
+		a.result.pass();
+	} else {
+		a.result.fail() << expected << " != " << a.actual;
+	}
+}
+
+template < typename T >
+T lessthan_assertion(T &a, const typename T::CType &expected)
+{
+	if (expected < a.actual) {
+		a.result.pass();
+	} else {
+		a.result.fail() << expected << " not < " << a.actual;
+	}
+	return T(a);
+}
+
+struct BoolAssertion
+: public TypedAssertion< bool >
+{
+	BoolAssertion(AssertionResult &r, bool b)
+	: TypedAssertion(r, b)
+	{}
 
 	void t();
 	void f();
 };
 
 struct IntAssertion
-: public Assertion
+: public TypedAssertion< int64_t >
 {
 	IntAssertion(AssertionResult &r, int64_t i)
-		: Assertion(r)
-		, actual(i)
+	: TypedAssertion(r, i)
 	{}
-	int64_t actual;
 
-	void operator == (int64_t expected);
+	friend void operator == (IntAssertion a, int64_t i)
+	{
+		equal_assertion(a, i);
+	}
+};
+
+struct DoubleAssertion
+: public TypedAssertion< double >
+{
+	DoubleAssertion(AssertionResult &r, double d)
+	: TypedAssertion< double >(r, d)
+	{}
+
+	friend void operator == (DoubleAssertion a, double d)
+	{
+		equal_assertion(a, d);
+	}
+	friend void operator < (DoubleAssertion a, double d)
+	{
+		lessthan_assertion(a, d);
+	}
+	friend DoubleAssertion operator < (double d, DoubleAssertion a)
+	{
+		return lessthan_assertion(a, d);
+	}
 };
 
 struct PtrAssertion
@@ -84,20 +151,22 @@ struct PtrAssertion
 };
 
 struct StringAssertion
-: public Assertion
+: public TypedAssertion< std::string >
 {
 	StringAssertion(AssertionResult &r, const std::string &s)
-		: Assertion(r)
-		, actual(s)
+	: TypedAssertion(r, s)
 	{}
-	std::string actual;
 
-	void operator == (const std::string &expected);
+	friend void operator == (StringAssertion a, const std::string &x)
+	{
+		return equal_assertion(a, x);
+	}
 };
 
 BoolAssertion accertion(bool actual, const AssertionResult &);
 IntAssertion accertion(int actual, const AssertionResult &);
 IntAssertion accertion(int64_t actual, const AssertionResult &);
+DoubleAssertion accertion(double actual, const AssertionResult &);
 PtrAssertion accertion(const void *actual, const AssertionResult &);
 StringAssertion accertion(const std::string &actual, const AssertionResult &);
 

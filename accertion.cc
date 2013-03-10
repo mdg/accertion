@@ -14,68 +14,47 @@ TestResult *g_current = NULL;
 
 AssertionResult & attach_result(const AssertionResult &);
 
+std::ostream & AssertionResult::fail()
+{
+	asserted = true;
+	passed = false;
+	return msg;
+}
 
 void BoolAssertion::t()
 {
-	result.set(actual);
-	if (!actual) {
-		cerr << "bool is not true as expected\n";
-		cerr << "@" << result.file << ':' << result.line << endl;
-		exit(1);
+	if (actual) {
+		result.pass();
+	} else {
+		result.fail() << "bool is not true as expected";
 	}
 }
 void BoolAssertion::f()
 {
-	result.set(!actual);
 	if (actual) {
-		cerr << "bool is not false as expected\n";
-		cerr << "@" << result.file << ':' << result.line << endl;
-		exit(1);
+		result.fail() << "bool is not false as expected";
+	} else {
+		result.pass();
 	}
 }
 
-void IntAssertion::operator == (int64_t exp)
-{
-	if (actual != exp) {
-		result.set(false);
-		cerr << actual << " != " << exp << endl;
-		cerr << "@" << result.file << ':' << result.line << endl;
-		exit(1);
-	}
-	result.set(true);
-}
 
 void PtrAssertion::null()
 {
 	if (actual) {
-		result.set(false);
-		cerr << "pointer is not null as expected\n";
-		cerr << "@" << result.file << ':' << result.line << endl;
-		exit(1);
+		result.fail() << "pointer is not null as expected";
+	} else {
+		result.pass();
 	}
-	result.set(true);
 }
 
 void PtrAssertion::not_null()
 {
-	if (!actual) {
-		result.set(false);
-		cerr << "pointer is null not and should be\n";
-		cerr << "@" << result.file << ':' << result.line << endl;
-		exit(1);
+	if (actual) {
+		result.pass();
+	} else {
+		result.fail() << "pointer is null not and should be";
 	}
-	result.set(true);
-}
-
-void StringAssertion::operator == (const std::string &exp)
-{
-	if (actual != exp) {
-		result.set(false);
-		cerr << actual << " != " << exp << endl;
-		cerr << "@" << result.file << ':' << result.line << endl;
-		exit(1);
-	}
-	result.set(true);
 }
 
 
@@ -92,6 +71,11 @@ IntAssertion accertion(int actual, const AssertionResult &result)
 IntAssertion accertion(int64_t actual, const AssertionResult &result)
 {
 	return IntAssertion(attach_result(result), actual);
+}
+
+DoubleAssertion accertion(double actual, const AssertionResult &r)
+{
+	return DoubleAssertion(attach_result(r), actual);
 }
 
 PtrAssertion accertion(const void *actual, const AssertionResult &result)
