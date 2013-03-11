@@ -256,7 +256,11 @@ AssertionResult & attach_result(const AssertionResult &result)
 
 void exit_with_usage(ostream &out, const std::string &argv0)
 {
-	out << argv0 << " (list|run|<test name>)\n";
+	out << "\nUsage:\t" << argv0 << " (list|run|<test name>)\n\n";
+	out << "\tlist\t\tshow all tests in this executable\n";
+	out << "\trun\t\tread which tests to execute from stdout\n";
+	out << "\t<test name>\trun a single test and exit\n";
+	out << endl;
 	exit(-1);
 }
 
