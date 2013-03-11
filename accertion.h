@@ -5,8 +5,23 @@
 
 #include <string>
 #include <sstream>
+#include <iostream>
 #include <stdint.h>
 
+
+struct AssertionResult;
+struct BoolAssertion;
+struct DoubleAssertion;
+struct IntAssertion;
+struct PtrAssertion;
+struct StringAssertion;
+
+BoolAssertion & accertion(bool actual, const AssertionResult &);
+IntAssertion & accertion(int actual, const AssertionResult &);
+IntAssertion & accertion(int64_t actual, const AssertionResult &);
+DoubleAssertion & accertion(double actual, const AssertionResult &);
+PtrAssertion & accertion(const void *actual, const AssertionResult &);
+StringAssertion & accertion(const std::string &actual, const AssertionResult &);
 
 struct AssertionResult
 {
@@ -34,11 +49,17 @@ public:
 	, msg(r.msg.str())
 	{}
 
+	AssertionResult dup() const
+	{
+		return AssertionResult(file, line);
+	}
+
 	void pass()
 	{
 		passed = asserted = true;
 	}
 	std::ostream & fail();
+	std::string failure_msg() const;
 
 	operator bool () const
 	{
@@ -82,14 +103,25 @@ void equal_assertion(T &a, const typename T::CType &expected)
 }
 
 template < typename T >
-T lessthan_assertion(T &a, const typename T::CType &expected)
+T & lessthan_assertion(T &a, const typename T::CType &expected)
 {
-	if (expected < a.actual) {
+	if (a.actual < expected) {
 		a.result.pass();
 	} else {
-		a.result.fail() << expected << " not < " << a.actual;
+		a.result.fail() << a.actual << " not < " << expected;
 	}
-	return T(a);
+	return accertion(a.actual, a.result.dup());
+}
+
+template < typename T >
+T & greaterthanequal_assertion(T &a, const typename T::CType &expected)
+{
+	if (a.actual >= expected) {
+		a.result.pass();
+	} else {
+		a.result.fail() << a.actual << " not >= " << expected;
+	}
+	return accertion(a.actual, a.result.dup());
 }
 
 struct BoolAssertion
@@ -127,13 +159,13 @@ struct DoubleAssertion
 	{
 		equal_assertion(a, d);
 	}
-	friend void operator < (DoubleAssertion a, double d)
+	friend DoubleAssertion & operator < (DoubleAssertion a, double d)
 	{
 		lessthan_assertion(a, d);
 	}
-	friend DoubleAssertion operator < (double d, DoubleAssertion a)
+	friend DoubleAssertion & operator < (double d, DoubleAssertion a)
 	{
-		return lessthan_assertion(a, d);
+		return greaterthanequal_assertion(a, d);
 	}
 };
 
@@ -163,20 +195,10 @@ struct StringAssertion
 	}
 };
 
-BoolAssertion accertion(bool actual, const AssertionResult &);
-IntAssertion accertion(int actual, const AssertionResult &);
-IntAssertion accertion(int64_t actual, const AssertionResult &);
-DoubleAssertion accertion(double actual, const AssertionResult &);
-PtrAssertion accertion(const void *actual, const AssertionResult &);
-StringAssertion accertion(const std::string &actual, const AssertionResult &);
-
 
 typedef void (*AccertionTest)();
 
 int add_test(const std::string &name, AccertionTest);
-bool run_test(const std::string &name);
-void run_tests();
-void print_tests(std::ostream &);
 int accertion_main(int, const char **);
 
 #define CCTEST(test) \

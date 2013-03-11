@@ -121,7 +121,7 @@ end
 
 def fetch_tests(file)
 	begin
-		result = `#{file}`;
+		result = `#{file} list`;
 	rescue Exception => e
 		print "#{e}\n"
 		exit $?.exitstatus

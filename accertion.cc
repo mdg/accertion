@@ -21,6 +21,13 @@ std::ostream & AssertionResult::fail()
 	return msg;
 }
 
+std::string AssertionResult::failure_msg() const
+{
+	ostringstream fmsg;
+	fmsg << msg.str() << "\n@ " << file << ':' << line << endl;
+	return fmsg.str();
+}
+
 void BoolAssertion::t()
 {
 	if (actual) {
@@ -47,7 +54,6 @@ void PtrAssertion::null()
 		result.pass();
 	}
 }
-
 void PtrAssertion::not_null()
 {
 	if (actual) {
@@ -58,36 +64,35 @@ void PtrAssertion::not_null()
 }
 
 
-BoolAssertion accertion(bool actual, const AssertionResult &result)
+BoolAssertion & accertion(bool actual, const AssertionResult &result)
 {
-	return BoolAssertion(attach_result(result), actual);
+	return *(new BoolAssertion(attach_result(result), actual));
 }
 
-IntAssertion accertion(int actual, const AssertionResult &result)
+IntAssertion & accertion(int actual, const AssertionResult &result)
 {
-	return IntAssertion(attach_result(result), actual);
+	return *(new IntAssertion(attach_result(result), actual));
 }
 
-IntAssertion accertion(int64_t actual, const AssertionResult &result)
+IntAssertion & accertion(int64_t actual, const AssertionResult &result)
 {
-	return IntAssertion(attach_result(result), actual);
+	return *(new IntAssertion(attach_result(result), actual));
 }
 
-DoubleAssertion accertion(double actual, const AssertionResult &r)
+DoubleAssertion & accertion(double actual, const AssertionResult &r)
 {
-	return DoubleAssertion(attach_result(r), actual);
+	return *(new DoubleAssertion(attach_result(r), actual));
 }
 
-PtrAssertion accertion(const void *actual, const AssertionResult &result)
+PtrAssertion & accertion(const void *actual, const AssertionResult &result)
 {
-	return PtrAssertion(attach_result(result), actual);
+	return *(new PtrAssertion(attach_result(result), actual));
 }
 
-StringAssertion accertion(const string &actual, const AssertionResult &result)
+StringAssertion & accertion(const string &actual, const AssertionResult &result)
 {
-	return StringAssertion(attach_result(result), actual);
+	return *(new StringAssertion(attach_result(result), actual));
 }
-
 
 struct TestRunner
 {
@@ -101,11 +106,38 @@ struct StandardTestRunner
 	AccertionTest test;
 
 	StandardTestRunner(AccertionTest t)
-		: test(t)
+	: test(t)
 	{}
 	virtual void run()
 	{
 		test();
+	}
+};
+
+/**
+ * counts to summarize a given test run
+ */
+struct TestSummary
+{
+	int run() const { return passed + failed + incomplete; }
+	int passed;
+	int failed;
+	int incomplete;
+	int assertions;
+
+	TestSummary()
+	: passed(0)
+	, failed(0)
+	, incomplete(0)
+	, assertions(0)
+	{}
+
+	void operator += (const TestSummary &o)
+	{
+		passed += o.passed;
+		failed += o.failed;
+		incomplete += o.incomplete;
+		assertions += o.assertions;
 	}
 };
 
@@ -131,6 +163,26 @@ struct TestResult
 		}
 		return true;
 	}
+
+	TestSummary summarize(ostream &out) const
+	{
+		TestSummary total;
+		if (result.empty()) {
+			total.incomplete = 1;
+			return total;
+		}
+		total.assertions = result.size();
+		list< AssertionResult >::const_iterator it(result.begin());
+		for (; it!=result.end(); ++it) {
+			if (! (bool) *it) {
+				total.failed = 1;
+				out << it->failure_msg();
+				return total;
+			}
+		}
+		total.passed = 1;
+		return total;
+	}
 };
 
 
@@ -146,15 +198,45 @@ int add_test(const string &name, AccertionTest test)
 	return 0;
 }
 
-bool run_test(const string &name)
+/**
+ */
+TestSummary run_test(const string &name, ostream &err)
 {
 	TestRunner *runner = tests()[name];
+	if (!runner) {
+		cerr << "No test named: " << name << endl;
+	}
 	TestResult result(name);
 	g_current = &result;
 	runner->run();
-	bool success(result);
 	g_current = NULL;
-	return success;
+	return result.summarize(err);
+}
+
+/**
+ * return number of failures, 0 or 1
+ */
+TestSummary run_tests(istream &in, ostream &out, ostream &err)
+{
+	string line;
+	TestSummary total;
+	while (in) {
+		getline(in, line);
+		if (line.empty()) {
+			continue;
+		}
+		TestSummary test_result(run_test(line, err));
+		if (test_result.passed) {
+			out << "passed ";
+		} else if (test_result.failed) {
+			out << "failed ";
+		} else if (test_result.incomplete) {
+			out << "incomplete ";
+		}
+		out << test_result.assertions << endl;
+		total += test_result;
+	}
+	return total;
 }
 
 void print_tests(ostream &out)
@@ -172,20 +254,30 @@ AssertionResult & attach_result(const AssertionResult &result)
 	return g_current->result.back();
 }
 
+void exit_with_usage(ostream &out, const std::string &argv0)
+{
+	out << argv0 << " (list|run|<test name>)\n";
+	exit(-1);
+}
+
 int accertion_main(int argc, const char **argv)
 {
 	int result(0);
 	if (argc == 1) {
-		print_tests(cout);
+		exit_with_usage(cout, argv[0]);
 	} else if (argc == 2) {
-		bool success(run_test(argv[1]));
-		if (success) {
-			cout << ".";
+		string argv1(argv[1]);
+		if (argv1 == "list") {
+			print_tests(cout);
+		} else if (argv1 == "run") {
+			TestSummary summary(run_tests(cin, cout, cerr));
+			result = summary.failed > 0 ? 1 : 0;
+		} else {
+			TestSummary singleResult(run_test(argv1, cerr));
+			result = singleResult.failed == 1 ? 1 : 0;
 		}
-		result = success ? 0 : 1;
 	} else {
-		cerr << "missing test\n";
-		result = -1;
+		exit_with_usage(cout, argv[0]);
 	}
 	return result;
 }
