@@ -36,8 +36,6 @@ public:
 	int line;
 	bool asserted;
 	bool passed;
-	// a duped result is created as the result of another assertion
-	bool duped;
 
 	AssertionResult(const char *expr, const char *file, int line)
 		: expr(expr)
@@ -45,7 +43,6 @@ public:
 		, line(line)
 		, asserted(false)
 		, passed(false)
-		, duped(false)
 		, msg()
 	{}
 	AssertionResult( const AssertionResult &r)
@@ -54,27 +51,17 @@ public:
 	, line(r.line)
 	, asserted(r.asserted)
 	, passed(r.passed)
-	, duped(r.duped)
 	, msg(r.msg.str())
 	{}
 
-	AssertionResult dup() const
-	{
-		AssertionResult ar(expr, file, line);
-		ar.duped = true;
-		return ar;
-	}
-
-	void pass()
-	{
-		passed = asserted = true;
-	}
+	void pass();
 	std::ostream & fail();
 	std::string failure_msg() const;
 
+	bool failed() const { return asserted && !passed; }
 	operator bool () const
 	{
-		return (passed && asserted) || (duped && !asserted);
+		return passed && asserted;
 	}
 };
 
@@ -110,8 +97,12 @@ void equal_assertion(T &a, const typename T::CType &expected)
 	if (expected == a.actual) {
 		a.result.pass();
 	} else {
-		a.result.fail() << a.result.expr << " = " << a.actual
-			<< ", != " << expected;
+		if (a.result.failed()) {
+			a.result.fail() << ", != " << expected;
+		} else {
+			a.result.fail() << a.result.expr << " = " << a.actual
+				<< ", != " << expected;
+		}
 	}
 }
 
@@ -121,10 +112,14 @@ T & lessthan_assertion(T &a, const typename T::CType &expected)
 	if (a.actual < expected) {
 		a.result.pass();
 	} else {
-		a.result.fail() << a.result.expr << " = " << a.actual
-			<< ", not < " << expected;
+		if (a.result.failed()) {
+			a.result.fail() << ", not < " << expected;
+		} else {
+			a.result.fail() << a.result.expr << " = " << a.actual
+				<< ", not < " << expected;
+		}
 	}
-	return accertion(a.actual, a.result.dup());
+	return a;
 }
 
 template < typename T >
@@ -133,10 +128,14 @@ T & greaterthanequal_assertion(T &a, const typename T::CType &expected)
 	if (a.actual >= expected) {
 		a.result.pass();
 	} else {
-		a.result.fail() << a.result.expr << " = " << a.actual
-			<< ", not >= " << expected;
+		if (a.result.failed()) {
+			a.result.fail() << ", not >= " << expected;
+		} else {
+			a.result.fail() << a.result.expr << " = " << a.actual
+				<< ", not >= " << expected;
+		}
 	}
-	return accertion(a.actual, a.result.dup());
+	return a;
 }
 
 struct BoolAssertion

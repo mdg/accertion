@@ -14,6 +14,15 @@ TestResult *g_current = NULL;
 
 AssertionResult & attach_result(const AssertionResult &);
 
+void AssertionResult::pass()
+{
+	if (!asserted) {
+		passed = asserted = true;
+	}
+	// else it passed, then no change, or it failed and leave
+	// the failure in place. either way, do nothing.
+}
+
 std::ostream & AssertionResult::fail()
 {
 	asserted = true;
