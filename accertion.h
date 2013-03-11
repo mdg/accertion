@@ -15,6 +15,7 @@ struct DoubleAssertion;
 struct IntAssertion;
 struct PtrAssertion;
 struct StringAssertion;
+struct VoidAssertion;
 
 BoolAssertion & accertion(bool actual, const AssertionResult &);
 IntAssertion & accertion(int actual, const AssertionResult &);
@@ -22,6 +23,7 @@ IntAssertion & accertion(int64_t actual, const AssertionResult &);
 DoubleAssertion & accertion(double actual, const AssertionResult &);
 PtrAssertion & accertion(const void *actual, const AssertionResult &);
 StringAssertion & accertion(const std::string &actual, const AssertionResult &);
+VoidAssertion & accertion(const AssertionResult &);
 
 struct AssertionResult
 {
@@ -70,8 +72,9 @@ public:
 	}
 };
 
-#define ASSERTION_RESULT(expr) (AssertionResult(expr, __FILE__, __LINE__))
-#define accert(actual) (accertion(actual, ASSERTION_RESULT(#actual)))
+#define ASSERTION_RESULT(expr) (AssertionResult(#expr, __FILE__, __LINE__))
+#define accert(actual) (accertion(actual, ASSERTION_RESULT(actual)))
+#define accert_still_alive() (accertion(ASSERTION_RESULT(void)).still_alive())
 
 
 struct Assertion
@@ -199,6 +202,17 @@ struct StringAssertion
 	{
 		return equal_assertion(a, x);
 	}
+};
+
+struct VoidAssertion
+: public Assertion
+{
+	VoidAssertion(AssertionResult &r)
+	: Assertion(r)
+	{}
+
+	// Assert that the test did not crash
+	void still_alive();
 };
 
 

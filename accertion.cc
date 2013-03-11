@@ -63,6 +63,11 @@ void PtrAssertion::not_null()
 	}
 }
 
+void VoidAssertion::still_alive()
+{
+	result.pass();
+}
+
 
 BoolAssertion & accertion(bool actual, const AssertionResult &result)
 {
@@ -92,6 +97,11 @@ PtrAssertion & accertion(const void *actual, const AssertionResult &result)
 StringAssertion & accertion(const string &actual, const AssertionResult &result)
 {
 	return *(new StringAssertion(attach_result(result), actual));
+}
+
+VoidAssertion & accertion(const AssertionResult &result)
+{
+	return *(new VoidAssertion(attach_result(result)));
 }
 
 struct TestRunner
