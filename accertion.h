@@ -36,6 +36,8 @@ public:
 	int line;
 	bool asserted;
 	bool passed;
+	// a duped result is created as the result of another assertion
+	bool duped;
 
 	AssertionResult(const char *expr, const char *file, int line)
 		: expr(expr)
@@ -43,6 +45,7 @@ public:
 		, line(line)
 		, asserted(false)
 		, passed(false)
+		, duped(false)
 		, msg()
 	{}
 	AssertionResult( const AssertionResult &r)
@@ -51,12 +54,15 @@ public:
 	, line(r.line)
 	, asserted(r.asserted)
 	, passed(r.passed)
+	, duped(r.duped)
 	, msg(r.msg.str())
 	{}
 
 	AssertionResult dup() const
 	{
-		return AssertionResult(expr, file, line);
+		AssertionResult ar(expr, file, line);
+		ar.duped = true;
+		return ar;
 	}
 
 	void pass()
@@ -68,7 +74,7 @@ public:
 
 	operator bool () const
 	{
-		return passed && asserted;
+		return (passed && asserted) || (duped && !asserted);
 	}
 };
 
@@ -170,7 +176,7 @@ struct DoubleAssertion
 	}
 	friend DoubleAssertion & operator < (DoubleAssertion a, double d)
 	{
-		lessthan_assertion(a, d);
+		return lessthan_assertion(a, d);
 	}
 	friend DoubleAssertion & operator < (double d, DoubleAssertion a)
 	{
