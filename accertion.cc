@@ -33,13 +33,13 @@ void BoolAssertion::t()
 	if (actual) {
 		result.pass();
 	} else {
-		result.fail() << "bool is not true as expected";
+		result.fail() << result.expr << " is unexpectedly false";
 	}
 }
 void BoolAssertion::f()
 {
 	if (actual) {
-		result.fail() << "bool is not false as expected";
+		result.fail() << result.expr << " is unexpectedly true";
 	} else {
 		result.pass();
 	}
@@ -49,7 +49,7 @@ void BoolAssertion::f()
 void PtrAssertion::null()
 {
 	if (actual) {
-		result.fail() << "pointer is not null as expected";
+		result.fail() << result.expr << " is unexpectedly not null";
 	} else {
 		result.pass();
 	}
@@ -59,7 +59,7 @@ void PtrAssertion::not_null()
 	if (actual) {
 		result.pass();
 	} else {
-		result.fail() << "pointer is null not and should be";
+		result.fail() << result.expr << " is unexpectedly null";
 	}
 }
 

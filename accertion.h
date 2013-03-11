@@ -29,20 +29,23 @@ private:
 	std::ostringstream msg;
 
 public:
+	const char *expr;
 	const char *file;
 	int line;
 	bool asserted;
 	bool passed;
 
-	AssertionResult(const char *file, int line)
-		: file(file)
+	AssertionResult(const char *expr, const char *file, int line)
+		: expr(expr)
+		, file(file)
 		, line(line)
 		, asserted(false)
 		, passed(false)
 		, msg()
 	{}
 	AssertionResult( const AssertionResult &r)
-	: file(r.file)
+	: expr(r.expr)
+	, file(r.file)
 	, line(r.line)
 	, asserted(r.asserted)
 	, passed(r.passed)
@@ -51,7 +54,7 @@ public:
 
 	AssertionResult dup() const
 	{
-		return AssertionResult(file, line);
+		return AssertionResult(expr, file, line);
 	}
 
 	void pass()
@@ -67,8 +70,8 @@ public:
 	}
 };
 
-#define ASSERTION_RESULT (AssertionResult(__FILE__, __LINE__))
-#define accert(actual) (accertion(actual, ASSERTION_RESULT))
+#define ASSERTION_RESULT(expr) (AssertionResult(expr, __FILE__, __LINE__))
+#define accert(actual) (accertion(actual, ASSERTION_RESULT(#actual)))
 
 
 struct Assertion
@@ -98,7 +101,8 @@ void equal_assertion(T &a, const typename T::CType &expected)
 	if (expected == a.actual) {
 		a.result.pass();
 	} else {
-		a.result.fail() << expected << " != " << a.actual;
+		a.result.fail() << a.result.expr << " = " << a.actual
+			<< ", != " << expected;
 	}
 }
 
@@ -108,7 +112,8 @@ T & lessthan_assertion(T &a, const typename T::CType &expected)
 	if (a.actual < expected) {
 		a.result.pass();
 	} else {
-		a.result.fail() << a.actual << " not < " << expected;
+		a.result.fail() << a.result.expr << " = " << a.actual
+			<< ", not < " << expected;
 	}
 	return accertion(a.actual, a.result.dup());
 }
@@ -119,7 +124,8 @@ T & greaterthanequal_assertion(T &a, const typename T::CType &expected)
 	if (a.actual >= expected) {
 		a.result.pass();
 	} else {
-		a.result.fail() << a.actual << " not >= " << expected;
+		a.result.fail() << a.result.expr << " = " << a.actual
+			<< ", not >= " << expected;
 	}
 	return accertion(a.actual, a.result.dup());
 }
