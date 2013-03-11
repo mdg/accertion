@@ -168,7 +168,8 @@ struct TestResult
 	{
 		TestSummary total;
 		if (result.empty()) {
-			total.incomplete = 1;
+			total.failed = 1;
+			out << "No assertions\n";
 			return total;
 		}
 		total.assertions = result.size();
