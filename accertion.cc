@@ -26,16 +26,12 @@ void AssertionResult::pass()
 
 std::ostream & AssertionResult::fail()
 {
+	if (!failed()) {
+		*err << "failure @ " << file << ':' << line << endl;
+	}
 	asserted = true;
 	passed = false;
-	return msg;
-}
-
-std::string AssertionResult::failure_msg() const
-{
-	ostringstream fmsg;
-	fmsg << msg.str() << "\n@ " << file << ':' << line << endl;
-	return fmsg.str();
+	return *err;
 }
 
 void BoolAssertion::t()
@@ -227,7 +223,6 @@ struct TestResult
 		for (; it!=result.end(); ++it) {
 			if (! (bool) *it) {
 				total.failed = 1;
-				out << it->failure_msg();
 				return total;
 			}
 		}
@@ -304,6 +299,7 @@ void print_tests(ostream &out)
 AssertionResult & attach_result(const AssertionResult &result)
 {
 	g_current->result.push_back(result);
+	g_current->result.back().err = &cerr;
 	return g_current->result.back();
 }
 

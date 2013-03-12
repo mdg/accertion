@@ -27,12 +27,10 @@ VoidAssertion & accertion(const AssertionResult &);
 
 struct AssertionResult
 {
-private:
-	std::ostringstream msg;
-
 public:
 	const char *expr;
 	const char *file;
+	std::ostream *err;
 	int line;
 	bool asserted;
 	bool passed;
@@ -40,23 +38,14 @@ public:
 	AssertionResult(const char *expr, const char *file, int line)
 		: expr(expr)
 		, file(file)
+		, err(NULL)
 		, line(line)
 		, asserted(false)
 		, passed(false)
-		, msg()
-	{}
-	AssertionResult( const AssertionResult &r)
-	: expr(r.expr)
-	, file(r.file)
-	, line(r.line)
-	, asserted(r.asserted)
-	, passed(r.passed)
-	, msg(r.msg.str())
 	{}
 
 	void pass();
 	std::ostream & fail();
-	std::string failure_msg() const;
 
 	bool failed() const { return asserted && !passed; }
 	operator bool () const
@@ -98,10 +87,10 @@ void equal_assertion(T &a, const typename T::CType &expected)
 		a.result.pass();
 	} else {
 		if (a.result.failed()) {
-			a.result.fail() << ", != " << expected;
+			a.result.fail() << ", != " << expected << std::endl;
 		} else {
 			a.result.fail() << a.result.expr << " = " << a.actual
-				<< ", != " << expected;
+				<< ", != " << expected << std::endl;
 		}
 	}
 }
@@ -113,10 +102,10 @@ T & lessthan_assertion(T &a, const typename T::CType &expected)
 		a.result.pass();
 	} else {
 		if (a.result.failed()) {
-			a.result.fail() << ", not < " << expected;
+			a.result.fail() << ", not < " << expected << "\n";
 		} else {
 			a.result.fail() << a.result.expr << " = " << a.actual
-				<< ", not < " << expected;
+				<< ", not < " << expected << std::endl;
 		}
 	}
 	return a;
@@ -129,10 +118,10 @@ T & greaterthanequal_assertion(T &a, const typename T::CType &expected)
 		a.result.pass();
 	} else {
 		if (a.result.failed()) {
-			a.result.fail() << ", not >= " << expected;
+			a.result.fail() << ", not >= " << expected << "\n";
 		} else {
 			a.result.fail() << a.result.expr << " = " << a.actual
-				<< ", not >= " << expected;
+				<< ", not >= " << expected << std::endl;
 		}
 	}
 	return a;
