@@ -220,7 +220,7 @@ int add_test(const string &name, AccertionTest test)
 
 /**
  */
-TestSummary run_test(const string &name, ostream &err)
+TestSummary run_test(const string &name, ostream &out, ostream &err)
 {
 	TestRunner *runner = tests()[name];
 	if (!runner) {
@@ -230,7 +230,16 @@ TestSummary run_test(const string &name, ostream &err)
 	g_current = &result;
 	runner->run();
 	g_current = NULL;
-	return result.summarize(err);
+	TestSummary test_result(result.summarize(err));
+	if (test_result.passed) {
+		out << "passed ";
+	} else if (test_result.failed) {
+		out << "failed ";
+	} else if (test_result.incomplete) {
+		out << "incomplete ";
+	}
+	out << test_result.assertions << endl;
+	return test_result;
 }
 
 /**
@@ -245,16 +254,7 @@ TestSummary run_tests(istream &in, ostream &out, ostream &err)
 		if (line.empty()) {
 			continue;
 		}
-		TestSummary test_result(run_test(line, err));
-		if (test_result.passed) {
-			out << "passed ";
-		} else if (test_result.failed) {
-			out << "failed ";
-		} else if (test_result.incomplete) {
-			out << "incomplete ";
-		}
-		out << test_result.assertions << endl;
-		total += test_result;
+		total += run_test(line, out, err);
 	}
 	return total;
 }
@@ -297,7 +297,7 @@ int accertion_main(int argc, const char **argv)
 			TestSummary summary(run_tests(cin, cout, cerr));
 			result = summary.failed > 0 ? 1 : 0;
 		} else {
-			TestSummary singleResult(run_test(argv1, cerr));
+			TestSummary singleResult(run_test(argv1, cout, cerr));
 			result = singleResult.failed == 1 ? 1 : 0;
 		}
 	} else {
