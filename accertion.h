@@ -223,12 +223,13 @@ struct VoidAssertion
 
 typedef void (*AccertionTest)();
 
-int add_test(const std::string &name, AccertionTest);
+int add_test(const char *name, AccertionTest
+		, const char *file, int lineno);
 int accertion_main(int, const char **);
 
 #define CCTEST(test) \
 	void test(); \
-	int x_##test = add_test(#test, test); \
+	int x_##test = add_test(#test, test, __FILE__, __LINE__); \
 	void test()
 
 #endif

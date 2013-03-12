@@ -6,6 +6,7 @@
 #include <list>
 #include <iostream>
 #include <cstdlib>
+#include <string.h>
 
 using namespace std;
 struct TestRunner;
@@ -113,8 +114,37 @@ VoidAssertion & accertion(const AssertionResult &result)
 	return *(new VoidAssertion(attach_result(result)));
 }
 
+struct TestKey
+{
+	const char *name;
+	const char *file;
+	int lineno;
+
+	TestKey(const char *name, const char *file, int line)
+	: name(name)
+	, file(file)
+	, lineno(line)
+	{}
+
+	friend bool operator < (const TestKey &a, const TestKey &b)
+	{
+		int cmp(strcmp(a.file, b.file));
+		if (cmp) {
+			return cmp < 0;
+		}
+		cmp = strcmp(a.name, b.name);
+		return cmp < 0;
+	}
+};
+
 struct TestRunner
 {
+	TestKey key;
+
+	TestRunner(TestKey &key)
+	: key(key)
+	{}
+
 	virtual ~TestRunner() {}
 	virtual void run() = 0;
 };
@@ -124,8 +154,9 @@ struct StandardTestRunner
 {
 	AccertionTest test;
 
-	StandardTestRunner(AccertionTest t)
-	: test(t)
+	StandardTestRunner(TestKey key, AccertionTest t)
+	: TestRunner(key)
+	, test(t)
 	{}
 	virtual void run()
 	{
@@ -212,9 +243,11 @@ static map< string, TestRunner * > & tests()
 	return mytests;
 }
 
-int add_test(const string &name, AccertionTest test)
+int add_test(const char *name, AccertionTest test
+		, const char *file, int lineno)
 {
-	tests()[name] = new StandardTestRunner(test);
+	TestKey key(name, file, lineno);
+	tests()[name] = new StandardTestRunner(key, test);
 	return 0;
 }
 
