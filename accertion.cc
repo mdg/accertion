@@ -90,6 +90,11 @@ IntAssertion & accertion(int64_t actual, const AssertionResult &result)
 	return *(new IntAssertion(attach_result(result), actual));
 }
 
+IntAssertion & accertion(uint64_t actual, const AssertionResult &result)
+{
+	return *(new IntAssertion(attach_result(result), actual));
+}
+
 DoubleAssertion & accertion(double actual, const AssertionResult &r)
 {
 	return *(new DoubleAssertion(attach_result(r), actual));

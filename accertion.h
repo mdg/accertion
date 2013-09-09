@@ -20,6 +20,7 @@ struct VoidAssertion;
 BoolAssertion & accertion(bool actual, const AssertionResult &);
 IntAssertion & accertion(int actual, const AssertionResult &);
 IntAssertion & accertion(int64_t actual, const AssertionResult &);
+IntAssertion & accertion(uint64_t actual, const AssertionResult &);
 DoubleAssertion & accertion(double actual, const AssertionResult &);
 PtrAssertion & accertion(const void *actual, const AssertionResult &);
 StringAssertion & accertion(const std::string &actual, const AssertionResult &);
